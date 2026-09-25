@@ -38,7 +38,7 @@ This writes responsive WebP files (640/1280/2400 px) and gallery crops to `publi
 
 Placeholders to replace:
 
-- `src/lib/content.ts`: phone, WhatsApp number, email, testimonials, package prices
+- `src/lib/content.ts`: testimonials, package prices (phone, WhatsApp and email are set in `brand`)
 - `src/components/sections/hero.tsx`: headline stats (years, travellers, rating)
 
 The contact form has no backend: on submit it opens WhatsApp with the enquiry pre-filled.
@@ -47,4 +47,6 @@ The contact form has no backend: on submit it opens WhatsApp with the enquiry pr
 
 - Hero adapted from "Layer Parallax Hero" by erikvalencia1 on 21st.dev
 - Destination cards adapted from "3D Card" by kavikatiyar on 21st.dev
+- Shine Border, Blur Fade and Marquee from Magic UI (magicui.design), in `src/components/magicui/`
+- Skewed buttons: `src/components/ui/skew-button.tsx`
 - Photos from Pexels

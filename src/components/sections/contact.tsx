@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Mail, MapPin, MessageCircle, Phone, Send } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { SkewButton } from "@/components/ui/skew-button";
 import { brand, packages, photo } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
@@ -77,7 +78,7 @@ export function Contact() {
       />
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-night via-night/85 to-night" />
 
-      <div className="mx-auto grid max-w-7xl gap-14 px-5 sm:px-8 lg:grid-cols-2 lg:gap-20">
+      <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)] gap-14 px-5 sm:px-8 lg:grid-cols-2 lg:gap-20">
         <div>
           <SectionHeading
             tone="dark"
@@ -114,14 +115,17 @@ export function Contact() {
                 {brand.office}
               </li>
             </ul>
-            <a
+            <SkewButton
               href={`https://wa.me/${brand.whatsapp}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-10 inline-flex items-center gap-2 rounded-full border border-cream/40 px-6 py-3 text-sm font-medium text-cream transition-colors hover:bg-cream hover:text-ink"
+              variant="outline"
+              shine
+              icon={<MessageCircle className="h-4 w-4" aria-hidden />}
+              className="mt-10 ml-1.5"
             >
-              <MessageCircle className="h-4 w-4" aria-hidden /> Chat on WhatsApp
-            </a>
+              Chat on WhatsApp
+            </SkewButton>
           </Reveal>
         </div>
 
@@ -227,12 +231,15 @@ export function Contact() {
               </div>
             </div>
 
-            <button
+            <SkewButton
               type="submit"
-              className="mt-7 flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-apricot py-4 text-sm font-medium text-apricot-ink transition-transform hover:-translate-y-0.5"
+              size="lg"
+              tone="light"
+              icon={<Send className="h-4 w-4" aria-hidden />}
+              className="mt-7 w-[calc(100%-0.75rem)] mx-1.5"
             >
-              <Send className="h-4 w-4" aria-hidden /> Send enquiry on WhatsApp
-            </button>
+              Send on WhatsApp
+            </SkewButton>
             <p id="form-note" className="mt-3 text-center text-xs text-mist" role="status">
               {sent ? "WhatsApp opened with your enquiry. Press send there and we'll reply soon." : "Opens WhatsApp with your details filled in."}
             </p>

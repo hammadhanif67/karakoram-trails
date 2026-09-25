@@ -1,10 +1,10 @@
-// Site copy and data. Replace placeholder contact details and testimonials with real ones before launch.
+// Site copy and data. Replace placeholder testimonials, stats and prices with real ones before launch.
 
 export const brand = {
   name: "Karakoram Trails",
-  phoneDisplay: "+92 300 0000000", // TODO: real number
-  whatsapp: "923000000000", // TODO: real WhatsApp number, digits only with country code
-  email: "hello@example.com", // TODO: real email
+  phoneDisplay: "+92 328 1933287",
+  whatsapp: "923281933287", // digits only with country code; used for wa.me links and tel:
+  email: "adalhammad556@gmail.com",
   office: "Aliabad, Hunza, Gilgit-Baltistan",
 };
 

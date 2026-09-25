@@ -1,8 +1,9 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowDown, MapPin } from "lucide-react";
+import { ArrowDown, ArrowRight, MapPin } from "lucide-react";
 import { LayeredParallaxHero } from "@/components/ui/layer-parallax-hero";
+import { SkewButton } from "@/components/ui/skew-button";
 import { photo } from "@/lib/content";
 
 // Placeholder numbers: replace with your agency's real figures before launch.
@@ -68,19 +69,13 @@ export function Hero() {
           chosen ourselves.
         </motion.p>
 
-        <motion.div {...rise(0.6)} className="mt-9 flex flex-wrap gap-3">
-          <a
-            href="#tours"
-            className="rounded-full bg-apricot px-7 py-3.5 text-sm font-medium text-apricot-ink shadow-lg shadow-apricot/20 transition-transform hover:-translate-y-0.5"
-          >
+        <motion.div {...rise(0.6)} className="mt-9 flex flex-wrap gap-4 pl-1.5">
+          <SkewButton href="#tours" size="lg" icon={<ArrowRight className="h-4 w-4" aria-hidden />}>
             Explore tours
-          </a>
-          <a
-            href="#destinations"
-            className="rounded-full border border-cream/60 px-7 py-3.5 text-sm font-medium text-cream transition-colors hover:bg-cream hover:text-ink"
-          >
+          </SkewButton>
+          <SkewButton href="#destinations" variant="outline" size="lg">
             See destinations
-          </a>
+          </SkewButton>
         </motion.div>
 
         <motion.dl {...rise(0.8)} className="mt-14 grid max-w-lg grid-cols-3 gap-6 border-t border-cream/20 pt-6">

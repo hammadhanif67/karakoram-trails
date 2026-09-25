@@ -1,5 +1,6 @@
 import { Check, Clock, Route } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
+import { SkewButton } from "@/components/ui/skew-button";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { packages } from "@/lib/content";
 import { cn } from "@/lib/utils";
@@ -62,18 +63,15 @@ export function Packages() {
                   ))}
                 </ul>
 
-                <a
-                  href={`#contact`}
-                  data-package={p.name}
-                  className={cn(
-                    "mt-8 block rounded-full py-3.5 text-center text-sm font-medium transition-colors",
-                    p.featured
-                      ? "bg-pine text-cream hover:bg-night"
-                      : "border border-cream/40 hover:bg-cream hover:text-ink",
-                  )}
+                <SkewButton
+                  href="#contact"
+                  variant={p.featured ? "solid" : "outline"}
+                  tone={p.featured ? "light" : "dark"}
+                  shine={p.featured}
+                  className="mx-1.5 mt-8"
                 >
                   Book {p.name}
-                </a>
+                </SkewButton>
               </article>
             </Reveal>
           ))}

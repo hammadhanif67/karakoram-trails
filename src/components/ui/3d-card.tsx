@@ -3,12 +3,13 @@
 // Adapted from "3D Card" (Destination Card) by kavikatiyar on 21st.dev.
 // Changes: Karakoram Trails palette and fonts, fluid width, responsive srcSet images,
 // in-page anchors instead of an external link, tilt disabled under reduced motion,
-// and extra detail rows (blurb, best season).
+// extra detail rows (blurb, best season) and the site's skewed CTA button.
 
 import * as React from "react";
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SkewButton } from "./skew-button";
 
 export interface InteractiveTravelCardProps {
   title: string;
@@ -91,14 +92,13 @@ export const InteractiveTravelCard = React.forwardRef<HTMLDivElement, Interactiv
             <div style={{ transform: "translateZ(40px)" }} className="space-y-4">
               <p className="text-sm leading-relaxed text-cream/90">{blurb}</p>
               <p className="text-xs tracking-[0.2em] text-apricot uppercase">Best season · {season}</p>
-              <motion.a
+              <SkewButton
                 href={href}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                className="block w-full cursor-pointer rounded-full bg-white/10 py-3 text-center text-sm font-medium ring-1 ring-white/25 backdrop-blur-md ring-inset transition-colors hover:bg-apricot hover:text-apricot-ink"
+                variant="outline"
+                className="mx-1.5 w-[calc(100%-0.75rem)] bg-night/30 backdrop-blur-md hover:border-apricot hover:bg-apricot hover:text-apricot-ink"
               >
                 {actionText}
-              </motion.a>
+              </SkewButton>
             </div>
           </div>
         </div>

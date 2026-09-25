@@ -1,21 +1,20 @@
 "use client";
 
-import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
+import { useReducedMotion } from "framer-motion";
+import { BlurFade } from "@/components/magicui/blur-fade";
 
-type RevealProps = HTMLMotionProps<"div"> & { delay?: number; y?: number };
+type RevealProps = { delay?: number; className?: string; children: React.ReactNode };
 
-/** Fades and lifts content in once when it scrolls into view. Renders static under reduced motion. */
-export function Reveal({ delay = 0, y = 28, children, ...props }: RevealProps) {
+/**
+ * Scroll-in animation used across sections: Magic UI Blur Fade (fade + lift + de-blur),
+ * triggered once when the block enters the viewport. Renders static under reduced motion.
+ */
+export function Reveal({ delay = 0, className, children }: RevealProps) {
   const reduce = useReducedMotion();
+  if (reduce) return <div className={className}>{children}</div>;
   return (
-    <motion.div
-      initial={reduce ? false : { opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
-      {...props}
-    >
+    <BlurFade inView inViewMargin="-80px" direction="up" offset={24} blur="8px" duration={0.7} delay={delay} className={className}>
       {children}
-    </motion.div>
+    </BlurFade>
   );
 }

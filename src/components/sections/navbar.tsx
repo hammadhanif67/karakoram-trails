@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, Mountain, X } from "lucide-react";
 import { brand } from "@/lib/content";
+import { SkewButton } from "@/components/ui/skew-button";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -55,12 +56,9 @@ export function Navbar() {
           ))}
         </ul>
 
-        <a
-          href="#contact"
-          className="hidden rounded-full bg-apricot px-5 py-2.5 text-sm font-medium text-apricot-ink transition-transform hover:-translate-y-0.5 lg:inline-block"
-        >
+        <SkewButton href="#contact" shine className="hidden lg:inline-flex">
           Plan my trip
-        </a>
+        </SkewButton>
 
         <button
           type="button"
@@ -85,7 +83,7 @@ export function Navbar() {
             className="overflow-hidden lg:hidden"
           >
             <ul className="flex flex-col gap-2 px-5 pt-8">
-              {[...links, { href: "#contact", label: "Contact" }].map((l, i) => (
+              {links.map((l, i) => (
                 <motion.li
                   key={l.href}
                   initial={{ opacity: 0, x: -16 }}
@@ -102,6 +100,11 @@ export function Navbar() {
                 </motion.li>
               ))}
             </ul>
+            <div className="px-6 pt-8">
+              <SkewButton href="#contact" size="lg" shine className="w-full" onClick={() => setOpen(false)}>
+                Plan my trip
+              </SkewButton>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

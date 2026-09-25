@@ -26,12 +26,25 @@
   --color-border: var(--line);
   --font-serif: var(--font-cormorant);
   --font-sans: var(--font-montserrat);
-  --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
-  --animate-marquee-reverse: marquee var(--marquee-duration, 40s) linear infinite reverse;
+  /* Magic UI Marquee */
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+
+  /* Magic UI Shine Border */
+  --animate-shine: shine var(--duration) infinite linear;
+  @keyframes shine {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    to { background-position: 0% 0%; }
+  }
 
   @keyframes marquee {
     from { transform: translateX(0); }
-    to { transform: translateX(calc(-50% - 0.75rem)); }
+    to { transform: translateX(calc(-100% - var(--gap))); }
+  }
+  @keyframes marquee-vertical {
+    from { transform: translateY(0); }
+    to { transform: translateY(calc(-100% - var(--gap))); }
   }
 }
 

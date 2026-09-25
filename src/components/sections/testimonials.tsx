@@ -1,4 +1,5 @@
 import { Quote, Star } from "lucide-react";
+import { Marquee } from "@/components/magicui/marquee";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { testimonials } from "@/lib/content";
 
@@ -31,28 +32,6 @@ function Card({ t }: { t: Item }) {
   );
 }
 
-/** Row of cards duplicated once so the CSS marquee can loop seamlessly. Pauses on hover and focus. */
-function MarqueeRow({ items, reverse = false }: { items: Item[]; reverse?: boolean }) {
-  return (
-    <div className="group flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-      <div
-        className={`flex w-max gap-6 pr-6 group-hover:[animation-play-state:paused] group-focus-within:[animation-play-state:paused] motion-reduce:animate-none ${
-          reverse ? "animate-marquee-reverse" : "animate-marquee"
-        }`}
-      >
-        {items.map((t) => (
-          <Card key={t.name} t={t} />
-        ))}
-        <div className="flex gap-6" aria-hidden>
-          {items.map((t) => (
-            <Card key={`${t.name}-dup`} t={t} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function Testimonials() {
   return (
     <section id="stories" className="overflow-hidden bg-[#efe8da] py-24 sm:py-32">
@@ -67,9 +46,17 @@ export function Testimonials() {
           }
         />
       </div>
-      <div className="mt-14 space-y-6">
-        <MarqueeRow items={testimonials} />
-        <MarqueeRow items={[...testimonials].reverse()} reverse />
+      <div className="mt-14 space-y-2 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+        <Marquee pauseOnHover repeat={2} className="[--duration:60s] [--gap:1.5rem]">
+          {testimonials.map((t) => (
+            <Card key={t.name} t={t} />
+          ))}
+        </Marquee>
+        <Marquee pauseOnHover reverse repeat={2} className="[--duration:60s] [--gap:1.5rem]" aria-hidden>
+          {[...testimonials].reverse().map((t) => (
+            <Card key={t.name} t={t} />
+          ))}
+        </Marquee>
       </div>
     </section>
   );

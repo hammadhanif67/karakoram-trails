@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+/* Design tokens from the approved direction (UI/UX Pro Max: Parallax Storytelling, Luxury Serif). */
+:root {
+  --night: #0f1e22;
+  --pine: #1e4d4a;
+  --pine-deep: #173b39;
+  --apricot: #d08a3c;
+  --apricot-ink: #1a1206;
+  --cream: #f6f1e7;
+  --ink: #1c1917;
+  --mist: #5f5e57;
+  --line: #e2d9c8;
+}
+
+@theme inline {
+  --color-night: var(--night);
+  --color-pine: var(--pine);
+  --color-pine-deep: var(--pine-deep);
+  --color-apricot: var(--apricot);
+  --color-apricot-ink: var(--apricot-ink);
+  --color-cream: var(--cream);
+  --color-ink: var(--ink);
+  --color-mist: var(--mist);
+  --color-line: var(--line);
+  --color-border: var(--line);
+  --font-serif: var(--font-cormorant);
+  --font-sans: var(--font-montserrat);
+  --animate-marquee: marquee var(--marquee-duration, 40s) linear infinite;
+  --animate-marquee-reverse: marquee var(--marquee-duration, 40s) linear infinite reverse;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(-50% - 0.75rem)); }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-montserrat), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--apricot);
+  color: var(--apricot-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--apricot);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

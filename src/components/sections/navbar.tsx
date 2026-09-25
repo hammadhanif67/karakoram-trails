@@ -1,18 +1,22 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, Mountain, X } from "lucide-react";
 import { brand } from "@/lib/content";
-import { SkewButton } from "@/components/ui/skew-button";
+import { ScrollProgress } from "@/components/magicui/scroll-progress";
+import { CtaButton } from "@/components/ui/cta-button";
 import { cn } from "@/lib/utils";
 
+// Absolute "/#" links so they also work from the tour pages.
 const links = [
-  { href: "#destinations", label: "Destinations" },
-  { href: "#tours", label: "Tours" },
-  { href: "#why-us", label: "Why us" },
-  { href: "#stories", label: "Stories" },
-  { href: "#gallery", label: "Gallery" },
+  { href: "/#destinations", label: "Destinations" },
+  { href: "/#route", label: "Route" },
+  { href: "/#tours", label: "Tours" },
+  { href: "/#departures", label: "Departures" },
+  { href: "/#why-us", label: "Why us" },
+  { href: "/#faq", label: "FAQ" },
 ];
 
 export function Navbar() {
@@ -40,13 +44,15 @@ export function Navbar() {
         scrolled || open ? "bg-night/90 py-3 shadow-lg shadow-night/20 backdrop-blur-md" : "py-5",
       )}
     >
+      {/* Magic UI Scroll Progress */}
+      <ScrollProgress className="h-0.5 bg-none bg-apricot" />
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 sm:px-8" aria-label="Main">
-        <a href="#top" className="flex items-center gap-2 text-cream">
+        <Link href="/" className="flex items-center gap-2 text-cream">
           <Mountain className="h-6 w-6 text-apricot" aria-hidden />
           <span className="font-serif text-2xl font-semibold tracking-wide">{brand.name}</span>
-        </a>
+        </Link>
 
-        <ul className="hidden items-center gap-8 lg:flex">
+        <ul className="hidden items-center gap-7 xl:gap-8 lg:flex">
           {links.map((l) => (
             <li key={l.href}>
               <a href={l.href} className="text-sm text-cream/85 transition-colors hover:text-apricot">
@@ -56,9 +62,9 @@ export function Navbar() {
           ))}
         </ul>
 
-        <SkewButton href="#contact" shine className="hidden lg:inline-flex">
+        <CtaButton href="/#contact" shine className="hidden lg:inline-flex">
           Plan my trip
-        </SkewButton>
+        </CtaButton>
 
         <button
           type="button"
@@ -101,9 +107,9 @@ export function Navbar() {
               ))}
             </ul>
             <div className="px-6 pt-8">
-              <SkewButton href="#contact" size="lg" shine className="w-full" onClick={() => setOpen(false)}>
+              <CtaButton href="/#contact" size="lg" shine className="w-full" onClick={() => setOpen(false)}>
                 Plan my trip
-              </SkewButton>
+              </CtaButton>
             </div>
           </motion.div>
         )}

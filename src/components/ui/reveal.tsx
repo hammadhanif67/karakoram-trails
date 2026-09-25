@@ -1,7 +1,7 @@
 "use client";
 
-import { useReducedMotion } from "framer-motion";
 import { BlurFade } from "@/components/magicui/blur-fade";
+import { useReducedMotionSafe } from "@/lib/use-media-query";
 
 type RevealProps = { delay?: number; className?: string; children: React.ReactNode };
 
@@ -10,7 +10,7 @@ type RevealProps = { delay?: number; className?: string; children: React.ReactNo
  * triggered once when the block enters the viewport. Renders static under reduced motion.
  */
 export function Reveal({ delay = 0, className, children }: RevealProps) {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
   if (reduce) return <div className={className}>{children}</div>;
   return (
     <BlurFade inView inViewMargin="-80px" direction="up" offset={24} blur="8px" duration={0.7} delay={delay} className={className}>

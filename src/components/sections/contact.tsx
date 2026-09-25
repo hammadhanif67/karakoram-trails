@@ -4,8 +4,11 @@ import { useState } from "react";
 import { Mail, MapPin, MessageCircle, Phone, Send } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { SkewButton } from "@/components/ui/skew-button";
-import { brand, packages, photo } from "@/lib/content";
+import { CtaButton } from "@/components/ui/cta-button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { brand, tours, whatsappLink } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
 type Fields = { name: string; phone: string; tour: string; travellers: string; month: string; message: string };
@@ -13,7 +16,7 @@ type Errors = Partial<Record<keyof Fields, string>>;
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-const empty: Fields = { name: "", phone: "", tour: packages[1].name, travellers: "2", month: "", message: "" };
+const empty: Fields = { name: "", phone: "", tour: tours[1].name, travellers: "2", month: "", message: "" };
 
 function validate(f: Fields): Errors {
   const e: Errors = {};
@@ -31,7 +34,6 @@ export function Contact() {
   const [fields, setFields] = useState<Fields>(empty);
   const [errors, setErrors] = useState<Errors>({});
   const [sent, setSent] = useState(false);
-  const fairy = photo("fairy-meadows");
 
   const set = (k: keyof Fields) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFields((f) => ({ ...f, [k]: e.target.value }));
@@ -57,26 +59,19 @@ export function Contact() {
     ]
       .filter(Boolean)
       .join("\n");
-    window.open(`https://wa.me/${brand.whatsapp}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
+    window.open(whatsappLink(text), "_blank", "noopener");
     setSent(true);
   };
 
-  const input =
-    "mt-2 w-full rounded-xl border bg-white px-4 py-3 text-base text-ink transition-colors placeholder:text-mist/70 focus:border-pine focus:outline-none";
+  // shadcn Input/Textarea sized up for touch; native <select> keeps the phone's own picker.
+  const input = "mt-2 h-12 rounded-xl bg-white px-4 text-base text-ink shadow-none placeholder:text-mist/70 focus-visible:border-pine focus-visible:ring-pine/20";
+  const select =
+    "mt-2 h-12 w-full rounded-xl border bg-white px-4 text-base text-ink transition-colors focus:border-pine focus:outline-none";
   const label = "text-sm font-medium text-ink";
 
   return (
     <section id="contact" className="relative isolate overflow-hidden bg-night py-24 sm:py-32">
-      {/* eslint-disable-next-line @next/next/no-img-element -- static export, pre-optimized srcSet */}
-      <img
-        src={fairy.src}
-        srcSet={fairy.srcSet}
-        sizes="100vw"
-        alt=""
-        loading="lazy"
-        className="absolute inset-0 -z-10 h-full w-full object-cover opacity-30"
-      />
-      <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-night via-night/85 to-night" />
+      <div aria-hidden className="absolute -top-48 -left-32 -z-10 h-[32rem] w-[32rem] rounded-full bg-pine/40 blur-3xl" />
 
       <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)] gap-14 px-5 sm:px-8 lg:grid-cols-2 lg:gap-20">
         <div>
@@ -115,17 +110,17 @@ export function Contact() {
                 {brand.office}
               </li>
             </ul>
-            <SkewButton
-              href={`https://wa.me/${brand.whatsapp}`}
+            <CtaButton
+              href={whatsappLink()}
               target="_blank"
               rel="noopener noreferrer"
               variant="outline"
               shine
               icon={<MessageCircle className="h-4 w-4" aria-hidden />}
-              className="mt-10 ml-1.5"
+              className="mt-10"
             >
               Chat on WhatsApp
-            </SkewButton>
+            </CtaButton>
           </Reveal>
         </div>
 
@@ -133,10 +128,10 @@ export function Contact() {
           <form noValidate onSubmit={onSubmit} className="rounded-3xl bg-cream p-6 shadow-2xl sm:p-9" aria-describedby="form-note">
             <div className="grid gap-5 sm:grid-cols-2">
               <div className="sm:col-span-2">
-                <label htmlFor="f-name" className={label}>
+                <Label htmlFor="" className={label}>
                   Full name
-                </label>
-                <input
+                </Label>
+                <Input
                   id="f-name"
                   autoComplete="name"
                   value={fields.name}
@@ -150,10 +145,10 @@ export function Contact() {
               </div>
 
               <div className="sm:col-span-2">
-                <label htmlFor="f-phone" className={label}>
+                <Label htmlFor="" className={label}>
                   Phone or WhatsApp
-                </label>
-                <input
+                </Label>
+                <Input
                   id="f-phone"
                   type="tel"
                   inputMode="tel"
@@ -169,22 +164,22 @@ export function Contact() {
               </div>
 
               <div>
-                <label htmlFor="f-tour" className={label}>
+                <Label htmlFor="" className={label}>
                   Tour
-                </label>
-                <select id="f-tour" value={fields.tour} onChange={set("tour")} className={cn(input, "border-line")}>
-                  {packages.map((p) => (
-                    <option key={p.name}>{p.name}</option>
+                </Label>
+                <select id="f-tour" value={fields.tour} onChange={set("tour")} className={cn(select, "border-line")}>
+                  {tours.map((t) => (
+                    <option key={t.slug}>{t.name}</option>
                   ))}
                   <option>Custom trip</option>
                 </select>
               </div>
 
               <div>
-                <label htmlFor="f-travellers" className={label}>
+                <Label htmlFor="" className={label}>
                   Travellers
-                </label>
-                <select id="f-travellers" value={fields.travellers} onChange={set("travellers")} className={cn(input, "border-line")}>
+                </Label>
+                <select id="f-travellers" value={fields.travellers} onChange={set("travellers")} className={cn(select, "border-line")}>
                   {["1", "2", "3", "4", "5", "6", "7-12"].map((n) => (
                     <option key={n}>{n}</option>
                   ))}
@@ -192,16 +187,16 @@ export function Contact() {
               </div>
 
               <div className="sm:col-span-2">
-                <label htmlFor="f-month" className={label}>
+                <Label htmlFor="" className={label}>
                   Travel month
-                </label>
+                </Label>
                 <select
                   id="f-month"
                   value={fields.month}
                   onChange={set("month")}
                   aria-invalid={!!errors.month}
                   aria-describedby={errors.month ? "e-month" : undefined}
-                  className={cn(input, errors.month ? "border-red-600" : "border-line", !fields.month && "text-mist")}
+                  className={cn(select, errors.month ? "border-red-600" : "border-line", !fields.month && "text-mist")}
                 >
                   <option value="" disabled>
                     Choose a month
@@ -217,29 +212,29 @@ export function Contact() {
               </div>
 
               <div className="sm:col-span-2">
-                <label htmlFor="f-message" className={label}>
+                <Label htmlFor="" className={label}>
                   Anything else? <span className="font-normal text-mist">(optional)</span>
-                </label>
-                <textarea
+                </Label>
+                <Textarea
                   id="f-message"
                   rows={3}
                   value={fields.message}
                   onChange={set("message")}
                   placeholder="Travelling with elderly parents, prefer a slower pace."
-                  className={cn(input, "resize-none border-line")}
+                  className={cn(input, "h-auto min-h-24 resize-none border-line py-3")}
                 />
               </div>
             </div>
 
-            <SkewButton
+            <CtaButton
               type="submit"
               size="lg"
               tone="light"
               icon={<Send className="h-4 w-4" aria-hidden />}
-              className="mt-7 w-[calc(100%-0.75rem)] mx-1.5"
+              className="mt-7 w-full"
             >
               Send on WhatsApp
-            </SkewButton>
+            </CtaButton>
             <p id="form-note" className="mt-3 text-center text-xs text-mist" role="status">
               {sent ? "WhatsApp opened with your enquiry. Press send there and we'll reply soon." : "Opens WhatsApp with your details filled in."}
             </p>

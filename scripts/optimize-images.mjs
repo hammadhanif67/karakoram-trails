@@ -1,5 +1,6 @@
 // Builds responsive WebP images in public/images/ from photos-original/.
-// Each output is re-encoded at decreasing quality until it fits its byte budget.
+// Each output is re-encoded at decreasing quality (and, for very grainy photos, a light denoise)
+// until it fits its byte budget. Every photo is used in exactly one place on the site.
 // Run with: npm run optimize-images
 
 import sharp from "sharp";
@@ -9,23 +10,34 @@ const SRC = "photos-original";
 const OUT = "public/images";
 const KB = 1024;
 
-// Hero may reach ~300 KB at its largest size; every other file stays under 150 KB.
-const photos = [
-  { file: "pexels-arifesapzai-35302567.jpg", name: "skardu", widths: [480, 768, 1280, 1920], budget: 300 * KB },
-  { file: "pexels-faysal9-35061891.jpg", name: "hunza", widths: [480, 720, 880], budget: 150 * KB },
-  { file: "pexels-zia-uddin-shah-392997573-14795281.jpg", name: "fairy-meadows", widths: [480, 800, 1200], budget: 150 * KB },
-];
+// aspect: crop to width/height ratio (cover, focused on the most detailed area) for slots that
+// are always landscape, e.g. full-width destination panels and tour-page heroes. The crop follows the
+// most detailed area unless `position` overrides it.
+const images = [
+  // Home hero may reach ~300 KB at its largest size; everything else stays under 150 KB.
+  { file: "pexels-arifesapzai-35302567.jpg", name: "hero-skardu-shangrila", widths: [480, 768, 1280, 1920], budget: 300 * KB },
 
-// Gallery detail crops (fractions of the original: left, top, width, height).
-const crops = [
-  ["pexels-arifesapzai-35302567.jpg", "gallery-skardu-peaks", [0.0, 0.1, 0.62, 0.5]],
-  ["pexels-arifesapzai-35302567.jpg", "gallery-skardu-lake", [0.2, 0.62, 0.6, 0.38]],
-  ["pexels-faysal9-35061891.jpg", "gallery-hunza-rider", [0.25, 0.35, 0.5, 0.35]],
-  ["pexels-faysal9-35061891.jpg", "gallery-hunza-poplars", [0.5, 0.0, 0.5, 0.55]],
-  ["pexels-zia-uddin-shah-392997573-14795281.jpg", "gallery-fm-glacier", [0.15, 0.3, 0.7, 0.4]],
-  ["pexels-zia-uddin-shah-392997573-14795281.jpg", "gallery-fm-meadow", [0.2, 0.6, 0.8, 0.4]],
+  // Destinations (pinned full-width panels)
+  { file: "pexels-faysal9-35061891.jpg", name: "dest-hunza", widths: [640, 1024, 1280], aspect: 16 / 10 }, // dense foliage: 1600px cannot fit 150 KB
+  { file: "skardu-katpana-desert.jpg", name: "dest-skardu", widths: [640, 1024, 1600], aspect: 16 / 10 },
+  { file: "pexels-zia-uddin-shah-392997573-14795281.jpg", name: "dest-fairy-meadows", widths: [640, 1024, 1600], aspect: 16 / 10 },
+
+  // Why us (tall editorial photo)
+  { file: "hunza-altit-fort-view.jpg", name: "why-altit-fort", widths: [480, 800, 1000] },
+
+  // Packages: card image and tour-page hero
+  { file: "attabad-lake.jpg", name: "tour-hunza-escape", widths: [480, 800, 1280, 1600], aspect: 16 / 10 },
+  { file: "passu-cones.jpg", name: "tour-grand-karakoram", widths: [480, 800, 1280, 1600], aspect: 16 / 10 },
+  { file: "skardu-lake-village.jpg", name: "tour-skardu-lakes", widths: [480, 800, 1280, 1600], aspect: 16 / 10, position: "centre" },
+
+  // Gallery
+  { file: "deosai-plains.jpg", name: "gallery-deosai", widths: [400, 800] },
+  { file: "kaghan-lake.jpg", name: "gallery-kaghan-lake", widths: [400, 800] },
+  { file: "rakaposhi.jpg", name: "gallery-rakaposhi", widths: [400, 800] },
+  { file: "karimabad-night.jpg", name: "gallery-karimabad-night", widths: [400, 800] },
+  { file: "khunjerab-yaks.jpg", name: "gallery-khunjerab", widths: [400, 800] },
+  { file: "fairy-meadows-cabins.jpg", name: "gallery-fairy-meadows-cabins", widths: [400, 800] },
 ];
-const CROP_WIDTHS = [400, 800];
 
 // Quality never drops below 50 (visible blockiness). Very grainy photos (e.g. dense foliage) that
 // still don't fit get a light denoise first, which removes sensor grain that WebP spends bytes on.
@@ -45,29 +57,18 @@ async function encodeWithin(pipeline, path, budget) {
   writeFileSync(path, last.buf); // write the exact bytes; sharp().toFile() would re-encode
   const kb = (last.buf.length / KB).toFixed(0);
   const notes = [last.sigma && `denoise ${last.sigma}`, last.buf.length > budget && "OVER BUDGET"].filter(Boolean);
-  console.log(`${path.padEnd(44)} q${last.quality}  ${kb} KB  ${notes.join(", ")}`);
+  console.log(`${path.padEnd(52)} q${last.quality}  ${kb} KB  ${notes.join(", ")}`);
 }
 
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(OUT, { recursive: true });
 
-for (const { file, name, widths, budget } of photos) {
+for (const { file, name, widths, budget = 150 * KB, aspect, position = sharp.strategy.attention } of images) {
   for (const w of widths) {
-    const pipeline = sharp(`${SRC}/${file}`).rotate().resize({ width: w, withoutEnlargement: true });
+    const resize = aspect
+      ? { width: w, height: Math.round(w / aspect), fit: "cover", position }
+      : { width: w, withoutEnlargement: true };
+    const pipeline = sharp(`${SRC}/${file}`).rotate().resize(resize);
     await encodeWithin(pipeline, `${OUT}/${name}-${w}.webp`, budget);
-  }
-}
-
-for (const [file, name, [l, t, w, h]] of crops) {
-  const { info } = await sharp(`${SRC}/${file}`).rotate().toBuffer({ resolveWithObject: true });
-  const region = {
-    left: Math.round(l * info.width),
-    top: Math.round(t * info.height),
-    width: Math.round(w * info.width),
-    height: Math.round(h * info.height),
-  };
-  for (const cw of CROP_WIDTHS) {
-    const pipeline = sharp(`${SRC}/${file}`).rotate().extract(region).resize({ width: cw, withoutEnlargement: true });
-    await encodeWithin(pipeline, `${OUT}/${name}-${cw}.webp`, 150 * KB);
   }
 }

@@ -26,6 +26,31 @@
   --color-border: var(--line);
   --font-serif: var(--font-cormorant);
   --font-sans: var(--font-montserrat);
+
+  /* shadcn/ui semantic tokens mapped to the site palette */
+  --color-foreground: var(--ink);
+  --color-input: var(--line);
+  --color-ring: var(--apricot);
+  --color-muted: #efe8da;
+  --color-muted-foreground: var(--mist);
+  --color-accent: var(--pine);
+  --color-accent-foreground: var(--cream);
+  --color-primary: var(--pine);
+  --color-primary-foreground: var(--cream);
+  --color-destructive: #b91c1c;
+
+  /* shadcn Accordion open/close */
+  --animate-accordion-down: accordion-down 0.25s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  @keyframes accordion-down {
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height); }
+  }
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; }
+  }
+
   /* Magic UI Marquee */
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
@@ -58,6 +83,17 @@ body {
   color: var(--ink);
   font-family: var(--font-montserrat), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Cormorant defaults to old-style figures, which bob up and down in prices and counters.
+   Set through Tailwind's variable so utilities like tabular-nums still combine with it. */
+@layer base {
+  /* Tailwind registers --tw-numeric-figure as non-inherited, so descendants need it too. */
+  .font-serif,
+  .font-serif * {
+    --tw-numeric-figure: lining-nums;
+    font-variant-numeric: lining-nums;
+  }
 }
 
 ::selection {

@@ -1,70 +1,85 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { BedDouble, Compass, Headset, ShieldCheck, Users, Wallet, type LucideIcon } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { NumberTicker } from "@/components/magicui/number-ticker";
+import { TextReveal } from "@/components/magicui/text-reveal";
+import { Photo } from "@/components/ui/photo";
 import { Reveal } from "@/components/ui/reveal";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { photo, reasons } from "@/lib/content";
-
-const icons: Record<string, LucideIcon> = { Compass, ShieldCheck, Users, BedDouble, Wallet, Headset };
+import { whyUs } from "@/lib/content";
+import { useReducedMotionSafe } from "@/lib/use-media-query";
 
 export function WhyUs() {
-  const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["-12%", "12%"]);
-  const hunza = photo("hunza");
+  const reduce = useReducedMotionSafe();
+  const photoRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: photoRef, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["-8%", "8%"]);
 
   return (
-    <section id="why-us" className="bg-cream py-24 sm:py-32">
-      <div className="mx-auto grid max-w-7xl gap-14 px-5 sm:px-8 lg:grid-cols-[5fr_7fr] lg:gap-20">
-        <div ref={ref} className="relative h-[26rem] overflow-hidden rounded-3xl sm:h-[34rem] lg:sticky lg:top-24 lg:h-[calc(100svh-8rem)]">
-          <motion.img
-            src={hunza.src}
-            srcSet={hunza.srcSet}
-            sizes="(min-width: 1024px) 40vw, 100vw"
-            alt="A rider on a golden autumn road through Hunza"
-            loading="lazy"
-            className="absolute inset-x-0 -top-[12%] h-[124%] w-full object-cover"
-            style={{ y }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-night/80 via-transparent to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 p-7 text-cream">
-            <p className="font-serif text-2xl leading-snug italic sm:text-3xl">
-              &ldquo;We only take guests to places we would take our own families.&rdquo;
-            </p>
-            <p className="mt-3 text-xs tracking-[0.2em] text-apricot uppercase">The Karakoram Trails team</p>
-          </div>
+    <section id="why-us" className="bg-cream">
+      {/* Magic UI Text Reveal: words brighten one by one as you scroll */}
+      {reduce ? (
+        <p className="mx-auto max-w-4xl px-5 pt-24 font-serif text-4xl leading-tight text-ink sm:px-8 sm:pt-32 lg:text-5xl">
+          {whyUs.statement}
+        </p>
+      ) : (
+        <TextReveal className="h-[160vh] font-serif font-medium text-ink [&_span.flex]:text-4xl [&_span.flex]:leading-tight [&_span.flex]:font-medium lg:[&_span.flex]:text-6xl">
+          {whyUs.statement}
+        </TextReveal>
+      )}
+
+      <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)] gap-12 px-5 pt-8 pb-24 sm:px-8 sm:pb-32 lg:grid-cols-[6fr_5fr] lg:gap-20">
+        <div ref={photoRef} className="relative h-[28rem] overflow-hidden rounded-3xl sm:h-[36rem] lg:h-[44rem]">
+          <motion.div className="absolute inset-x-0 -top-[10%] h-[120%]" style={{ y }}>
+            <Photo name={whyUs.image} alt={whyUs.alt} sizes="(min-width: 1024px) 50vw, 100vw" className="h-full w-full object-cover" />
+          </motion.div>
         </div>
 
         <div className="flex flex-col justify-center">
-          <SectionHeading
-            eyebrow="Why choose us"
-            title={
-              <>
-                Local roots, <em className="text-pine">premium care</em>
-              </>
-            }
-            intro="We are a Gilgit-Baltistan team. That means better routes, warmer welcomes and help that is never more than a call away."
-          />
-          <div className="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2">
-            {reasons.map((r, i) => {
-              const Icon = icons[r.icon];
-              return (
-                <Reveal key={r.title} delay={(i % 2) * 0.1 + Math.floor(i / 2) * 0.08}>
-                  <div className="group">
-                    <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-pine text-cream transition-colors duration-300 group-hover:bg-apricot group-hover:text-apricot-ink">
-                      <Icon className="h-5 w-5" aria-hidden />
-                    </span>
-                    <h3 className="mt-5 font-serif text-2xl font-semibold text-ink">{r.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-mist">{r.text}</p>
+          <Reveal>
+            <p className="text-xs font-medium tracking-[0.25em] text-apricot uppercase">Why travel with us</p>
+          </Reveal>
+          <ol className="mt-8 space-y-10">
+            {whyUs.points.map((p, i) => (
+              <Reveal key={p.title} delay={i * 0.1}>
+                <li className="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-4 border-t border-line pt-8">
+                  <span className="font-serif text-5xl leading-none text-apricot italic" aria-hidden>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h3 className="font-serif text-3xl leading-tight font-medium text-ink">{p.title}</h3>
+                    <p className="mt-3 leading-relaxed text-mist">{p.text}</p>
                   </div>
-                </Reveal>
-              );
-            })}
-          </div>
+                </li>
+              </Reveal>
+            ))}
+          </ol>
         </div>
+      </div>
+
+      {/* Stats in large type on a dark band, counted up with Magic UI Number Ticker */}
+      <div className="bg-night text-cream">
+        <dl className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-cream/10 px-5 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-8">
+          {whyUs.stats.map((s, i) => (
+            <div key={s.label} className="py-10 sm:px-10 sm:py-16 sm:first:pl-0">
+              <dt className="text-xs tracking-[0.25em] text-cream/60 uppercase">{s.label}</dt>
+              <dd className="mt-4 flex items-baseline font-serif text-7xl leading-none font-medium tabular-nums lg:text-8xl">
+                {reduce ? (
+                  <span>{s.value.toLocaleString("en-US", { minimumFractionDigits: s.decimals ?? 0 })}</span>
+                ) : (
+                  <NumberTicker
+                    value={s.value}
+                    startValue={s.start}
+                    decimalPlaces={s.decimals ?? 0}
+                    delay={0.15 * i}
+                    className="tracking-normal text-cream"
+                  />
+                )}
+                <span className="ml-1 text-4xl text-apricot lg:text-5xl">{s.suffix}</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   );

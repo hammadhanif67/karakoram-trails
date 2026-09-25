@@ -1,10 +1,15 @@
 import { Contact } from "@/components/sections/contact";
+import { Departures } from "@/components/sections/departures";
 import { Destinations } from "@/components/sections/destinations";
+import { Faq } from "@/components/sections/faq";
+import { FloatingWhatsApp } from "@/components/sections/floating-whatsapp";
 import { Footer } from "@/components/sections/footer";
 import { Gallery } from "@/components/sections/gallery";
 import { Hero } from "@/components/sections/hero";
+import { HowItWorks } from "@/components/sections/how-it-works";
 import { Navbar } from "@/components/sections/navbar";
 import { Packages } from "@/components/sections/packages";
+import { RouteMap } from "@/components/sections/route-map";
 import { Testimonials } from "@/components/sections/testimonials";
 import { WhyUs } from "@/components/sections/why-us";
 
@@ -21,13 +26,18 @@ export default function Home() {
       <main>
         <Hero />
         <Destinations />
+        <RouteMap />
         <Packages />
+        <Departures />
         <WhyUs />
+        <HowItWorks />
         <Testimonials />
         <Gallery />
+        <Faq />
         <Contact />
       </main>
       <Footer />
+      <FloatingWhatsApp />
     </>
   );
 }

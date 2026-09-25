@@ -1,86 +1,114 @@
+"use client";
+
 import { Check, Clock, Route } from "lucide-react";
+import { ShineBorder } from "@/components/magicui/shine-border";
+import { CurrencyToggle } from "@/components/ui/currency-toggle";
+import { Photo } from "@/components/ui/photo";
 import { Reveal } from "@/components/ui/reveal";
-import { SkewButton } from "@/components/ui/skew-button";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { packages } from "@/lib/content";
+import { CtaButton } from "@/components/ui/cta-button";
+import { formatPrice, tours } from "@/lib/content";
+import { useCurrency } from "@/lib/currency";
 import { cn } from "@/lib/utils";
 
 export function Packages() {
+  const { currency } = useCurrency();
+
   return (
-    <section id="tours" className="relative overflow-hidden bg-night py-24 text-cream sm:py-32">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-40 right-[-10%] h-[36rem] w-[36rem] rounded-full bg-pine/40 blur-3xl"
-      />
-      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
-        <SectionHeading
-          tone="dark"
-          align="center"
-          eyebrow="Tour packages"
-          title={
-            <>
-              Journeys planned <em className="text-apricot">down to the last chai stop</em>
-            </>
-          }
-          intro="Every package includes transport from Islamabad, stays, breakfast and dinner, a local guide and all permits."
-        />
-
-        <div className="mt-16 grid items-stretch gap-6 lg:grid-cols-3">
-          {packages.map((p, i) => (
-            <Reveal key={p.name} delay={i * 0.12} className="h-full">
-              <article
-                className={cn(
-                  "relative flex h-full flex-col rounded-3xl border p-7 transition-transform duration-300 hover:-translate-y-1 sm:p-8",
-                  p.featured
-                    ? "border-apricot bg-cream text-ink shadow-2xl shadow-apricot/10 lg:-mt-4 lg:mb-4"
-                    : "border-cream/15 bg-pine-deep/60",
-                )}
-              >
-                {p.featured && (
-                  <span className="absolute -top-3.5 left-8 rounded-full bg-apricot px-4 py-1 text-xs font-medium text-apricot-ink">
-                    Most booked
-                  </span>
-                )}
-                <h3 className="font-serif text-3xl font-semibold">{p.name}</h3>
-                <div className={cn("mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm", p.featured ? "text-mist" : "text-cream/75")}>
-                  <span className="flex items-center gap-1.5">
-                    <Clock className="h-4 w-4" aria-hidden /> {p.days} days
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <Route className="h-4 w-4" aria-hidden /> {p.route}
-                  </span>
-                </div>
-
-                <p className="mt-7 font-serif text-5xl font-medium">{p.price}</p>
-                <p className={cn("mt-1 text-xs", p.featured ? "text-mist" : "text-cream/70")}>{p.note}</p>
-
-                <ul className="mt-7 flex-1 space-y-3 text-sm">
-                  {p.features.map((f) => (
-                    <li key={f} className="flex gap-3">
-                      <Check className={cn("mt-0.5 h-4 w-4 shrink-0", p.featured ? "text-pine" : "text-apricot")} aria-hidden />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-
-                <SkewButton
-                  href="#contact"
-                  variant={p.featured ? "solid" : "outline"}
-                  tone={p.featured ? "light" : "dark"}
-                  shine={p.featured}
-                  className="mx-1.5 mt-8"
-                >
-                  Book {p.name}
-                </SkewButton>
-              </article>
-            </Reveal>
-          ))}
+    <section id="tours" className="relative overflow-hidden bg-cream py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <SectionHeading
+            eyebrow="Tour packages"
+            title={
+              <>
+                Journeys planned <em className="text-pine">down to the last chai stop</em>
+              </>
+            }
+            intro="Transport from Islamabad, stays, breakfast and dinner, a local guide and all permits in one price."
+          />
+          <Reveal delay={0.1} className="flex items-center gap-3">
+            <span className="text-xs tracking-[0.2em] text-mist uppercase">Prices in</span>
+            <CurrencyToggle tone="light" />
+          </Reveal>
         </div>
-        <Reveal delay={0.2}>
-          <p className="mt-10 text-center text-sm text-cream/70">
-            Private and family departures available on any date. Prices are indicative and depend on season and group size.
-          </p>
-        </Reveal>
+
+        <div className="mt-14 grid gap-6 lg:grid-cols-3">
+          {tours.map((t, i) => {
+            const href = `/tours/${t.slug}/`;
+            return (
+              <Reveal key={t.slug} delay={i * 0.1} className="h-full">
+                <article
+                  className={cn(
+                    "group relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white/70 transition-[transform,box-shadow] duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-night/10",
+                    t.featured ? "border-apricot/60" : "border-line",
+                  )}
+                >
+                  {t.featured && <ShineBorder borderWidth={1.5} duration={10} shineColor={["#d08a3c", "#f6f1e7", "#d08a3c"]} />}
+                  <a href={href} className="relative block aspect-[16/10] overflow-hidden" tabIndex={-1} aria-hidden>
+                    <Photo
+                      name={t.image}
+                      alt=""
+                      sizes="(min-width: 1024px) 33vw, 100vw"
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    {t.featured && (
+                      <span className="absolute top-4 left-4 rounded-full bg-apricot px-3 py-1 text-xs font-medium text-apricot-ink">
+                        Most booked
+                      </span>
+                    )}
+                  </a>
+
+                  <div className="flex flex-1 flex-col p-6 sm:p-7">
+                    <h3 className="font-serif text-3xl font-semibold text-ink">
+                      <a href={href} className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none">
+                        {t.name}
+                      </a>
+                    </h3>
+                    <p className="mt-2 text-sm text-mist">{t.tagline}</p>
+                    <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-mist">
+                      <span className="flex items-center gap-1.5">
+                        <Clock className="h-4 w-4 text-pine" aria-hidden /> {t.days} days
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <Route className="h-4 w-4 text-pine" aria-hidden /> {t.route}
+                      </span>
+                    </div>
+
+                    <ul className="mt-5 flex-1 space-y-2.5 text-sm text-ink">
+                      {t.highlights.slice(0, 3).map((h) => (
+                        <li key={h} className="flex gap-2.5">
+                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-apricot" aria-hidden />
+                          {h}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="mt-6 flex flex-wrap items-end justify-between gap-4 border-t border-line pt-5">
+                      <div>
+                        <p className="text-xs text-mist">From, per person</p>
+                        <p className="font-serif text-3xl font-medium whitespace-nowrap text-ink tabular-nums">{formatPrice(t.pricePKR, currency)}</p>
+                      </div>
+                      <CtaButton
+                        href={href}
+                        variant={t.featured ? "solid" : "outline"}
+                        tone="light"
+                        arrow
+                        className="relative z-10 shrink-0"
+                        aria-label={`View itinerary for ${t.name}`}
+                      >
+                        Itinerary
+                      </CtaButton>
+                    </div>
+                  </div>
+                </article>
+              </Reveal>
+            );
+          })}
+        </div>
+        <p className="mt-8 text-center text-sm text-mist">
+          {currency === "USD" ? "US dollar prices are approximate. " : ""}Private and family departures available on any date.
+        </p>
       </div>
     </section>
   );

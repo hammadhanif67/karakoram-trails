@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant, Montserrat } from "next/font/google";
+import { CurrencyProvider } from "@/lib/currency";
+import { MotionProvider } from "@/lib/motion-provider";
 import "./globals.css";
 
 const cormorant = Cormorant({
@@ -15,14 +17,19 @@ const montserrat = Montserrat({
   weight: ["400", "500", "600"],
 });
 
+// Public site address, used for social-preview image URLs. Set NEXT_PUBLIC_SITE_URL in Cloudflare Pages
+// once you know the final domain.
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://karakoram-trails.pages.dev";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Karakoram Trails | Tours to Hunza, Skardu and Fairy Meadows",
   description:
     "Small-group and private tours through Northern Pakistan: Hunza Valley, Skardu and Fairy Meadows, with local guides, 4x4 transport and handpicked stays.",
   openGraph: {
     title: "Karakoram Trails",
     description: "Curated journeys through Hunza, Skardu and Fairy Meadows.",
-    images: ["/images/skardu-1280.webp"],
+    images: ["/images/hero-skardu-shangrila-1280.webp"],
   },
 };
 
@@ -33,7 +40,11 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${cormorant.variable} ${montserrat.variable}`}>
-      <body>{children}</body>
+      <body>
+        <MotionProvider>
+          <CurrencyProvider>{children}</CurrencyProvider>
+        </MotionProvider>
+      </body>
     </html>
   );
 }

@@ -1,20 +1,17 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowDown, ArrowRight, MapPin } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowDown, MapPin } from "lucide-react";
 import { LayeredParallaxHero } from "@/components/ui/layer-parallax-hero";
-import { SkewButton } from "@/components/ui/skew-button";
+import { CtaButton } from "@/components/ui/cta-button";
+import { WordRotate } from "@/components/magicui/word-rotate";
 import { photo } from "@/lib/content";
+import { useReducedMotionSafe } from "@/lib/use-media-query";
 
-// Placeholder numbers: replace with your agency's real figures before launch.
-const stats = [
-  { value: "12+", label: "Years guiding" },
-  { value: "4,800", label: "Happy travellers" },
-  { value: "4.9", label: "Average rating" },
-];
+const places = ["Hunza", "Skardu", "Fairy Meadows", "Deosai", "Naran"];
 
 export function Hero() {
-  const reduce = useReducedMotion();
+  const reduce = useReducedMotionSafe();
   const rise = (delay: number) => ({
     initial: reduce ? false : { opacity: 0, y: 40 },
     animate: { opacity: 1, y: 0 },
@@ -23,10 +20,9 @@ export function Hero() {
 
   return (
     <LayeredParallaxHero
-      image={{ ...photo("skardu"), alt: "Shangrila lake in Skardu beneath snow-capped Karakoram peaks" }}
+      image={{ ...photo("hero-skardu-shangrila"), alt: "Shangrila lake in Skardu beneath snow-capped Karakoram peaks" }}
       layers={[
         {
-          depth: 30,
           children: (
             <svg viewBox="0 0 1440 320" preserveAspectRatio="none" className="absolute -bottom-2 left-[-5%] h-[22vh] w-[110%]">
               <path
@@ -38,7 +34,6 @@ export function Hero() {
           ),
         },
         {
-          depth: 55,
           front: true,
           children: (
             <svg viewBox="0 0 1440 200" preserveAspectRatio="none" className="absolute -bottom-2 left-[-5%] h-[12vh] w-[110%]">
@@ -53,8 +48,28 @@ export function Hero() {
           {...rise(0.1)}
           className="flex items-center gap-2 text-xs font-medium tracking-[0.3em] text-apricot uppercase"
         >
-          <MapPin className="h-4 w-4" aria-hidden />
-          Hunza · Skardu · Fairy Meadows
+          <MapPin className="h-4 w-4 shrink-0" aria-hidden />
+          <span>Journeys to</span>
+          {reduce ? (
+            <span>{places.join(" · ")}</span>
+          ) : (
+            <>
+              <span className="sr-only">{places.join(", ")}</span>
+              {/* Magic UI Word Rotate, kept slow and subtle */}
+              <span aria-hidden className="text-cream">
+                <WordRotate
+                  words={places}
+                  duration={3800}
+                  motionProps={{
+                    initial: { opacity: 0, y: 10, filter: "blur(4px)" },
+                    animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+                    exit: { opacity: 0, y: -10, filter: "blur(4px)" },
+                    transition: { duration: 0.8, ease: "easeOut" },
+                  }}
+                />
+              </span>
+            </>
+          )}
         </motion.p>
 
         <motion.h1
@@ -69,24 +84,15 @@ export function Hero() {
           chosen ourselves.
         </motion.p>
 
-        <motion.div {...rise(0.6)} className="mt-9 flex flex-wrap gap-4 pl-1.5">
-          <SkewButton href="#tours" size="lg" icon={<ArrowRight className="h-4 w-4" aria-hidden />}>
+        <motion.div {...rise(0.6)} className="mt-9 flex flex-wrap gap-4">
+          <CtaButton href="#tours" size="lg" arrow>
             Explore tours
-          </SkewButton>
-          <SkewButton href="#destinations" variant="outline" size="lg">
+          </CtaButton>
+          <CtaButton href="#destinations" variant="outline" size="lg">
             See destinations
-          </SkewButton>
+          </CtaButton>
         </motion.div>
 
-        <motion.dl {...rise(0.8)} className="mt-14 grid max-w-lg grid-cols-3 gap-6 border-t border-cream/20 pt-6">
-          {stats.map((s) => (
-            <div key={s.label}>
-              <dt className="sr-only">{s.label}</dt>
-              <dd className="font-serif text-3xl text-cream sm:text-4xl">{s.value}</dd>
-              <dd className="mt-1 text-xs text-cream/70">{s.label}</dd>
-            </div>
-          ))}
-        </motion.dl>
       </div>
 
       <motion.a

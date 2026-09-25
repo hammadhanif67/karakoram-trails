@@ -32,7 +32,9 @@ Originals live in `photos-original/`. After adding or replacing a photo, update 
 npm run optimize-images
 ```
 
-This writes responsive WebP files (640/1280/2400 px) and gallery crops to `public/images/`.
+This writes responsive WebP files (480 px up to 1920 px for the hero) and gallery crops to `public/images/`,
+lowering quality (never below 50) and lightly denoising until each file fits its budget: hero up to
+300 KB, everything else under 150 KB.
 
 ## Before launch
 

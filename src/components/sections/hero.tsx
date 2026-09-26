@@ -17,10 +17,18 @@ const fromPrice = Math.min(...tours.map((t) => t.pricePKR));
 function HeroFacts() {
   const { currency } = useCurrency();
   const tour = getTour(nextDeparture.tour)!;
+  // `short` is shown below 1024px so every value stays on one line on phones and tablets.
+  const fullDate = formatDate(nextDeparture.date);
   const facts = [
-    { icon: CalendarDays, label: "Next departure", value: `${formatDate(nextDeparture.date)} · ${tour.name}`, href: `/tours/${tour.slug}/` },
-    { icon: Wallet, label: "Tours from", value: `${formatPrice(fromPrice, currency)} per person`, href: "#tours" },
-    { icon: Users, label: "Group size", value: "Small groups, max 12", href: "#why-us" },
+    {
+      icon: CalendarDays,
+      label: "Next departure",
+      value: `${fullDate} · ${tour.name}`,
+      short: `${fullDate.replace(/ \d{4}$/, "")} · ${tour.name}`,
+      href: `/tours/${tour.slug}/`,
+    },
+    { icon: Wallet, label: "Tours from", value: `${formatPrice(fromPrice, currency)} per person`, short: formatPrice(fromPrice, currency), href: "#tours" },
+    { icon: Users, label: "Group size", value: "Small groups, max 12", short: "Max 12 travellers", href: "#why-us" },
   ];
   return (
     <div className="animate-hero-rise border-t border-cream/15 bg-night/35 backdrop-blur-md" style={{ animationDelay: "0.6s" }}>
@@ -31,14 +39,19 @@ function HeroFacts() {
             key={f.label}
             href={f.href}
             className={cn(
-              "group flex items-center gap-3 py-4 pl-3 transition-colors first:pl-0 sm:gap-4 sm:px-6 sm:py-6",
+              "group flex min-w-0 items-center gap-3 py-4 pl-4 transition-colors first:pl-0 max-[359px]:pl-3 sm:px-5 sm:py-5 lg:gap-4 lg:px-6 lg:py-6",
               i === 2 && "hidden sm:flex",
             )}
           >
-            <f.icon className="hidden h-5 w-5 shrink-0 text-apricot sm:block" aria-hidden />
-            <span>
-              <span className="block text-[0.65rem] tracking-[0.25em] text-cream/60 uppercase">{f.label}</span>
-              <span className="mt-1 block text-[0.8rem] text-cream transition-colors group-hover:text-apricot sm:text-sm">{f.value}</span>
+            <f.icon className="hidden h-5 w-5 shrink-0 text-apricot md:block" aria-hidden />
+            <span className="min-w-0">
+              <span className="block truncate text-[0.6rem] tracking-[0.22em] text-cream/60 uppercase sm:text-[0.65rem] sm:tracking-[0.25em]">
+                {f.label}
+              </span>
+              <span className="mt-1 block truncate text-[0.8rem] text-cream transition-colors group-hover:text-apricot max-[359px]:text-[0.72rem] sm:text-sm">
+                <span className="lg:hidden">{f.short}</span>
+                <span className="hidden lg:inline">{f.value}</span>
+              </span>
             </span>
           </a>
         ))}
@@ -67,7 +80,7 @@ export function Hero() {
       image={{ ...photo("hero-skardu-shangrila"), alt: "Shangrila lake in Skardu beneath snow-capped Karakoram peaks" }}
       footer={<HeroFacts />}
     >
-      <div id="top" className="mx-auto w-full max-w-7xl px-5 pt-28 pb-12 sm:px-8">
+      <div id="top" className="mx-auto w-full max-w-7xl px-5 pt-28 pb-12 sm:px-8 [@media(max-height:720px)]:pt-20 [@media(max-height:720px)]:pb-8">
         <p
           {...rise(0.05)}
           className="animate-hero-rise flex items-center gap-2 text-xs font-medium tracking-[0.3em] text-apricot uppercase"
@@ -98,17 +111,17 @@ export function Hero() {
 
         <h1
           {...rise(0.15)}
-          className="animate-hero-rise mt-6 max-w-4xl font-serif text-[3.25rem] leading-[0.95] font-medium text-cream sm:text-7xl lg:text-8xl xl:text-[7.5rem]"
+          className="animate-hero-rise mt-6 max-w-4xl font-serif text-[3.25rem] leading-[0.95] font-medium text-cream sm:text-7xl lg:text-8xl xl:text-[7.5rem] [@media(max-height:720px)]:mt-4 [@media(max-height:720px)]:text-[2.6rem] [@media(max-height:720px)_and_(min-width:640px)]:text-6xl"
         >
           Where the mountains <em className="text-apricot">still keep secrets</em>
         </h1>
 
-        <p {...rise(0.3)} className="animate-hero-rise mt-6 max-w-xl text-base leading-relaxed text-cream/85 sm:text-lg">
+        <p {...rise(0.3)} className="animate-hero-rise mt-6 max-w-xl [@media(max-height:720px)]:mt-4 text-base leading-relaxed text-cream/85 sm:text-lg">
           Curated journeys through the Karakoram and Himalaya with local guides, small groups and stays we have
           chosen ourselves.
         </p>
 
-        <div {...rise(0.45)} className="animate-hero-rise mt-9 flex flex-wrap gap-4">
+        <div {...rise(0.45)} className="animate-hero-rise mt-9 flex flex-wrap gap-3 sm:gap-4 [@media(max-height:720px)]:mt-6">
           <CtaButton href="#tours" size="lg" arrow>
             Explore tours
           </CtaButton>

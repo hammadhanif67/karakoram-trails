@@ -23,6 +23,40 @@ npm run preview   # serves out/ on http://localhost:4173
 - Build command: `npm run build`
 - Build output directory: `out`
 
+## Booking backend (Cloudflare Pages Functions + D1)
+
+Stage 1 of the booking system. D1 is the single source of truth for tour prices and departures:
+the site renders the `src/lib/content.ts` values in the static HTML, then replaces them in the
+browser with `GET /api/departures` (`functions/api/departures.ts`). On hosts without Pages Functions
+the request 404s and the static values stay.
+
+- `wrangler.toml`: Pages config, D1 (`DB`) and R2 (`RECEIPTS`) bindings. No secrets.
+- `migrations/`: D1 schema. `server/`: server-only code for functions (kept out of the Next build).
+- `src/lib/booking-rules.ts`: shared rules. Online booking closes 72 h before departure; unpaid holds
+  expire at the earlier of now + `HOLD_HOURS` and departure − 72 h (only `pending_payment` expires).
+
+Local development:
+
+```bash
+npm run db:migrate:local   # create tables in the local D1
+npm run db:seed:local      # insert content.ts tours/departures, then check they match D1
+npm run build
+npm run pages:dev          # static site + functions + local D1 on http://127.0.0.1:8788
+```
+
+`db:seed:*` and `db:check:*` exit with an error if `content.ts` and D1 disagree on a tour name,
+price or the upcoming departures. D1 wins: update `content.ts` to match.
+
+One-time production setup (needs your Cloudflare login):
+
+```bash
+npx wrangler login
+npx wrangler d1 create karakoram-trails     # paste the printed database_id into wrangler.toml
+npx wrangler r2 bucket create karakoram-trails-receipts
+npm run db:migrate:remote
+npm run db:seed:remote
+```
+
 ## Photos
 
 Originals live in `photos-original/`. After adding or replacing a photo, update the file map in

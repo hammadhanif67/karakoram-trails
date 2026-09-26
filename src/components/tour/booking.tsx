@@ -5,11 +5,14 @@ import { MessageCircle, ShieldCheck } from "lucide-react";
 import { ShineBorder } from "@/components/magicui/shine-border";
 import { CurrencyToggle } from "@/components/ui/currency-toggle";
 import { CtaButton } from "@/components/ui/cta-button";
-import { departures as allDepartures, formatDate, formatPrice, whatsappLink, type Tour } from "@/lib/content";
+import { formatDate, formatPrice, whatsappLink, type Tour } from "@/lib/content";
 import { useCurrency } from "@/lib/currency";
+import { useDepartures, useTourPrice } from "@/lib/live-data";
 
-export function TourPrice({ pkr, prefix = "", className }: { pkr: number; prefix?: string; className?: string }) {
+/** Live price per person for a tour (D1 via /api/departures, content.ts as fallback). */
+export function TourPrice({ slug, prefix = "", className }: { slug: string; prefix?: string; className?: string }) {
   const { currency } = useCurrency();
+  const pkr = useTourPrice(slug);
   return (
     <span className={`tabular-nums ${className ?? ""}`}>
       {prefix}
@@ -18,21 +21,25 @@ export function TourPrice({ pkr, prefix = "", className }: { pkr: number; prefix
   );
 }
 
-type Departure = (typeof allDepartures)[number];
-
 const FLEXIBLE = "flexible";
 
 /**
  * Booking panel: a sticky card beside the itinerary on desktop (inline at the end on phones),
  * plus a fixed "Book on WhatsApp" bar at the bottom of the screen on phones and tablets.
  */
-export function TourBooking({ tour, departures }: { tour: Tour; departures: Departure[] }) {
+export function TourBooking({ tour }: { tour: Tour }) {
   const { currency } = useCurrency();
-  const [date, setDate] = useState(departures[0]?.date ?? FLEXIBLE);
+  // Only departures that can still be booked online and have seats; the rest go through WhatsApp.
+  const all = useDepartures(tour.slug);
+  const departures = all.filter((d) => d.bookable && d.seatsLeft > 0);
+  // null = "first available", so the default follows the live data when it arrives.
+  const [choice, setChoice] = useState<string | null>(null);
+  const date = choice ?? departures[0]?.date ?? FLEXIBLE;
+  const setDate = setChoice;
 
   const when = date === FLEXIBLE ? "on my own dates" : `departing ${formatDate(date)}`;
   const link = whatsappLink(`Assalam o Alaikum, I'd like to book ${tour.name} (${tour.days} days) ${when}.`);
-  const price = formatPrice(tour.pricePKR, currency);
+  const price = formatPrice(useTourPrice(tour.slug), currency);
 
   return (
     <>
@@ -56,7 +63,7 @@ export function TourBooking({ tour, departures }: { tour: Tour; departures: Depa
             className="mt-2 h-12 w-full cursor-pointer rounded-xl border border-line bg-white px-4 text-base text-ink focus:border-pine focus:outline-none"
           >
             {departures.map((d) => (
-              <option key={d.date} value={d.date}>
+              <option key={d.id ?? d.date} value={d.date}>
                 {formatDate(d.date)} · {d.seatsLeft} seats left
               </option>
             ))}

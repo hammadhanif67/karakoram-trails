@@ -9,10 +9,12 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { CtaButton } from "@/components/ui/cta-button";
 import { formatPrice, tours } from "@/lib/content";
 import { useCurrency } from "@/lib/currency";
+import { useLiveData } from "@/lib/live-data";
 import { cn } from "@/lib/utils";
 
 export function Packages() {
   const { currency } = useCurrency();
+  const { prices } = useLiveData();
 
   return (
     <section id="tours" className="relative overflow-hidden bg-cream py-24 sm:py-32">
@@ -87,7 +89,7 @@ export function Packages() {
                     <div className="mt-6 flex flex-wrap items-end justify-between gap-4 border-t border-line pt-5">
                       <div>
                         <p className="text-xs text-mist">From, per person</p>
-                        <p className="font-serif text-3xl font-medium whitespace-nowrap text-ink tabular-nums">{formatPrice(t.pricePKR, currency)}</p>
+                        <p className="font-serif text-3xl font-medium whitespace-nowrap text-ink tabular-nums">{formatPrice(prices[t.slug], currency)}</p>
                       </div>
                       <CtaButton
                         href={href}

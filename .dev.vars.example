@@ -1,0 +1,16 @@
+# Copy to .dev.vars for local `wrangler pages dev` (never commit .dev.vars).
+# In production set these in Cloudflare Pages → Settings → Variables and Secrets.
+# Non-secret defaults (DEPOSIT_PERCENT, HOLD_HOURS) live in wrangler.toml [vars].
+
+# Stage 2+ (not used yet):
+# TURNSTILE_SECRET_KEY=
+# BANK_NAME=
+# BANK_ACCOUNT_TITLE=
+# BANK_IBAN=
+# RAAST_ID=
+# N8N_WEBHOOK_URL=
+# N8N_WEBHOOK_SECRET=
+# EMAIL_API_KEY=
+# MAIL_FROM=
+# ADMIN_NOTIFY_EMAIL=
+# PUBLIC_SITE_URL=

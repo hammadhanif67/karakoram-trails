@@ -4,29 +4,32 @@ import { CalendarDays, MapPin, Users, Wallet } from "lucide-react";
 import { LayeredParallaxHero } from "@/components/ui/layer-parallax-hero";
 import { CtaButton } from "@/components/ui/cta-button";
 import { WordRotate } from "@/components/magicui/word-rotate";
-import { departures, formatDate, formatPrice, getTour, photo, tours } from "@/lib/content";
+import { formatDate, formatPrice, getTour, photo } from "@/lib/content";
 import { useCurrency } from "@/lib/currency";
+import { useDepartures, useFromPrice } from "@/lib/live-data";
 import { cn } from "@/lib/utils";
 import { useReducedMotionSafe } from "@/lib/use-media-query";
 
 const places = ["Hunza", "Skardu", "Fairy Meadows", "Deosai", "Naran"];
-const nextDeparture = [...departures].sort((a, b) => a.date.localeCompare(b.date))[0];
-const fromPrice = Math.min(...tours.map((t) => t.pricePKR));
 
 /** Facts strip along the bottom edge of the hero: useful at a glance, and a clean straight edge. */
 function HeroFacts() {
   const { currency } = useCurrency();
-  const tour = getTour(nextDeparture.tour)!;
+  const fromPrice = useFromPrice();
+  const nextDeparture = useDepartures()[0];
+  const tour = nextDeparture ? getTour(nextDeparture.tour) : undefined;
   // `short` is shown below 1024px so every value stays on one line on phones and tablets.
-  const fullDate = formatDate(nextDeparture.date);
+  const fullDate = nextDeparture ? formatDate(nextDeparture.date) : "";
   const facts = [
-    {
-      icon: CalendarDays,
-      label: "Next departure",
-      value: `${fullDate} · ${tour.name}`,
-      short: `${fullDate.replace(/ \d{4}$/, "")} · ${tour.name}`,
-      href: `/tours/${tour.slug}/`,
-    },
+    nextDeparture && tour
+      ? {
+          icon: CalendarDays,
+          label: "Next departure",
+          value: `${fullDate} · ${tour.name}`,
+          short: `${fullDate.replace(/ \d{4}$/, "")} · ${tour.name}`,
+          href: `/tours/${tour.slug}/`,
+        }
+      : { icon: CalendarDays, label: "Departures", value: "Private trips on your dates", short: "Private trips", href: "#contact" },
     { icon: Wallet, label: "Tours from", value: `${formatPrice(fromPrice, currency)} per person`, short: formatPrice(fromPrice, currency), href: "#tours" },
     { icon: Users, label: "Group size", value: "Small groups, max 12", short: "Max 12 travellers", href: "#why-us" },
   ];

@@ -1,0 +1,24 @@
+# Cloudflare Pages project: static Next.js export in `out/` plus Pages Functions in `functions/`.
+# No secrets in this file. Secrets go in `.dev.vars` locally (see .dev.vars.example) and in the
+# Pages project settings (Settings → Variables and Secrets) in production.
+name = "karakoram-trails"
+pages_build_output_dir = "out"
+compatibility_date = "2026-09-01"
+
+[vars]
+DEPOSIT_PERCENT = "30"
+HOLD_HOURS = "48"
+
+# Create once with:  npx wrangler d1 create karakoram-trails
+# then paste the database_id it prints below. The placeholder works for local development.
+[[d1_databases]]
+binding = "DB"
+database_name = "karakoram-trails"
+database_id = "00000000-0000-0000-0000-000000000000"
+migrations_dir = "migrations"
+
+# Receipts bucket (used from stage 2). Create once with:
+#   npx wrangler r2 bucket create karakoram-trails-receipts
+[[r2_buckets]]
+binding = "RECEIPTS"
+bucket_name = "karakoram-trails-receipts"

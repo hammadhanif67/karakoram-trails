@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant, Montserrat } from "next/font/google";
 import { CurrencyProvider } from "@/lib/currency";
+import { LiveDataProvider } from "@/lib/live-data";
 import { MotionProvider } from "@/lib/motion-provider";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
@@ -41,7 +42,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       {/* suppressHydrationWarning: browser extensions (e.g. ColorZilla) add attributes to <body> before React hydrates */}
       <body suppressHydrationWarning>
         <MotionProvider>
-          <CurrencyProvider>{children}</CurrencyProvider>
+          <CurrencyProvider>
+            <LiveDataProvider>{children}</LiveDataProvider>
+          </CurrencyProvider>
         </MotionProvider>
       </body>
     </html>

@@ -9,7 +9,15 @@
     "lint": "eslint",
     "optimize-images": "node scripts/optimize-images.mjs",
     "preview": "npx serve out -l 4173",
-    "postbuild": "node scripts/flatten-segment-files.mjs"
+    "postbuild": "node scripts/flatten-segment-files.mjs",
+    "db:migrate:local": "wrangler d1 migrations apply karakoram-trails --local",
+    "db:migrate:remote": "wrangler d1 migrations apply karakoram-trails --remote",
+    "db:seed:local": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/seed-d1.mjs --local",
+    "db:seed:remote": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/seed-d1.mjs --remote",
+    "db:check:local": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/seed-d1.mjs --local --check",
+    "db:check:remote": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/seed-d1.mjs --remote --check",
+    "typecheck:functions": "tsc -p functions/tsconfig.json",
+    "pages:dev": "wrangler pages dev --port 8788"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.20",
@@ -25,6 +33,7 @@
     "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260926.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -33,6 +42,7 @@
     "eslint-config-next": "16.3.6",
     "sharp": "^0.35.4",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^4.141.0"
   }
 }

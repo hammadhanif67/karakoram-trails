@@ -24,6 +24,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { Textarea } from "@/components/ui/textarea";
 import { brand, formatPrice, tours, whatsappLink } from "@/lib/content";
 import { useCurrency } from "@/lib/currency";
+import { useLiveData } from "@/lib/live-data";
 import { cn } from "@/lib/utils";
 
 type Fields = { name: string; phone: string; tour: string; travellers: number; month: string; message: string };
@@ -67,6 +68,7 @@ function ErrorText({ id, children }: { id: string; children?: string }) {
  */
 export function Contact() {
   const { currency } = useCurrency();
+  const { prices } = useLiveData();
   const [fields, setFields] = useState<Fields>(empty);
   const [errors, setErrors] = useState<Errors>({});
   const [sentLink, setSentLink] = useState<string | null>(null);
@@ -102,7 +104,7 @@ export function Contact() {
   };
 
   const tourOptions = [
-    ...tours.map((t) => ({ value: t.name, meta: `${t.days} days · from ${formatPrice(t.pricePKR, currency)}` })),
+    ...tours.map((t) => ({ value: t.name, meta: `${t.days} days · from ${formatPrice(prices[t.slug], currency)}` })),
     { value: CUSTOM, meta: "Your dates, your route" },
   ];
 

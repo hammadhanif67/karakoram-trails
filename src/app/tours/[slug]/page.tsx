@@ -10,7 +10,7 @@ import { Itinerary } from "@/components/tour/itinerary";
 import { TourBooking, TourPrice } from "@/components/tour/booking";
 import { Photo } from "@/components/ui/photo";
 import { Reveal } from "@/components/ui/reveal";
-import { departures, faqs, getTour, photo, tours } from "@/lib/content";
+import { faqs, getTour, photo, tours } from "@/lib/content";
 
 // Only the tours listed in content.ts exist; anything else is a 404 in the static export.
 export const dynamicParams = false;
@@ -51,7 +51,6 @@ export default async function TourPage({ params }: PageProps<"/tours/[slug]">) {
     { icon: Sun, label: "Best season", value: tour.season },
     { icon: MapPin, label: "Start / end", value: tour.startEnd },
   ];
-  const tourDepartures = departures.filter((d) => d.tour === tour.slug);
   const others = tours.filter((t) => t.slug !== tour.slug);
 
   return (
@@ -71,7 +70,7 @@ export default async function TourPage({ params }: PageProps<"/tours/[slug]">) {
             <p className="mt-3 text-xs tracking-[0.2em] text-cream/70 uppercase">{tour.route}</p>
             <div className="mt-8 flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <span className="text-sm text-cream/70">From</span>
-              <TourPrice pkr={tour.pricePKR} className="font-serif text-4xl whitespace-nowrap text-apricot sm:text-5xl" />
+              <TourPrice slug={tour.slug} className="font-serif text-4xl whitespace-nowrap text-apricot sm:text-5xl" />
               <span className="text-sm text-cream/70">per person</span>
             </div>
           </div>
@@ -147,17 +146,15 @@ export default async function TourPage({ params }: PageProps<"/tours/[slug]">) {
               </div>
             </section>
 
-            {/* Departures */}
-            {tourDepartures.length > 0 && (
-              <section aria-labelledby="dates">
-                <SectionTitle eyebrow="Upcoming departures">
-                  <span id="dates">Join a group</span>
-                </SectionTitle>
-                <div className="mt-8">
-                  <DepartureList tourSlug={tour.slug} tone="light" />
-                </div>
-              </section>
-            )}
+            {/* Departures (live from D1; the list shows its own empty state) */}
+            <section aria-labelledby="dates">
+              <SectionTitle eyebrow="Upcoming departures">
+                <span id="dates">Join a group</span>
+              </SectionTitle>
+              <div className="mt-8">
+                <DepartureList tourSlug={tour.slug} tone="light" />
+              </div>
+            </section>
 
             {/* FAQ */}
             <section aria-labelledby="tour-faq">
@@ -170,7 +167,7 @@ export default async function TourPage({ params }: PageProps<"/tours/[slug]">) {
             </section>
           </div>
 
-          <TourBooking tour={tour} departures={tourDepartures} />
+          <TourBooking tour={tour} />
         </div>
 
         {/* Other tours */}
@@ -191,7 +188,7 @@ export default async function TourPage({ params }: PageProps<"/tours/[slug]">) {
                     <p className="mt-2 text-sm text-mist">
                       {t.days} days · {t.route}
                     </p>
-                    <TourPrice pkr={t.pricePKR} prefix="From " className="mt-3 block font-medium text-pine" />
+                    <TourPrice slug={t.slug} prefix="From " className="mt-3 block font-medium text-pine" />
                   </div>
                   <ArrowUpRight className="h-6 w-6 shrink-0 text-apricot transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden />
                 </Link>

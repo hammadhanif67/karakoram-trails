@@ -45,3 +45,7 @@ next-env.d.ts
 
 # local editor/agent config
 /.claude/
+
+# Cloudflare local state and secrets
+/.wrangler/
+/.dev.vars

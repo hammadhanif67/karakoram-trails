@@ -4,25 +4,46 @@ import { CalendarDays, Users } from "lucide-react";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { CtaButton } from "@/components/ui/cta-button";
-import { departures, formatDate, formatPrice, getTour, whatsappLink } from "@/lib/content";
+import { formatDate, formatPrice, getTour, whatsappLink } from "@/lib/content";
 import { useCurrency } from "@/lib/currency";
+import { useDepartures, useLiveData } from "@/lib/live-data";
 import { cn } from "@/lib/utils";
 
 /** Departure rows; pass `tourSlug` to show one tour's dates (tour pages). */
 export function DepartureList({ tourSlug, tone = "dark" }: { tourSlug?: string; tone?: "dark" | "light" }) {
   const { currency } = useCurrency();
-  const rows = departures.filter((d) => !tourSlug || d.tour === tourSlug);
+  const { prices } = useLiveData();
+  const rows = useDepartures(tourSlug);
   const dark = tone === "dark";
+
+  if (rows.length === 0) {
+    return (
+      <p className={cn("border-y py-8", dark ? "border-cream/10 text-cream/80" : "border-line text-mist")}>
+        No scheduled departures right now.{" "}
+        <a href={whatsappLink("Assalam o Alaikum, I'd like to ask about a private trip.")} target="_blank" rel="noopener noreferrer" className="underline decoration-apricot underline-offset-4 hover:text-apricot">
+          Ask us for a private date on WhatsApp
+        </a>
+        .
+      </p>
+    );
+  }
 
   return (
     <ul className={cn("divide-y border-y", dark ? "divide-cream/10 border-cream/10" : "divide-line border-line")}>
       {rows.map((d, i) => {
         const tour = getTour(d.tour)!;
         const date = formatDate(d.date);
-        const low = d.seatsLeft <= 4;
+        const full = d.seatsLeft <= 0;
+        const low = !full && d.seatsLeft <= 4;
+        // Within the online cutoff (72 h) or full: no online booking, talk to us instead.
+        const cta = full
+          ? { label: "Join the waitlist", text: `Assalam o Alaikum, ${tour.name} on ${date} is full. Please add me to the waitlist.` }
+          : d.bookable
+            ? { label: "Book seats", text: `Assalam o Alaikum, I'd like to book ${tour.name} departing ${date}.` }
+            : { label: "Contact us on WhatsApp", text: `Assalam o Alaikum, is there still space on ${tour.name} departing ${date}?` };
         const taken = ((d.seats - d.seatsLeft) / d.seats) * 100;
         return (
-          <li key={`${d.tour}-${d.date}`}>
+          <li key={d.id ?? `${d.tour}-${d.date}`}>
             <BlurFade inView direction="up" offset={10} delay={i * 0.05}>
               <div className="grid grid-cols-[minmax(0,1fr)] items-center gap-4 py-6 sm:grid-cols-[10rem_minmax(0,1fr)_12rem_auto] sm:gap-8">
                 <div className="flex items-center gap-3 sm:block">
@@ -37,14 +58,14 @@ export function DepartureList({ tourSlug, tone = "dark" }: { tourSlug?: string; 
                     </a>
                   )}
                   <p className={cn("text-sm", dark ? "text-cream/70" : "text-mist")}>
-                    {tour.days} days · from {formatPrice(tour.pricePKR, currency)}
+                    {tour.days} days · from {formatPrice(prices[tour.slug], currency)}
                   </p>
                 </div>
 
                 <div>
                   <p className={cn("flex items-center gap-2 text-sm", low ? "text-apricot" : dark ? "text-cream/80" : "text-ink")}>
                     <Users className="h-4 w-4" aria-hidden />
-                    {d.seatsLeft === d.seats ? "All seats open" : `${d.seatsLeft} of ${d.seats} seats left`}
+                    {full ? "Fully booked" : d.seatsLeft === d.seats ? "All seats open" : `${d.seatsLeft} of ${d.seats} seats left`}
                   </p>
                   <div
                     className={cn("mt-2 h-1.5 overflow-hidden rounded-full", dark ? "bg-cream/10" : "bg-line")}
@@ -59,15 +80,15 @@ export function DepartureList({ tourSlug, tone = "dark" }: { tourSlug?: string; 
                 </div>
 
                 <CtaButton
-                  href={whatsappLink(`Assalam o Alaikum, I'd like to book ${tour.name} departing ${date}.`)}
+                  href={whatsappLink(cta.text)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  variant={low ? "primary" : "outline"}
+                  variant={low && d.bookable ? "primary" : "outline"}
                   tone={tone}
                   className="w-full sm:w-auto"
-                  aria-label={`Book ${tour.name} on ${date} via WhatsApp`}
+                  aria-label={`${cta.label}: ${tour.name} on ${date} (opens WhatsApp)`}
                 >
-                  Book seats
+                  {cta.label}
                 </CtaButton>
               </div>
             </BlurFade>

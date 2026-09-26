@@ -214,7 +214,6 @@ export const getTour = (slug: string) => tours.find((t) => t.slug === slug);
 export const departures = [
   { tour: "hunza-escape", date: "2026-10-10", seatsLeft: 3, seats: 12 },
   { tour: "hunza-escape", date: "2026-10-24", seatsLeft: 8, seats: 12 },
-  { tour: "hunza-escape", date: "2027-04-17", seatsLeft: 12, seats: 12 },
   { tour: "skardu-lakes", date: "2027-05-15", seatsLeft: 6, seats: 12 },
   { tour: "grand-karakoram", date: "2027-06-12", seatsLeft: 4, seats: 12 },
   { tour: "grand-karakoram", date: "2027-07-10", seatsLeft: 10, seats: 12 },

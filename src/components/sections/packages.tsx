@@ -48,7 +48,7 @@ export function Packages() {
                   <a href={href} className="relative block aspect-[16/10] overflow-hidden" tabIndex={-1} aria-hidden>
                     <Photo
                       name={t.image}
-                      alt=""
+                      alt={`${t.name} tour: ${t.alt}`}
                       sizes="(min-width: 1024px) 33vw, 100vw"
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />

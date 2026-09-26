@@ -52,7 +52,7 @@ export function Gallery() {
           eyebrow="Gallery"
           title={
             <>
-              Seen through <em className="text-pine">our travellers&apos; eyes</em>
+              Glimpses <em className="text-pine">of the north</em>
             </>
           }
         />

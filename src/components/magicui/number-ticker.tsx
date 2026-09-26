@@ -1,9 +1,12 @@
 "use client"
 
-// Magic UI "number-ticker" from https://magicui.design/r/number-ticker.json, adapted: framer-motion
-// import, and a fixed-length ease-out tween instead of the spring. The spring's settle time depends on
-// physics and frame rate (5+ s for large values on slow devices) and could stop a digit short
-// (4,799 for 4,800); the tween always finishes on time and on the exact value.
+// Magic UI "number-ticker" from https://magicui.design/r/number-ticker.json, adapted:
+// - framer-motion import;
+// - the static HTML contains the FINAL value, so crawlers, link previews and no-JS visitors see the
+//   real number; after hydration, a ticker that is still below the fold is reset to `startValue` and
+//   counts up when it scrolls into view (one already on screen at load keeps its final value);
+// - prefers-reduced-motion keeps the final value and never animates;
+// - a fixed-length ease-out tween instead of the spring, which could take 5+ s or stop a digit short.
 import { useEffect, useRef, type ComponentPropsWithoutRef } from "react"
 import { animate, useInView } from "framer-motion"
 
@@ -31,6 +34,8 @@ export function NumberTicker({
 }: NumberTickerProps) {
   const ref = useRef<HTMLSpanElement>(null)
   const isInView = useInView(ref, { once: true, margin: "0px" })
+  // Decided once after hydration: animate only if the ticker starts off-screen and motion is allowed.
+  const shouldAnimate = useRef<boolean | null>(null)
 
   const format = (n: number) =>
     Intl.NumberFormat("en-US", {
@@ -42,7 +47,19 @@ export function NumberTicker({
   const to = direction === "down" ? startValue : value
 
   useEffect(() => {
-    if (!isInView) return
+    const el = ref.current
+    if (!el || shouldAnimate.current !== null) return
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    const rect = el.getBoundingClientRect()
+    const onScreen = rect.top < window.innerHeight && rect.bottom > 0
+    shouldAnimate.current = !reduce && !onScreen
+    if (shouldAnimate.current) el.textContent = format(from)
+    // Runs once after hydration; format/from are stable for a given ticker.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (!isInView || !shouldAnimate.current) return
     const controls = animate(from, to, {
       delay,
       duration,
@@ -68,7 +85,7 @@ export function NumberTicker({
       )}
       {...props}
     >
-      {format(from)}
+      {format(to)}
     </span>
   )
 }

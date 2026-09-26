@@ -64,17 +64,13 @@ export function WhyUs() {
             <div key={s.label} className="py-10 sm:px-10 sm:py-16 sm:first:pl-0">
               <dt className="text-xs tracking-[0.25em] text-cream/60 uppercase">{s.label}</dt>
               <dd className="mt-4 flex items-baseline font-serif text-7xl leading-none font-medium tabular-nums lg:text-8xl">
-                {reduce ? (
-                  <span>{s.value.toLocaleString("en-US", { minimumFractionDigits: s.decimals ?? 0 })}</span>
-                ) : (
-                  <NumberTicker
-                    value={s.value}
-                    startValue={s.start}
-                    decimalPlaces={s.decimals ?? 0}
-                    delay={0.15 * i}
-                    className="tracking-normal text-cream"
-                  />
-                )}
+                <NumberTicker
+                  value={s.value}
+                  startValue={s.start}
+                  decimalPlaces={s.decimals ?? 0}
+                  delay={0.15 * i}
+                  className="tracking-normal text-cream"
+                />
                 <span className="ml-1 text-4xl text-apricot lg:text-5xl">{s.suffix}</span>
               </dd>
             </div>

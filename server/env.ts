@@ -30,6 +30,16 @@ export interface Env {
   ADMIN_EMAILS?: string;
   /** Local development only (honoured only on localhost / 127.0.0.1): pretend to be this Access user. */
   ADMIN_DEV_EMAIL?: string;
+  /** Password login: "pbkdf2-sha256$iterations$salt$hash" from scripts/hash-admin-password.mjs */
+  ADMIN_PASSWORD_HASH?: string;
+  /** At least 32 random characters; signs admin session cookies. */
+  SESSION_SECRET?: string;
+
+  // Telegram admin alerts (stage 4)
+  TELEGRAM_BOT_TOKEN?: string;
+  TELEGRAM_CHAT_ID?: string;
+  /** Local testing only; defaults to https://api.telegram.org */
+  TELEGRAM_API_BASE?: string;
 
   // Notifications (stage 4)
   N8N_WEBHOOK_URL?: string;
@@ -38,7 +48,6 @@ export interface Env {
   /** Defaults to Resend. Overridable for local testing. */
   EMAIL_API_URL?: string;
   MAIL_FROM?: string;
-  ADMIN_NOTIFY_EMAIL?: string;
   /** Public site origin used in email links, e.g. https://karakoramtrails.com */
   PUBLIC_SITE_URL?: string;
 }

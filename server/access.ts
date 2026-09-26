@@ -1,7 +1,8 @@
-// Cloudflare Access authentication for the admin area.
-// Access blocks unauthenticated visitors at the edge; this code additionally verifies the signed
-// Cf-Access-Jwt-Assertion on every request (signature, audience, issuer, expiry) and checks the email
-// against ADMIN_EMAILS, so the admin never depends on the dashboard policy alone.
+// Admin authentication. Two ways in, either is enough:
+// 1. Password session cookie (server/admin-session.ts), used while the site runs on pages.dev.
+// 2. Cloudflare Access (for a custom domain later): the signed Cf-Access-Jwt-Assertion is verified on
+//    every request (signature, audience, issuer, expiry) and the email checked against ADMIN_EMAILS.
+import { hasValidSession, passwordLoginConfigured } from "./admin-session";
 import { list, type Env } from "./env";
 import { HttpError } from "./http";
 
@@ -61,12 +62,15 @@ export async function requireAdmin(request: Request, env: Env): Promise<Admin> {
     return { email };
   }
 
-  if (!env.ACCESS_TEAM_DOMAIN || !env.ACCESS_AUD || allowed.length === 0) {
-    console.error("Admin is not configured (ACCESS_TEAM_DOMAIN / ACCESS_AUD / ADMIN_EMAILS)");
+  if (await hasValidSession(request, env)) return { email: "admin" };
+
+  const accessConfigured = !!(env.ACCESS_TEAM_DOMAIN && env.ACCESS_AUD && allowed.length > 0);
+  if (!accessConfigured && !passwordLoginConfigured(env)) {
+    console.error("Admin is not configured (ADMIN_PASSWORD_HASH + SESSION_SECRET, or Cloudflare Access)");
     throw new HttpError(503, "not_configured", "Admin is not configured.");
   }
   const token = request.headers.get("Cf-Access-Jwt-Assertion");
-  if (!token) throw new HttpError(401, "unauthenticated", "Sign in through Cloudflare Access.");
+  if (!token || !accessConfigured) throw new HttpError(401, "unauthenticated", "Please sign in.");
   let claims: Claims;
   try {
     claims = await verifyJwt(token, env);

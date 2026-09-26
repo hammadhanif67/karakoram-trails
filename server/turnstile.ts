@@ -3,7 +3,7 @@
 import type { Env } from "./env";
 import { HttpError } from "./http";
 
-export type TurnstileAction = "booking_create" | "receipt_upload";
+export type TurnstileAction = "booking_create" | "receipt_upload" | "admin_login";
 
 type SiteverifyResult = {
   success: boolean;

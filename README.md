@@ -60,22 +60,25 @@ npm run db:seed:remote
 ### Stages 2–4: checkout, admin, notifications
 
 - Checkout `/checkout/?departure=<id>`, booking status `/booking/?ref=&t=` (WhatsApp "Send booking to us"
-  button shares details, never the private link), receipt upload to private R2.
-- Admin `/admin/` behind **Cloudflare Access**; every `/api/admin/*` request also verifies the Access JWT
-  (signature, audience, issuer, expiry) and the email against `ADMIN_EMAILS`. State changes require a
-  same-origin request.
-- Notifications: `booking_events` is an outbox. After each request, pending events are sent to the n8n
-  webhook (`X-KT-Signature: sha256=HMAC_SHA256(N8N_WEBHOOK_SECRET, "<X-KT-Timestamp>.<body>")`) and by
-  email through Resend. Failures are retried up to 5 times; the admin has "Retry notifications".
+  shares details, never the private link), receipt upload to private R2.
+- Admin `/admin/`: password login (`/admin/login/`, Turnstile, 5 failed tries per IP per 15 min,
+  12 h HttpOnly/Secure/SameSite=Strict signed cookie). Cloudflare Access is also accepted when configured
+  (for a custom domain later). Per booking: view receipt, confirm payment, cancel, and "Send confirmation
+  on WhatsApp" (message with the reference and the customer's booking link).
+- Notifications (`booking_events` outbox, retried up to 5 times, "Retry notifications" in admin):
+  Telegram admin alerts (new booking, receipt uploaded); optional n8n webhook (skipped while
+  `N8N_WEBHOOK_URL` is empty; `X-KT-Signature: sha256=HMAC_SHA256(secret, "<X-KT-Timestamp>.<body>")`);
+  customer emails through the provider in `server/email/provider.ts`, off until `EMAIL_API_KEY` is set.
 
-Before going live (Cloudflare dashboard):
-1. Zero Trust → Access → Applications → Self-hosted: protect `your-domain/admin*` and
-   `your-domain/api/admin*` (and the `*.pages.dev` hostname) with an email policy. Copy the team domain
-   and the Application Audience (AUD) tag.
-2. Turnstile widget for your domain.
-3. Pages → Settings → Variables and Secrets: every variable in `.dev.vars.example` (never
-   `TURNSTILE_ALLOW_TEST_KEYS` or `ADMIN_DEV_EMAIL`), plus build variable `NEXT_PUBLIC_TURNSTILE_SITE_KEY`.
-4. `npm run db:migrate:remote` (applies `0002_notifications.sql`).
+Before going live (Cloudflare dashboard, Pages → Settings → Variables and Secrets, Production):
+1. Turnstile widget for `karakoram-trails.pages.dev`; secret `TURNSTILE_SECRET_KEY`,
+   `TURNSTILE_HOSTNAMES=karakoram-trails.pages.dev`, build variable `NEXT_PUBLIC_TURNSTILE_SITE_KEY`.
+   (Preview URLs like `<hash>.karakoram-trails.pages.dev` fail the hostname check by design.)
+2. `node scripts/hash-admin-password.mjs` → secrets `ADMIN_PASSWORD_HASH` and `SESSION_SECRET`.
+3. Telegram: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`. Bank: `BANK_NAME`, `BANK_ACCOUNT_TITLE`, `BANK_IBAN`,
+   `RAAST_ID`. `PUBLIC_SITE_URL=https://karakoram-trails.pages.dev`.
+4. Never set `TURNSTILE_ALLOW_TEST_KEYS`, `ADMIN_DEV_EMAIL` or `TELEGRAM_API_BASE` in production.
+5. `npm run db:migrate:remote` (applies `0002` and `0003`).
 
 ## Photos
 

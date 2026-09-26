@@ -7,7 +7,7 @@
 #   site key 1x00000000000000000000AA (build with NEXT_PUBLIC_TURNSTILE_SITE_KEY), secret below,
 #   which returns hostname "example.com" and no action.
 TURNSTILE_SECRET_KEY=
-TURNSTILE_HOSTNAMES=
+TURNSTILE_HOSTNAMES=karakoram-trails.pages.dev
 # TURNSTILE_ALLOW_TEST_KEYS=true
 
 # Bank transfer instructions shown to the booking's owner (stage 2)
@@ -16,20 +16,26 @@ BANK_ACCOUNT_TITLE=
 BANK_IBAN=
 RAAST_ID=
 
-# Admin via Cloudflare Access (stage 3). Production: from the Access application protecting
-# /admin* and /api/admin*. ADMIN_EMAILS is checked in addition to the Access policy.
+# Admin login (stage 3). Password login is used while the site runs on karakoram-trails.pages.dev:
+#   node scripts/hash-admin-password.mjs   → prints ADMIN_PASSWORD_HASH and a SESSION_SECRET
+ADMIN_PASSWORD_HASH=
+SESSION_SECRET=
+# Optional, for a custom domain later: Cloudflare Access (either login method is accepted).
 ACCESS_TEAM_DOMAIN=
 ACCESS_AUD=
 ADMIN_EMAILS=
-# Local only (ignored on any real hostname): act as this admin without Access.
+# Local only (ignored on any real hostname): act as this admin without logging in.
 # ADMIN_DEV_EMAIL=
 
-# Notifications (stage 4). n8n verifies X-KT-Signature = sha256=HMAC_SHA256(secret, "<X-KT-Timestamp>.<body>").
+# Notifications (stage 4)
+# Telegram admin alerts (new booking, receipt uploaded): bot token from @BotFather, chat id of you/your group.
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=
+# Optional n8n webhook (skipped while empty). n8n verifies
+# X-KT-Signature = sha256=HMAC_SHA256(N8N_WEBHOOK_SECRET, "<X-KT-Timestamp>.<body>").
 N8N_WEBHOOK_URL=
 N8N_WEBHOOK_SECRET=
-# Resend (https://resend.com); MAIL_FROM must be on a domain verified in Resend.
+# Customer emails: off until EMAIL_API_KEY is set (Resend; MAIL_FROM on a verified domain).
 EMAIL_API_KEY=
-MAIL_FROM=Karakoram Trails <bookings@your-domain.com>
-ADMIN_NOTIFY_EMAIL=
-PUBLIC_SITE_URL=https://your-domain.com
-# EMAIL_API_URL=  (local testing only; defaults to https://api.resend.com/emails)
+MAIL_FROM=
+PUBLIC_SITE_URL=https://karakoram-trails.pages.dev

@@ -33,7 +33,7 @@ export const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? 
 export type TurnstileHandle = { reset: () => void };
 
 type Props = {
-  action: "booking_create" | "receipt_upload";
+  action: "booking_create" | "receipt_upload" | "admin_login";
   onToken: (token: string) => void;
   ref?: Ref<TurnstileHandle>;
 };

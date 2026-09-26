@@ -1,8 +1,12 @@
-// Notifications outbox (stage 4). booking_events rows are the queue: each has webhook_sent / email_sent
-// (0 pending, 1 sent, 2 not applicable / not configured). deliverPending() runs after a response with
+// Notifications outbox (stage 4). booking_events rows are the queue: each has telegram_sent /
+// webhook_sent / email_sent (0 pending, 1 sent, 2 not applicable or not configured).
+// Telegram: admin alerts. n8n webhook: optional, skipped while N8N_WEBHOOK_URL is empty.
+// Email: customer emails, off until an email provider is configured (server/email/provider.ts). deliverPending() runs after a response with
 // waitUntil, sends what is pending, and records failures for up to MAX_ATTEMPTS tries. Payloads carry
 // the event id so n8n can ignore a duplicate if two deliveries ever overlap.
+import { emailProvider } from "./email/provider";
 import { emailFor, type EmailBooking } from "./email-templates";
+import { sendTelegram, telegramConfigured, telegramText } from "./telegram";
 import type { Env } from "./env";
 
 const MAX_ATTEMPTS = 5;
@@ -15,6 +19,7 @@ type EventRow = {
   created_at: string;
   webhook_sent: number;
   email_sent: number;
+  telegram_sent: number;
   attempts: number;
 } & EmailBooking;
 
@@ -62,31 +67,20 @@ async function sendWebhook(env: Env, e: EventRow) {
   if (!r.ok) throw new Error(`webhook HTTP ${r.status}`);
 }
 
-async function sendEmail(env: Env, to: string, msg: { subject: string; html: string; text: string }) {
-  const r = await fetch(env.EMAIL_API_URL || "https://api.resend.com/emails", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${env.EMAIL_API_KEY}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ from: env.MAIL_FROM, to: [to], subject: msg.subject, html: msg.html, text: msg.text }),
-    signal: AbortSignal.timeout(10_000),
-  });
-  if (!r.ok) throw new Error(`email HTTP ${r.status}`);
-}
-
 const webhookConfigured = (env: Env) => !!(env.N8N_WEBHOOK_URL && env.N8N_WEBHOOK_SECRET);
-const emailConfigured = (env: Env) => !!(env.EMAIL_API_KEY && env.MAIL_FROM);
 
 /** Sends pending notifications. With includeFailed, also retries events that used up their attempts. */
 export async function deliverPending(env: Env, opts: { includeFailed?: boolean; limit?: number } = {}) {
   const db = env.DB;
   const { results } = await db
     .prepare(
-      `SELECT e.id, e.type, e.actor, e.data, e.created_at, e.webhook_sent, e.email_sent, e.attempts,
+      `SELECT e.id, e.type, e.actor, e.data, e.created_at, e.webhook_sent, e.email_sent, e.telegram_sent, e.attempts,
               b.ref, b.access_token, b.status, b.travellers, b.lead_name, b.email, b.phone, b.notes,
               b.total_pkr, b.deposit_pkr, b.deposit_percent, b.payment_method, b.hold_expires_at,
               d.start_date, t.name AS tour_name
          FROM booking_events e JOIN bookings b ON b.id = e.booking_id
          JOIN departures d ON d.id = b.departure_id JOIN tours t ON t.id = d.tour_id
-        WHERE (e.webhook_sent = 0 OR e.email_sent = 0) ${opts.includeFailed ? "" : "AND e.attempts < ?1"}
+        WHERE (e.webhook_sent = 0 OR e.email_sent = 0 OR e.telegram_sent = 0) ${opts.includeFailed ? "" : "AND e.attempts < ?1"}
         ORDER BY e.id LIMIT ${Math.min(opts.limit ?? 20, 50)}`,
     )
     .bind(...(opts.includeFailed ? [] : [MAX_ATTEMPTS]))
@@ -99,6 +93,20 @@ export async function deliverPending(env: Env, opts: { includeFailed?: boolean; 
     if (claim.meta.changes !== 1) continue;
     summary.processed++;
     const errors: string[] = [];
+
+    let telegram = e.telegram_sent;
+    if (telegram === 0) {
+      const text = telegramText(e, env);
+      if (!text || !telegramConfigured(env)) telegram = 2;
+      else {
+        try {
+          await sendTelegram(env, text);
+          telegram = 1;
+        } catch (err) {
+          errors.push(`telegram: ${(err as Error).message}`);
+        }
+      }
+    }
 
     let webhook = e.webhook_sent;
     if (webhook === 0) {
@@ -115,12 +123,12 @@ export async function deliverPending(env: Env, opts: { includeFailed?: boolean; 
 
     let email = e.email_sent;
     if (email === 0) {
-      const messages = emailFor(e, env);
-      if (messages.length === 0) email = 2;
-      else if (!emailConfigured(env)) email = 2;
+      const provider = emailProvider(env);
+      const messages = provider ? emailFor(e, env) : [];
+      if (!provider || messages.length === 0) email = 2;
       else {
         try {
-          for (const m of messages) await sendEmail(env, m.to, m);
+          for (const m of messages) await provider.send(m);
           email = 1;
         } catch (err) {
           errors.push(`email: ${(err as Error).message}`);
@@ -129,8 +137,8 @@ export async function deliverPending(env: Env, opts: { includeFailed?: boolean; 
     }
 
     await db
-      .prepare("UPDATE booking_events SET webhook_sent = ?2, email_sent = ?3, last_error = ?4 WHERE id = ?1")
-      .bind(e.id, webhook, email, errors.length ? errors.join("; ").slice(0, 300) : null)
+      .prepare("UPDATE booking_events SET webhook_sent = ?2, email_sent = ?3, telegram_sent = ?4, last_error = ?5 WHERE id = ?1")
+      .bind(e.id, webhook, email, telegram, errors.length ? errors.join("; ").slice(0, 300) : null)
       .run();
     if (errors.length) {
       summary.failed++;

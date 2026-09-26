@@ -1,4 +1,6 @@
-// Transactional emails (stage 4). Plain, readable HTML plus a text version; every value is escaped.
+// Customer emails (stage 4). Plain, readable HTML plus a text version; every value is escaped.
+// Admin alerts go to Telegram instead (server/telegram.ts).
+import type { EmailMessage } from "./email/provider";
 import type { Env } from "./env";
 
 export type EmailBooking = {
@@ -21,7 +23,7 @@ export type EmailBooking = {
   data: string | null;
 };
 
-type Message = { to: string; subject: string; html: string; text: string };
+type Message = EmailMessage;
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 export const formatPkr = (n: number) => `PKR ${n.toLocaleString("en-US")}`;
@@ -42,24 +44,12 @@ ${cta ? `<p style="margin:24px 0"><a href="${esc(cta.href)}" style="background:#
   return { html, text };
 }
 
-/** Emails for one event: to the customer and/or the admin inbox. Empty when nothing should be sent. */
+/** Customer emails for one event. Empty when this event sends none. */
 export function emailFor(b: EmailBooking, env: Env): Message[] {
   const site = (env.PUBLIC_SITE_URL ?? "").replace(/\/$/, "");
   const statusUrl = `${site}/booking/?ref=${encodeURIComponent(b.ref)}&t=${encodeURIComponent(b.access_token)}`;
   const trip = `<strong>${esc(b.tour_name)}</strong>, ${esc(day(b.start_date))}, ${b.travellers} traveller${b.travellers === 1 ? "" : "s"}`;
   const out: Message[] = [];
-  const admin = env.ADMIN_NOTIFY_EMAIL;
-  const adminLine = (what: string) => {
-    if (!admin) return;
-    const m = layout(`${what}: ${b.ref}`, [
-      `${trip}.`,
-      `Lead: ${esc(b.lead_name)} · ${esc(b.email)} · ${esc(b.phone)}`,
-      `Total ${formatPkr(b.total_pkr)} · deposit ${formatPkr(b.deposit_pkr)}.`,
-      ...(b.notes ? [`Notes: ${esc(b.notes)}`] : []),
-    ], site ? { label: "Open admin", href: `${site}/admin/` } : undefined);
-    out.push({ to: admin, subject: `[Karakoram Trails] ${what}: ${b.ref}`, ...m });
-  };
-
   switch (b.type) {
     case "created": {
       if (site) {
@@ -76,12 +66,8 @@ export function emailFor(b: EmailBooking, env: Env): Message[] {
         );
         out.push({ to: b.email, subject: `Your seats are reserved (${b.ref})`, ...m });
       }
-      adminLine("New booking");
       break;
     }
-    case "receipt_uploaded":
-      adminLine("Receipt uploaded");
-      break;
     case "confirmed": {
       if (site) {
         const m = layout(

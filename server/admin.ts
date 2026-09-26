@@ -24,7 +24,7 @@ export async function listBookings(env: Env, url: URL) {
     where.push(`(b.ref LIKE ?${i} OR b.lead_name LIKE ?${i} OR b.email LIKE ?${i} OR b.phone LIKE ?${i})`);
   }
   const { results } = await env.DB.prepare(
-    `SELECT b.ref, b.status, b.travellers, b.lead_name, b.email, b.phone, b.notes, b.total_pkr, b.deposit_pkr,
+    `SELECT b.ref, b.access_token, b.status, b.travellers, b.lead_name, b.email, b.phone, b.notes, b.total_pkr, b.deposit_pkr,
             b.payment_method, b.hold_expires_at, b.created_at, b.updated_at,
             d.id AS departure_id, d.start_date, d.seats_total, d.seats_booked, d.seats_held, t.name AS tour_name,
             (SELECT p.id FROM payments p WHERE p.booking_id = b.id AND p.receipt_key IS NOT NULL ORDER BY p.id DESC LIMIT 1) AS receipt_payment_id
@@ -99,7 +99,7 @@ export async function cancelBooking(env: Env, ref: string, admin: Admin, reason:
 export async function bookingEvents(env: Env, ref: string) {
   const b = await current(env, ref);
   const { results } = await env.DB.prepare(
-    "SELECT type, actor, data, created_at, webhook_sent, email_sent, attempts, last_error FROM booking_events WHERE booking_id = ?1 ORDER BY id",
+    "SELECT type, actor, data, created_at, webhook_sent, email_sent, telegram_sent, attempts, last_error FROM booking_events WHERE booking_id = ?1 ORDER BY id",
   )
     .bind(b.id)
     .all();

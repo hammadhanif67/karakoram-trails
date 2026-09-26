@@ -1,13 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { CheckCircle2, ExternalLink, FileText, RefreshCw, Search, XCircle } from "lucide-react";
+import { CheckCircle2, ExternalLink, FileText, LogOut, MessageCircle, RefreshCw, Search, XCircle } from "lucide-react";
 import { formatDate, formatPrice } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
 type Status = "pending_payment" | "verifying" | "confirmed" | "cancelled";
 type Row = {
   ref: string;
+  access_token: string;
   status: Status;
   travellers: number;
   lead_name: string;
@@ -25,7 +26,7 @@ type Row = {
   seats_held: number;
   receipt_payment_id: number | null;
 };
-type Event = { type: string; actor: string; data: string | null; created_at: string; webhook_sent: number; email_sent: number; attempts: number; last_error: string | null };
+type Event = { type: string; actor: string; data: string | null; created_at: string; webhook_sent: number; email_sent: number; telegram_sent: number; attempts: number; last_error: string | null };
 
 const LABEL: Record<Status, string> = { pending_payment: "Awaiting payment", verifying: "Check receipt", confirmed: "Confirmed", cancelled: "Cancelled" };
 const TONE: Record<Status, string> = {
@@ -42,6 +43,27 @@ async function api<T>(path: string, init?: RequestInit): Promise<T> {
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error((data as { message?: string }).message ?? `Request failed (${res.status})`);
   return data as T;
+}
+
+/** Customer phone as wa.me digits: 0300… → 92300…, +92… / 0092… → 92… */
+function waNumber(phone: string) {
+  let d = phone.replace(/\D/g, "");
+  if (d.startsWith("00")) d = d.slice(2);
+  if (d.startsWith("0") && d.length === 11) d = `92${d.slice(1)}`;
+  return d;
+}
+
+/** WhatsApp message from us to the customer, with the reference and their private booking link. */
+function customerMessage(row: Row) {
+  const link = `${window.location.origin}/booking/?ref=${encodeURIComponent(row.ref)}&t=${encodeURIComponent(row.access_token)}`;
+  const trip = `${row.tour_name} on ${formatDate(row.start_date)} for ${row.travellers} ${row.travellers === 1 ? "traveller" : "travellers"}`;
+  const body =
+    row.status === "confirmed"
+      ? `your booking ${row.ref} is confirmed: ${trip}. We've received your deposit of ${formatPrice(row.deposit_pkr, "PKR")}; the balance of ${formatPrice(row.total_pkr - row.deposit_pkr, "PKR")} is due 7 days before departure.`
+      : row.status === "cancelled"
+        ? `your booking ${row.ref} (${trip}) has been cancelled. Reply here if you'd like new dates.`
+        : `we've received your booking ${row.ref}: ${trip}. To confirm, please transfer the deposit of ${formatPrice(row.deposit_pkr, "PKR")} and upload the receipt on your booking page.`;
+  return `Assalam o Alaikum ${row.lead_name}, ${body}\n\nYour booking: ${link}\n\nKarakoram Trails`;
 }
 
 const sent = (v: number) => (v === 1 ? "sent" : v === 2 ? "n/a" : "pending");
@@ -81,7 +103,7 @@ function Detail({ row, onDone }: { row: Row; onDone: () => void }) {
         <p>
           <span className="text-stone-500">Contact:</span>{" "}
           <a className="underline" href={`mailto:${row.email}`}>{row.email}</a> ·{" "}
-          <a className="underline" href={`https://wa.me/${row.phone.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer">{row.phone}</a>
+          <a className="underline" href={`https://wa.me/${waNumber(row.phone)}`} target="_blank" rel="noopener noreferrer">{row.phone}</a>
         </p>
         {row.notes && <p><span className="text-stone-500">Notes:</span> {row.notes}</p>}
         <p><span className="text-stone-500">Total:</span> {formatPrice(row.total_pkr, "PKR")} · <span className="text-stone-500">deposit</span> {formatPrice(row.deposit_pkr, "PKR")}</p>
@@ -100,6 +122,14 @@ function Detail({ row, onDone }: { row: Row; onDone: () => void }) {
               <CheckCircle2 className="h-4 w-4" aria-hidden /> Confirm payment
             </button>
           )}
+          <a
+            href={`https://wa.me/${waNumber(row.phone)}?text=${encodeURIComponent(customerMessage(row))}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded bg-[#1b7f45] px-4 py-2 text-sm font-medium text-white hover:bg-[#146a38]"
+          >
+            <MessageCircle className="h-4 w-4" aria-hidden /> {row.status === "confirmed" ? "Send confirmation on WhatsApp" : "Message customer on WhatsApp"}
+          </a>
           {row.status !== "cancelled" && (
             <button disabled={busy} onClick={() => act("cancel")} className="inline-flex cursor-pointer items-center gap-2 rounded border border-red-300 px-4 py-2 text-sm font-medium text-red-800 hover:bg-red-50 disabled:opacity-50">
               <XCircle className="h-4 w-4" aria-hidden /> Cancel booking
@@ -118,10 +148,10 @@ function Detail({ row, onDone }: { row: Row; onDone: () => void }) {
               const data = e.data ? (JSON.parse(e.data) as Record<string, unknown>) : null;
               return (
                 <li key={i} className="rounded border border-stone-200 bg-white p-2">
-                  <p className="font-medium">{e.type.replace(/_/g, " ")} <span className="font-normal text-stone-500">· {e.actor}{data?.by ? ` (${String(data.by)})` : ""} · {dt.format(utc(e.created_at))}</span></p>
+                  <p className="font-medium">{e.type.replace(/_/g, " ")} <span className="font-normal text-stone-500">· {e.actor}{data?.by && data.by !== e.actor ? ` (${String(data.by)})` : ""} · {dt.format(utc(e.created_at))}</span></p>
                   {(data?.note || data?.reason) ? <p className="text-stone-600">“{String(data.note ?? data.reason)}”</p> : null}
                   <p className="text-xs text-stone-500">
-                    n8n: {sent(e.webhook_sent)} · email: {sent(e.email_sent)}
+                    Telegram: {sent(e.telegram_sent)} · n8n: {sent(e.webhook_sent)} · email: {sent(e.email_sent)}
                     {e.last_error ? <span className="text-red-700"> · {e.last_error}</span> : null}
                   </p>
                 </li>
@@ -179,6 +209,13 @@ export function AdminClient() {
     }
   }
 
+  async function logout() {
+    await fetch("/api/admin/logout", { method: "POST" }).catch(() => undefined);
+    // Full page load on purpose: drop all admin state after signing out.
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+    window.location.assign("/admin/login/");
+  }
+
   const tabs: { key: Status | ""; label: string }[] = [
     { key: "verifying", label: "Check receipt" },
     { key: "pending_payment", label: "Awaiting payment" },
@@ -199,6 +236,9 @@ export function AdminClient() {
           <button onClick={retry} className="cursor-pointer rounded border border-stone-300 px-3 py-1.5 hover:bg-stone-100">Retry notifications</button>
           <button onClick={load} aria-label="Refresh" className="cursor-pointer rounded border border-stone-300 p-1.5 hover:bg-stone-100">
             <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} aria-hidden />
+          </button>
+          <button onClick={logout} className="inline-flex cursor-pointer items-center gap-1.5 rounded border border-stone-300 px-3 py-1.5 hover:bg-stone-100">
+            <LogOut className="h-4 w-4" aria-hidden /> Sign out
           </button>
         </div>
       </header>

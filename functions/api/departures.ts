@@ -3,12 +3,13 @@
 // content.ts values in the static HTML and replaces them with this response in the browser.
 import { isBookableOnline } from "../../src/lib/booking-rules";
 import { releaseExpiredHolds } from "../../server/bookings";
+import { deliverPending } from "../../server/notify";
 import type { Env } from "../../server/env";
 
 type TourRow = { slug: string; price_pkr: number };
 type DepartureRow = { id: number; tour: string; date: string; seats: number; seats_left: number };
 
-export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
+export const onRequestGet: PagesFunction<Env> = async ({ env, waitUntil }) => {
   const now = new Date();
   // Pakistan date (UTC+5): a departure stays listed through its own start day.
   const today = new Date(now.getTime() + 5 * 3600_000).toISOString().slice(0, 10);
@@ -16,6 +17,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
   try {
     // Free seats from unpaid bookings whose hold has expired, so seatsLeft is accurate.
     await releaseExpiredHolds(env.DB, now);
+    waitUntil(deliverPending(env)); // e.g. 'hold_expired' notifications
     const [tours, departures] = await env.DB.batch([
       env.DB.prepare("SELECT slug, price_pkr FROM tours WHERE active = 1 ORDER BY id"),
       env.DB.prepare(

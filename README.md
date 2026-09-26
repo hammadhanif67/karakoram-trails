@@ -57,6 +57,26 @@ npm run db:migrate:remote
 npm run db:seed:remote
 ```
 
+### Stages 2–4: checkout, admin, notifications
+
+- Checkout `/checkout/?departure=<id>`, booking status `/booking/?ref=&t=` (WhatsApp "Send booking to us"
+  button shares details, never the private link), receipt upload to private R2.
+- Admin `/admin/` behind **Cloudflare Access**; every `/api/admin/*` request also verifies the Access JWT
+  (signature, audience, issuer, expiry) and the email against `ADMIN_EMAILS`. State changes require a
+  same-origin request.
+- Notifications: `booking_events` is an outbox. After each request, pending events are sent to the n8n
+  webhook (`X-KT-Signature: sha256=HMAC_SHA256(N8N_WEBHOOK_SECRET, "<X-KT-Timestamp>.<body>")`) and by
+  email through Resend. Failures are retried up to 5 times; the admin has "Retry notifications".
+
+Before going live (Cloudflare dashboard):
+1. Zero Trust → Access → Applications → Self-hosted: protect `your-domain/admin*` and
+   `your-domain/api/admin*` (and the `*.pages.dev` hostname) with an email policy. Copy the team domain
+   and the Application Audience (AUD) tag.
+2. Turnstile widget for your domain.
+3. Pages → Settings → Variables and Secrets: every variable in `.dev.vars.example` (never
+   `TURNSTILE_ALLOW_TEST_KEYS` or `ADMIN_DEV_EMAIL`), plus build variable `NEXT_PUBLIC_TURNSTILE_SITE_KEY`.
+4. `npm run db:migrate:remote` (applies `0002_notifications.sql`).
+
 ## Photos
 
 Originals live in `photos-original/`. After adding or replacing a photo, update the file map in

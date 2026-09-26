@@ -26,6 +26,27 @@ type Booking = {
 type Payment = { amountPkr: number; reference: string; bankName: string; accountTitle: string; iban: string; raastId: string | null };
 
 const MAX_BYTES = 5 * 1024 * 1024;
+
+/** Pre-filled WhatsApp message with the booking details (never the private link or token). */
+function bookingMessage(b: Booking) {
+  const next =
+    b.status === "pending_payment"
+      ? "I'll transfer the deposit and upload the receipt."
+      : b.status === "verifying"
+        ? "I've transferred the deposit and uploaded the receipt."
+        : b.status === "confirmed"
+          ? "My booking is confirmed; sharing the details for the trip."
+          : "My booking shows as cancelled. Can you help?";
+  return [
+    `Assalam o Alaikum Karakoram Trails, here is my booking.`,
+    `Booking: ${b.ref}`,
+    `Tour: ${b.tour}, ${formatDate(b.date)}`,
+    `Travellers: ${b.travellers}`,
+    `Lead traveller: ${b.leadName}`,
+    `Deposit: ${formatPrice(b.depositPkr, "PKR")} of ${formatPrice(b.totalPkr, "PKR")}`,
+    next,
+  ].join("\n");
+}
 const dateTime = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "2-digit" });
 
 function CopyRow({ label, value }: { label: string; value: string }) {
@@ -161,6 +182,21 @@ export function BookingStatusClient() {
             {b.status === "cancelled" && "Booking cancelled"}
           </h1>
           {b.status !== "cancelled" && <div className="mt-5"><Timeline status={b.status} /></div>}
+          {b.status !== "cancelled" && (
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <CtaButton
+                href={whatsappLink(bookingMessage(b))}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="outline"
+                tone="light"
+                icon={<MessageCircle className="h-4 w-4" aria-hidden />}
+              >
+                Send booking to us
+              </CtaButton>
+              <span className="text-xs text-mist">Opens WhatsApp with your booking details (not your private link).</span>
+            </div>
+          )}
         </div>
 
         {b.status === "pending_payment" && (

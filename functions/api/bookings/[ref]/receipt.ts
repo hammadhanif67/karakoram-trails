@@ -5,9 +5,10 @@ import type { Env } from "../../../../server/env";
 import { HttpError, handle, json } from "../../../../server/http";
 import { MAX_RECEIPT_BYTES, checkReceipt } from "../../../../server/receipts";
 import { randomToken } from "../../../../server/tokens";
+import { deliverPending } from "../../../../server/notify";
 import { verifyTurnstile } from "../../../../server/turnstile";
 
-export const onRequestPost: PagesFunction<Env, "ref"> = ({ request, env, params }) =>
+export const onRequestPost: PagesFunction<Env, "ref"> = ({ request, env, params, waitUntil }) =>
   handle(async () => {
     const token = new URL(request.url).searchParams.get("t");
     const len = Number(request.headers.get("content-length") ?? "0");
@@ -57,6 +58,7 @@ export const onRequestPost: PagesFunction<Env, "ref"> = ({ request, env, params 
       throw new HttpError(409, "state_changed", "This booking changed while uploading. Please reload the page.");
     }
 
+    waitUntil(deliverPending(env));
     const updated = await getBookingForCustomer(env, booking.ref, token);
     return json(publicBooking(updated));
   });

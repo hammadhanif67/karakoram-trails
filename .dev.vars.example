@@ -16,10 +16,20 @@ BANK_ACCOUNT_TITLE=
 BANK_IBAN=
 RAAST_ID=
 
-# Later stages:
-# N8N_WEBHOOK_URL=
-# N8N_WEBHOOK_SECRET=
-# EMAIL_API_KEY=
-# MAIL_FROM=
-# ADMIN_NOTIFY_EMAIL=
-# PUBLIC_SITE_URL=
+# Admin via Cloudflare Access (stage 3). Production: from the Access application protecting
+# /admin* and /api/admin*. ADMIN_EMAILS is checked in addition to the Access policy.
+ACCESS_TEAM_DOMAIN=
+ACCESS_AUD=
+ADMIN_EMAILS=
+# Local only (ignored on any real hostname): act as this admin without Access.
+# ADMIN_DEV_EMAIL=
+
+# Notifications (stage 4). n8n verifies X-KT-Signature = sha256=HMAC_SHA256(secret, "<X-KT-Timestamp>.<body>").
+N8N_WEBHOOK_URL=
+N8N_WEBHOOK_SECRET=
+# Resend (https://resend.com); MAIL_FROM must be on a domain verified in Resend.
+EMAIL_API_KEY=
+MAIL_FROM=Karakoram Trails <bookings@your-domain.com>
+ADMIN_NOTIFY_EMAIL=
+PUBLIC_SITE_URL=https://your-domain.com
+# EMAIL_API_URL=  (local testing only; defaults to https://api.resend.com/emails)

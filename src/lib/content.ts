@@ -82,7 +82,7 @@ export const destinations = [
     region: "Diamer",
     altitude: "3,300 m",
     image: "dest-fairy-meadows",
-    alt: "Karakoram peaks and a glacier above the green meadow at Fairy Meadows",
+    alt: "Sunrise lighting the snowy face of Nanga Parbat, the peak above Fairy Meadows",
     blurb: "Alpine meadows and log cabins at the foot of Nanga Parbat, reached by jeep and a forest trek.",
     best: "Jun to Sep",
   },

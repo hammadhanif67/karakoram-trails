@@ -1,7 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowDown, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { LayeredParallaxHero } from "@/components/ui/layer-parallax-hero";
 import { CtaButton } from "@/components/ui/cta-button";
 import { WordRotate } from "@/components/magicui/word-rotate";
@@ -12,11 +11,9 @@ const places = ["Hunza", "Skardu", "Fairy Meadows", "Deosai", "Naran"];
 
 export function Hero() {
   const reduce = useReducedMotionSafe();
-  const rise = (delay: number) => ({
-    initial: reduce ? false : { opacity: 0, y: 40 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 1, delay, ease: [0.22, 1, 0.36, 1] as const },
-  });
+  // Entrance is plain CSS (animate-hero-rise), so the text shows on first paint instead of
+  // staying invisible until JavaScript has loaded and hydrated.
+  const rise = (delay: number) => ({ style: { animationDelay: `${delay}s` } });
 
   return (
     <LayeredParallaxHero
@@ -44,9 +41,9 @@ export function Hero() {
       ]}
     >
       <div id="top" className="mx-auto max-w-7xl px-5 pt-28 pb-40 sm:px-8">
-        <motion.p
-          {...rise(0.1)}
-          className="flex items-center gap-2 text-xs font-medium tracking-[0.3em] text-apricot uppercase"
+        <p
+          {...rise(0.05)}
+          className="animate-hero-rise flex items-center gap-2 text-xs font-medium tracking-[0.3em] text-apricot uppercase"
         >
           <MapPin className="h-4 w-4 shrink-0" aria-hidden />
           <span>Journeys to</span>
@@ -70,41 +67,41 @@ export function Hero() {
               </span>
             </>
           )}
-        </motion.p>
+        </p>
 
-        <motion.h1
-          {...rise(0.25)}
-          className="mt-6 max-w-4xl font-serif text-[3.25rem] leading-[0.95] font-medium text-cream sm:text-7xl lg:text-8xl xl:text-[7.5rem]"
+        <h1
+          {...rise(0.15)}
+          className="animate-hero-rise mt-6 max-w-4xl font-serif text-[3.25rem] leading-[0.95] font-medium text-cream sm:text-7xl lg:text-8xl xl:text-[7.5rem]"
         >
           Where the mountains <em className="text-apricot">still keep secrets</em>
-        </motion.h1>
+        </h1>
 
-        <motion.p {...rise(0.45)} className="mt-6 max-w-xl text-base leading-relaxed text-cream/85 sm:text-lg">
+        <p {...rise(0.3)} className="animate-hero-rise mt-6 max-w-xl text-base leading-relaxed text-cream/85 sm:text-lg">
           Curated journeys through the Karakoram and Himalaya with local guides, small groups and stays we have
           chosen ourselves.
-        </motion.p>
+        </p>
 
-        <motion.div {...rise(0.6)} className="mt-9 flex flex-wrap gap-4">
+        <div {...rise(0.45)} className="animate-hero-rise mt-9 flex flex-wrap gap-4">
           <CtaButton href="#tours" size="lg" arrow>
             Explore tours
           </CtaButton>
           <CtaButton href="#destinations" variant="outline" size="lg">
             See destinations
           </CtaButton>
-        </motion.div>
+        </div>
 
+        {/* Scroll cue: part of the content, so it fades with it and slides behind the mountains */}
+        <a
+          href="#destinations"
+          {...rise(0.7)}
+          className="animate-hero-rise group mt-14 hidden w-fit items-center gap-4 text-[0.7rem] tracking-[0.3em] text-cream/70 uppercase transition-colors hover:text-cream lg:flex"
+        >
+          <span aria-hidden className="relative h-12 w-px overflow-hidden bg-cream/25">
+            <span className="animate-scroll-cue absolute inset-x-0 top-0 h-4 bg-apricot" />
+          </span>
+          Scroll to explore
+        </a>
       </div>
-
-      <motion.a
-        href="#destinations"
-        aria-label="Scroll to destinations"
-        initial={reduce ? false : { opacity: 0 }}
-        animate={{ opacity: 1, y: reduce ? 0 : [0, 8, 0] }}
-        transition={{ opacity: { delay: 1.2 }, y: { repeat: Infinity, duration: 2.2, ease: "easeInOut" } }}
-        className="absolute bottom-[14vh] left-1/2 z-10 hidden h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full border border-cream/40 text-cream lg:flex"
-      >
-        <ArrowDown className="h-5 w-5" />
-      </motion.a>
     </LayeredParallaxHero>
   );
 }

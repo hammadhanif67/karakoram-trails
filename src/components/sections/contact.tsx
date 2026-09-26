@@ -71,7 +71,7 @@ export function Contact() {
 
   return (
     <section id="contact" className="relative isolate overflow-hidden bg-night py-24 sm:py-32">
-      <div aria-hidden className="absolute -top-48 -left-32 -z-10 h-[32rem] w-[32rem] rounded-full bg-pine/40 blur-3xl" />
+      <div aria-hidden className="absolute inset-0 -z-10 bg-[radial-gradient(40rem_28rem_at_0%_0%,rgba(30,77,74,0.45),transparent_70%)]" />
 
       <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)] gap-14 px-5 sm:px-8 lg:grid-cols-2 lg:gap-20">
         <div>

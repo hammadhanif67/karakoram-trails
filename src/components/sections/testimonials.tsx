@@ -1,4 +1,4 @@
-import { Quote, Star } from "lucide-react";
+import { Quote } from "lucide-react";
 import { Marquee } from "@/components/magicui/marquee";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { testimonials } from "@/lib/content";
@@ -9,11 +9,10 @@ function Card({ t }: { t: Item }) {
   return (
     <figure className="w-[19rem] shrink-0 rounded-3xl border border-line bg-white/70 p-6 sm:w-[23rem]">
       <div className="flex items-center justify-between">
-        <div className="flex gap-0.5 text-apricot" aria-label="5 out of 5 stars">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star key={i} className="h-4 w-4 fill-current" aria-hidden />
-          ))}
-        </div>
+        {/* One SVG for the five stars: this card is repeated 24 times by the marquee */}
+        <svg viewBox="0 0 100 18" className="h-4 w-[5.5rem] fill-apricot" role="img" aria-label="5 out of 5 stars">
+          <path d="M9 0l2.6 5.6 6.1.6-4.6 4.1 1.3 6L9 13.2 3.6 16.3l1.3-6L.3 6.2l6.1-.6zM29.5 0l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6zM50 0l2.6 5.6 6.1.6-4.6 4.1 1.3 6L50 13.2l-5.4 3.1 1.3-6-4.6-4.1 6.1-.6zM70.5 0l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6zM91 0l2.6 5.6 6.1.6-4.6 4.1 1.3 6L91 13.2l-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z" />
+        </svg>
         <Quote className="h-6 w-6 text-line" aria-hidden />
       </div>
       <blockquote className="mt-4 text-[0.95rem] leading-relaxed text-ink">{t.text}</blockquote>

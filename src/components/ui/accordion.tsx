@@ -1,10 +1,10 @@
 "use client"
 
-// shadcn/ui "accordion" (new-york-v4) from https://ui.shadcn.com/r/styles/new-york-v4/accordion.json; theme tokens are mapped in globals.css.
+// shadcn/ui "accordion" (new-york-v4) from https://ui.shadcn.com/r/styles/new-york-v4/accordion.json; theme tokens are mapped in globals.css. Imports the single Radix primitive package (not the `radix-ui` umbrella) to keep the bundle small.
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { ChevronDownIcon } from "lucide-react"
-import { Accordion as AccordionPrimitive } from "radix-ui"
+import * as AccordionPrimitive from "@radix-ui/react-accordion"
 
 function Accordion({
   ...props

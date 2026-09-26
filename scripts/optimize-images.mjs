@@ -20,7 +20,7 @@ const images = [
   // Destinations (pinned full-width panels)
   { file: "pexels-faysal9-35061891.jpg", name: "dest-hunza", widths: [640, 1024, 1280], aspect: 16 / 10 }, // dense foliage: 1600px cannot fit 150 KB
   { file: "skardu-katpana-desert.jpg", name: "dest-skardu", widths: [640, 1024, 1600], aspect: 16 / 10 },
-  { file: "pexels-zia-uddin-shah-392997573-14795281.jpg", name: "dest-fairy-meadows", widths: [640, 1024, 1600], aspect: 16 / 10 },
+  { file: "nanga-parbat-sunrise.jpg", name: "dest-fairy-meadows", widths: [640, 1024, 1600], aspect: 16 / 10 }, // Nanga Parbat, the view from Fairy Meadows
 
   // Why us (tall editorial photo)
   { file: "hunza-altit-fort-view.jpg", name: "why-altit-fort", widths: [480, 800, 1000] },

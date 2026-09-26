@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   // No image server on a static host; photos are pre-optimized by scripts/optimize-images.mjs.
   images: { unoptimized: true },
+  // Hide the "N" dev-tools badge during `npm run dev` (it never appears on the built site).
+  devIndicators: false,
 };
 
 export default nextConfig;

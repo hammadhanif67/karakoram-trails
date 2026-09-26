@@ -65,7 +65,7 @@ Components
 - Call-to-action buttons (`src/components/ui/cta-button.tsx`), pinned destinations, route map and tour pages were built for this site
 
 Photos (Pexels)
-- Shangrila hero: arifesapzai · Hunza autumn road: faysal9 · Fairy Meadows meadow and cabins: Zia uddin Shah
+- Shangrila hero: arifesapzai · Hunza autumn road: faysal9 · Nanga Parbat sunrise: maazkalia · Fairy Meadows cabins: Zia uddin Shah
 - Katpana desert and Karimabad at night: Wasif Mehmood · Altit Fort view: Aakash Ashraf
 - Attabad Lake: Hamayoon Riaz · Passu Cones: Raj Kumar Lohana · Skardu lake: Osama Bin Younis
 - Deosai: Neha Siraj Khan · Kaghan lake: Sameer Bhatti · Rakaposhi: Adnan Temur Barcha · Khunjerab: Kamran Sabir

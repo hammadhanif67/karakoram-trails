@@ -28,7 +28,7 @@ type AsButton = CommonProps & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>
 const base =
   "group/cta relative isolate inline-flex cursor-pointer items-center justify-center gap-2.5 overflow-hidden rounded-[4px] " +
   "text-center font-medium tracking-[0.14em] uppercase select-none " +
-  "transition-[color,border-color,box-shadow,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.98] " +
+  "transition-[background-color,color,border-color,box-shadow,transform] duration-250 ease-out hover:-translate-y-px active:translate-y-0 active:scale-[0.98] " +
   "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-apricot motion-reduce:transition-none";
 
 const sizes: Record<Size, string> = {
@@ -37,41 +37,34 @@ const sizes: Record<Size, string> = {
   lg: "min-h-14 px-8 text-[0.8rem]",
 };
 
-// `fill` is the colour that sweeps in from the left on hover.
-const variants: Record<Variant, Record<Tone, { idle: string; fill: string }>> = {
+// Background and text change together in one short transition, so the label is never
+// half-over the old colour (the earlier left-to-right sweep left a lagging sliver).
+const variants: Record<Variant, Record<Tone, string>> = {
   primary: {
-    dark: { idle: "bg-apricot text-apricot-ink shadow-lg shadow-apricot/20", fill: "bg-[#e3a45e]" },
-    light: { idle: "bg-apricot text-apricot-ink shadow-lg shadow-apricot/20", fill: "bg-[#e3a45e]" },
+    dark: "bg-apricot text-apricot-ink shadow-lg shadow-apricot/20 hover:bg-[#e0a059] hover:shadow-apricot/35",
+    light: "bg-apricot text-apricot-ink shadow-lg shadow-apricot/20 hover:bg-[#e0a059] hover:shadow-apricot/35",
   },
   outline: {
-    dark: { idle: "border border-cream/45 text-cream hover:border-cream hover:text-ink", fill: "bg-cream" },
-    light: { idle: "border border-pine/45 text-pine hover:border-pine hover:text-cream", fill: "bg-pine" },
+    dark: "border border-cream/45 text-cream hover:border-cream hover:bg-cream hover:text-ink",
+    light: "border border-pine/45 text-pine hover:border-pine hover:bg-pine hover:text-cream",
   },
   solid: {
-    dark: { idle: "bg-cream text-ink", fill: "bg-white" },
-    light: { idle: "bg-pine text-cream shadow-lg shadow-pine/20", fill: "bg-night" },
+    dark: "bg-cream text-ink hover:bg-white",
+    light: "bg-pine text-cream shadow-lg shadow-pine/20 hover:bg-night",
   },
 };
 
 /**
  * The site's call-to-action button. Clean rectangle with small radius and spaced capitals;
- * on hover a fill sweeps in from the left and the arrow nudges forward.
+ * on hover the colours change together, the button lifts 1px and the arrow nudges forward.
  * Renders an <a> when `href` is given, otherwise a <button>.
  */
 export function CtaButton(props: AsLink | AsButton) {
   const { variant = "primary", tone = "dark", size = "md", shine = false, icon, arrow = false, className, children, ...rest } = props;
-  const v = variants[variant][tone];
-  const classes = cn(base, sizes[size], v.idle, className);
+  const classes = cn(base, sizes[size], variants[variant][tone], className);
 
   const inner = (
     <>
-      <span
-        aria-hidden
-        className={cn(
-          "absolute inset-0 -z-10 origin-left scale-x-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/cta:scale-x-100 motion-reduce:transition-none",
-          v.fill,
-        )}
-      />
       {shine && (
         <ShineBorder
           borderWidth={1.5}

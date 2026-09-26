@@ -1,8 +1,11 @@
 "use client"
 
-// Magic UI "number-ticker" from https://magicui.design/r/number-ticker.json, unmodified except the framer-motion import; the spring is lighter (counts in ~2.5 s) and snaps to the exact value at the end.
+// Magic UI "number-ticker" from https://magicui.design/r/number-ticker.json, adapted: framer-motion
+// import, and a fixed-length ease-out tween instead of the spring. The spring's settle time depends on
+// physics and frame rate (5+ s for large values on slow devices) and could stop a digit short
+// (4,799 for 4,800); the tween always finishes on time and on the exact value.
 import { useEffect, useRef, type ComponentPropsWithoutRef } from "react"
-import { useInView, useMotionValue, useSpring } from "framer-motion"
+import { animate, useInView } from "framer-motion"
 
 import { cn } from "@/lib/utils"
 
@@ -12,6 +15,8 @@ interface NumberTickerProps extends ComponentPropsWithoutRef<"span"> {
   direction?: "up" | "down"
   delay?: number
   decimalPlaces?: number
+  /** Seconds. */
+  duration?: number
 }
 
 export function NumberTicker({
@@ -21,50 +26,38 @@ export function NumberTicker({
   delay = 0,
   className,
   decimalPlaces = 0,
+  duration = 2,
   ...props
 }: NumberTickerProps) {
   const ref = useRef<HTMLSpanElement>(null)
-  const motionValue = useMotionValue(direction === "down" ? value : startValue)
-  const springValue = useSpring(motionValue, {
-    // Lighter than Magic UI's default (damping 60), which took 5+ seconds to reach large values.
-    damping: 30,
-    stiffness: 90,
-    // Settle once within half of the last shown digit instead of crawling the last fraction.
-    restDelta: 0.5 * 10 ** -decimalPlaces,
-    restSpeed: 10 ** -decimalPlaces,
-  })
   const isInView = useInView(ref, { once: true, margin: "0px" })
 
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout> | null = null
+  const format = (n: number) =>
+    Intl.NumberFormat("en-US", {
+      minimumFractionDigits: decimalPlaces,
+      maximumFractionDigits: decimalPlaces,
+    }).format(Number(n.toFixed(decimalPlaces)))
 
-    if (isInView) {
-      timer = setTimeout(() => {
-        motionValue.set(direction === "down" ? startValue : value)
-      }, delay * 1000)
-    }
-
-    return () => {
-      if (timer !== null) {
-        clearTimeout(timer)
-      }
-    }
-  }, [motionValue, isInView, delay, value, direction, startValue])
+  const from = direction === "down" ? value : startValue
+  const to = direction === "down" ? startValue : value
 
   useEffect(() => {
-    const format = (n: number) =>
-      Intl.NumberFormat("en-US", {
-        minimumFractionDigits: decimalPlaces,
-        maximumFractionDigits: decimalPlaces,
-      }).format(Number(n.toFixed(decimalPlaces)))
-    const halfStep = 0.5 * 10 ** -decimalPlaces
-    return springValue.on("change", (latest) => {
-      if (!ref.current) return
-      // Land exactly on the target instead of stopping a hair short (e.g. 4,799 for 4,800).
-      const target = motionValue.get()
-      ref.current.textContent = format(Math.abs(target - latest) < halfStep * 2 ? target : latest)
+    if (!isInView) return
+    const controls = animate(from, to, {
+      delay,
+      duration,
+      ease: [0.16, 1, 0.3, 1], // easeOutExpo: fast start, gentle landing
+      onUpdate: (latest) => {
+        if (ref.current) ref.current.textContent = format(latest)
+      },
+      onComplete: () => {
+        if (ref.current) ref.current.textContent = format(to)
+      },
     })
-  }, [springValue, motionValue, decimalPlaces])
+    return () => controls.stop()
+    // format depends only on decimalPlaces
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isInView, from, to, delay, duration, decimalPlaces])
 
   return (
     <span
@@ -75,7 +68,7 @@ export function NumberTicker({
       )}
       {...props}
     >
-      {startValue}
+      {format(from)}
     </span>
   )
 }

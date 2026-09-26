@@ -1,10 +1,10 @@
 "use client"
 
-// shadcn/ui "toggle-group" (new-york-v4) from https://ui.shadcn.com/r/styles/new-york-v4/toggle-group.json; theme tokens are mapped in globals.css.
+// shadcn/ui "toggle-group" (new-york-v4) from https://ui.shadcn.com/r/styles/new-york-v4/toggle-group.json; theme tokens are mapped in globals.css. Imports the single Radix primitive package (not the `radix-ui` umbrella) to keep the bundle small.
 import * as React from "react"
 import { type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
-import { ToggleGroup as ToggleGroupPrimitive } from "radix-ui"
+import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group"
 
 import { toggleVariants } from "@/components/ui/toggle"
 

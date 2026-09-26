@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant, Montserrat } from "next/font/google";
 import { CurrencyProvider } from "@/lib/currency";
 import { MotionProvider } from "@/lib/motion-provider";
+import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const cormorant = Cormorant({
@@ -17,9 +18,6 @@ const montserrat = Montserrat({
   weight: ["400", "500", "600"],
 });
 
-// Public site address, used for social-preview image URLs. Set NEXT_PUBLIC_SITE_URL in Cloudflare Pages
-// once you know the final domain.
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://karakoram-trails.pages.dev";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

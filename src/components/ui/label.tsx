@@ -1,16 +1,12 @@
-"use client"
-
-// shadcn/ui "label" (new-york-v4) from https://ui.shadcn.com/r/styles/new-york-v4/label.json; theme tokens are mapped in globals.css.
+// shadcn/ui "label" (new-york-v4) styles on a native <label>. The Radix Label primitive only adds
+// double-click text-selection prevention, which isn't worth pulling Radix into the bundle for.
 import * as React from "react"
-import { cn } from "@/lib/utils"
-import { Label as LabelPrimitive } from "radix-ui"
 
-function Label({
-  className,
-  ...props
-}: React.ComponentProps<typeof LabelPrimitive.Root>) {
+import { cn } from "@/lib/utils"
+
+function Label({ className, ...props }: React.ComponentProps<"label">) {
   return (
-    <LabelPrimitive.Root
+    <label
       data-slot="label"
       className={cn(
         "flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",

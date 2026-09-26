@@ -10,7 +10,7 @@
 // Exits with code 1 if content.ts and D1 disagree on a tour name or price, or on the set of upcoming
 // departures (date + seats). Fix by updating content.ts to match D1 (or D1, if content.ts is right).
 
-import { execSync } from "node:child_process";
+import { execFileSync, execSync } from "node:child_process";
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { departures, tours } from "../src/lib/content.ts";
@@ -22,15 +22,15 @@ const tmp = join(".wrangler", "tmp-seed");
 
 const sql = (v) => `'${String(v).replace(/'/g, "''")}'`;
 
-function d1File(name, statements, json = false) {
+function d1File(name, statements) {
   mkdirSync(tmp, { recursive: true });
   const file = join(tmp, name);
   writeFileSync(file, statements.join("\n") + "\n");
-  const out = execSync(`npx wrangler d1 execute ${DB} ${target} --file=${file}${json ? " --json" : ""}`, {
+  const out = execSync(`npx wrangler d1 execute ${DB} ${target} --file=${file}`, {
     encoding: "utf8",
     stdio: ["ignore", "pipe", "inherit"],
   });
-  return json ? JSON.parse(out) : out;
+  return out;
 }
 
 // Pakistan date (UTC+5), same rule as /api/departures.
@@ -53,17 +53,26 @@ if (!checkOnly) {
 }
 
 // ---- consistency check: content.ts fallback vs D1 ----
-const [dbTours, dbDeps] = d1File(
-  "check.sql",
-  [
-    "SELECT slug, name, price_pkr FROM tours WHERE active = 1 ORDER BY slug;",
-    `SELECT t.slug AS tour, d.start_date AS date, d.seats_total AS seats
-       FROM departures d JOIN tours t ON t.id = d.tour_id
-      WHERE d.status = 'open' AND t.active = 1 AND d.start_date >= ${sql(today)}
-      ORDER BY d.start_date, t.slug;`,
-  ],
-  true,
-).map((r) => r.results);
+// Read-only queries via --command (a --file run returns a different JSON shape on --remote). Wrangler's
+// CLI is run with node directly, without a shell, so the SQL needs no shell quoting.
+function d1Query(sqlText) {
+  const out = execFileSync(
+    process.execPath,
+    [join("node_modules", "wrangler", "bin", "wrangler.js"), "d1", "execute", DB, target, "--json", "--command", sqlText],
+    { encoding: "utf8", stdio: ["ignore", "pipe", "inherit"] },
+  );
+  const start = out.indexOf("["); // --remote prints progress lines before the JSON
+  if (start < 0) throw new Error(`wrangler returned no JSON:
+${out}`);
+  return JSON.parse(out.slice(start))[0].results;
+}
+const dbTours = d1Query("SELECT slug, name, price_pkr FROM tours WHERE active = 1 ORDER BY slug");
+const dbDeps = d1Query(
+  `SELECT t.slug AS tour, d.start_date AS date, d.seats_total AS seats
+     FROM departures d JOIN tours t ON t.id = d.tour_id
+    WHERE d.status = 'open' AND t.active = 1 AND d.start_date >= ${sql(today)}
+    ORDER BY d.start_date, t.slug`,
+);
 
 const problems = [];
 const dbTourBySlug = new Map(dbTours.map((t) => [t.slug, t]));

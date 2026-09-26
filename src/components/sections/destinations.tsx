@@ -84,7 +84,9 @@ export function Destinations() {
   const pinned = desktop && !reduce;
 
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  // The pinned track (and its ref) only exists on desktop; without it, don't hand useScroll a target
+  // that never mounts (framer throws "Target ref is defined but not hydrated").
+  const { scrollYProgress } = useScroll(pinned ? { target: ref, offset: ["start start", "end end"] } : {});
   const n = destinations.length;
   const x = useTransform(scrollYProgress, [0, 1], ["0vw", `-${(n - 1) * 100}vw`]);
 

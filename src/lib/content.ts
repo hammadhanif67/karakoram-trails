@@ -8,6 +8,7 @@ export const brand = {
   whatsapp: "923281933287", // digits only with country code; used for wa.me links and tel:
   email: "adalhammad556@gmail.com",
   office: "Aliabad, Hunza, Gilgit-Baltistan",
+  hours: "Replies within a few hours, 9 am to 10 pm PKT", // PLACEHOLDER: your real reply hours
 };
 
 export const whatsappLink = (text?: string) =>

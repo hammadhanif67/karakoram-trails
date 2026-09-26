@@ -37,8 +37,9 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${montserrat.variable}`}>
-      <body>
+    <html lang="en" data-scroll-behavior="smooth" className={`${cormorant.variable} ${montserrat.variable}`}>
+      {/* suppressHydrationWarning: browser extensions (e.g. ColorZilla) add attributes to <body> before React hydrates */}
+      <body suppressHydrationWarning>
         <MotionProvider>
           <CurrencyProvider>{children}</CurrencyProvider>
         </MotionProvider>

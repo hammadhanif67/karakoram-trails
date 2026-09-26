@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, Mountain, X } from "lucide-react";
 import { brand } from "@/lib/content";
 import { ScrollProgress } from "@/components/magicui/scroll-progress";
+import { HomeLink } from "@/components/ui/home-link";
 import { CtaButton } from "@/components/ui/cta-button";
 import { cn } from "@/lib/utils";
 
@@ -47,10 +47,10 @@ export function Navbar() {
       {/* Magic UI Scroll Progress */}
       <ScrollProgress className="h-0.5 bg-none bg-apricot" />
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 sm:px-8" aria-label="Main">
-        <Link href="/" className="flex items-center gap-2 text-cream">
+        <HomeLink className="flex items-center gap-2 text-cream" onClick={() => setOpen(false)}>
           <Mountain className="h-6 w-6 text-apricot" aria-hidden />
           <span className="font-serif text-2xl font-semibold tracking-wide">{brand.name}</span>
-        </Link>
+        </HomeLink>
 
         <ul className="hidden items-center gap-7 xl:gap-8 lg:flex">
           {links.map((l) => (

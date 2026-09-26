@@ -1,43 +1,113 @@
 import Link from "next/link";
-import { Mountain } from "lucide-react";
-import { brand, tours } from "@/lib/content";
+import { ArrowUp, Mail, MapPin, MessageCircle, Mountain, Phone } from "lucide-react";
+import { CtaButton } from "@/components/ui/cta-button";
+import { BackToTop, HomeLink } from "@/components/ui/home-link";
+import { brand, tours, whatsappLink } from "@/lib/content";
+
+const explore = [
+  { href: "/#destinations", label: "Destinations" },
+  { href: "/#route", label: "The route" },
+  { href: "/#departures", label: "Departures" },
+  { href: "/#why-us", label: "Why travel with us" },
+  { href: "/#how-it-works", label: "How it works" },
+  { href: "/#faq", label: "FAQ" },
+];
+
+function Heading({ children }: { children: React.ReactNode }) {
+  return <p className="text-[0.7rem] font-medium tracking-[0.25em] text-apricot uppercase">{children}</p>;
+}
 
 export function Footer() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="border-t border-cream/10 bg-night text-cream/75">
-      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:grid-cols-3 sm:px-8">
-        <div>
-          <Link href="/" className="flex items-center gap-2 text-cream">
-            <Mountain className="h-6 w-6 text-apricot" aria-hidden />
-            <span className="font-serif text-2xl font-semibold">{brand.name}</span>
-          </Link>
-          <p className="mt-4 max-w-xs text-sm leading-relaxed">
-            Small-group and private tours through Gilgit-Baltistan, run by people who call it home.
-          </p>
+    <footer className="bg-night text-cream/70">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        {/* Brand and a closing call to action */}
+        <div className="flex flex-col gap-8 border-b border-cream/10 py-14 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-md">
+            <HomeLink className="inline-flex items-center gap-2 text-cream">
+              <Mountain className="h-7 w-7 text-apricot" aria-hidden />
+              <span className="font-serif text-3xl font-semibold">{brand.name}</span>
+            </HomeLink>
+            <p className="mt-4 leading-relaxed">
+              Small-group and private journeys through Hunza, Skardu and Fairy Meadows, planned by a team from
+              Gilgit-Baltistan.
+            </p>
+          </div>
+          <CtaButton
+            href={whatsappLink("Assalam o Alaikum, I'd like to plan a trip.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            icon={<MessageCircle className="h-4 w-4" aria-hidden />}
+            className="self-start lg:self-auto"
+          >
+            Plan your trip on WhatsApp
+          </CtaButton>
         </div>
-        <div>
-          <p className="text-xs tracking-[0.2em] text-apricot uppercase">Tours</p>
-          <ul className="mt-4 space-y-2 text-sm">
-            {tours.map((t) => (
-              <li key={t.slug}>
-                <Link href={`/tours/${t.slug}/`} className="hover:text-apricot">
-                  {t.name} · {t.days} days
-                </Link>
+
+        {/* Link columns */}
+        <div className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-3">
+          <nav aria-label="Tours">
+            <Heading>Tours</Heading>
+            <ul className="mt-5 space-y-3 text-sm">
+              {tours.map((t) => (
+                <li key={t.slug}>
+                  <Link href={`/tours/${t.slug}/`} className="transition-colors hover:text-cream">
+                    {t.name}
+                    <span className="text-cream/40"> · {t.days} days</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav aria-label="Explore">
+            <Heading>Explore</Heading>
+            <ul className="mt-5 grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-1">
+              {explore.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="transition-colors hover:text-cream">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div>
+            <Heading>Contact</Heading>
+            <ul className="mt-5 space-y-4 text-sm">
+              <li>
+                <a href={`tel:+${brand.whatsapp}`} className="flex items-center gap-3 transition-colors hover:text-cream">
+                  <Phone className="h-4 w-4 shrink-0 text-apricot" aria-hidden />
+                  {brand.phoneDisplay}
+                </a>
               </li>
-            ))}
-          </ul>
+              <li>
+                <a href={`mailto:${brand.email}`} className="flex items-center gap-3 break-all transition-colors hover:text-cream">
+                  <Mail className="h-4 w-4 shrink-0 text-apricot" aria-hidden />
+                  {brand.email}
+                </a>
+              </li>
+              <li className="flex items-center gap-3">
+                <MapPin className="h-4 w-4 shrink-0 text-apricot" aria-hidden />
+                {brand.office}
+              </li>
+            </ul>
+          </div>
         </div>
-        <div>
-          <p className="text-xs tracking-[0.2em] text-apricot uppercase">Get in touch</p>
-          <ul className="mt-4 space-y-2 text-sm">
-            <li>{brand.phoneDisplay}</li>
-            <li>{brand.email}</li>
-            <li>{brand.office}</li>
-          </ul>
+
+        {/* Bottom bar */}
+        {/* Extra bottom room on phones so the floating WhatsApp button / booking bar never covers it */}
+        <div className="flex flex-col gap-4 border-t border-cream/10 pt-6 pb-28 text-xs sm:flex-row sm:items-center sm:justify-between lg:pb-6">
+          <p>
+            © {year} {brand.name}. All rights reserved.
+          </p>
+          <BackToTop className="inline-flex cursor-pointer items-center gap-2 self-start tracking-[0.2em] uppercase transition-colors hover:text-cream">
+            Back to top <ArrowUp className="h-3.5 w-3.5" aria-hidden />
+          </BackToTop>
         </div>
-      </div>
-      <div className="border-t border-cream/10 px-5 py-6 text-center text-xs text-cream/70">
-        © {new Date().getFullYear()} {brand.name}. Photos from Pexels.
       </div>
     </footer>
   );

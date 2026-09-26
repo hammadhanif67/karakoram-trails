@@ -1,8 +1,9 @@
 "use client";
 
 // Adapted from "Layer Parallax Hero" by erikvalencia1 on 21st.dev.
-// Changes: photo + mountain layers instead of abstract shapes, and scroll parallax instead of the
-// original pointer-follow effect (the background no longer moves with the cursor). Scroll motion is
+// Changes: a photo background with scroll parallax instead of the original pointer-follow shapes (the
+// background never moves with the cursor), a bottom `footer` slot, and content that lifts and fades
+// out as you scroll away (it no longer drifts down and reappears lower on the page). Scroll motion is
 // switched off under prefers-reduced-motion.
 
 import { useRef } from "react";
@@ -10,30 +11,31 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useReducedMotionSafe } from "@/lib/use-media-query";
 import { cn } from "@/lib/utils";
 
-type Layer = { className?: string; children: React.ReactNode; front?: boolean };
-
 type Props = {
   image: { src: string; srcSet: string; alt: string };
   children: React.ReactNode;
-  /** Decorative layers drawn over the photo; `front` layers also cover the content as it scrolls away. */
-  layers?: Layer[];
+  /** Pinned to the bottom edge of the hero (e.g. a facts strip). */
+  footer?: React.ReactNode;
   className?: string;
 };
 
-export function LayeredParallaxHero({ image, children, layers = [], className }: Props) {
+export function LayeredParallaxHero({ image, children, footer, className }: Props) {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotionSafe();
 
-  // Scroll parallax: photo drifts slower than the page, content lifts and fades out.
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const photoY = useTransform(scrollYProgress, [0, 1], ["0%", reduce ? "0%" : "25%"]);
-  const photoScale = useTransform(scrollYProgress, [0, 1], [1.05, reduce ? 1.05 : 1.15]);
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", reduce ? "0%" : "40%"]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, reduce ? 1 : 0]);
+  // Photo drifts slower than the page (classic parallax).
+  const photoY = useTransform(scrollYProgress, [0, 1], ["0%", reduce ? "0%" : "22%"]);
+  const photoScale = useTransform(scrollYProgress, [0, 1], [1.04, reduce ? 1.04 : 1.12]);
+  // Content lifts slightly and is fully gone by the time half the hero has scrolled past.
+  const contentY = useTransform(scrollYProgress, [0, 0.5, 1], reduce ? ["0%", "0%", "0%"] : ["0%", "-12%", "-12%"]);
+  // Spell out the whole 0..1 range: framer runs scroll-linked opacity on the browser's native
+  // ScrollTimeline, and with a partial range ([0, 0.45]) it faded back IN past 0.45, so the hero
+  // text reappeared while scrolling down.
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.45, 1], reduce ? [1, 1, 1] : [1, 0, 0]);
 
   return (
-    <section ref={ref} className={cn("relative isolate flex min-h-svh items-center overflow-hidden bg-night", className)}>
-      {/* Photo (furthest back) */}
+    <section ref={ref} className={cn("relative isolate flex min-h-svh flex-col overflow-hidden bg-night", className)}>
       <motion.div className="absolute inset-0 -z-10" style={{ y: photoY, scale: photoScale }}>
         {/* eslint-disable-next-line @next/next/no-img-element -- static export; images are pre-optimized */}
         <img
@@ -46,30 +48,19 @@ export function LayeredParallaxHero({ image, children, layers = [], className }:
         />
       </motion.div>
 
-      {/* Tint so text keeps 4.5:1 contrast on any part of the photo */}
-      <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-night/70 via-night/35 to-night/85" />
+      {/* Tints keep text at 4.5:1 contrast on any part of the photo */}
+      <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-night/75 via-night/30 to-night/90" />
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-night/70 via-night/20 to-transparent" />
 
-      {layers
-        .filter((l) => !l.front)
-        .map((layer, i) => (
-          <div key={i} aria-hidden className={cn("pointer-events-none absolute inset-0", layer.className)}>
-            {layer.children}
-          </div>
-        ))}
-
-      {/* Content: scrolls down and fades, sliding behind any `front` layers */}
-      <motion.div className="relative z-10 w-full" style={{ y: contentY, opacity: contentOpacity }}>
+      <motion.div className="relative z-10 flex w-full flex-1 items-center" style={{ y: contentY, opacity: contentOpacity }}>
         {children}
       </motion.div>
 
-      {layers
-        .filter((l) => l.front)
-        .map((layer, i) => (
-          <div key={`front-${i}`} aria-hidden className={cn("pointer-events-none absolute inset-0 z-20", layer.className)}>
-            {layer.children}
-          </div>
-        ))}
+      {footer && (
+        <motion.div className="relative z-10 w-full" style={{ opacity: contentOpacity }}>
+          {footer}
+        </motion.div>
+      )}
     </section>
   );
 }

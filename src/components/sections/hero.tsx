@@ -1,13 +1,60 @@
 "use client";
 
-import { MapPin } from "lucide-react";
+import { CalendarDays, MapPin, Users, Wallet } from "lucide-react";
 import { LayeredParallaxHero } from "@/components/ui/layer-parallax-hero";
 import { CtaButton } from "@/components/ui/cta-button";
 import { WordRotate } from "@/components/magicui/word-rotate";
-import { photo } from "@/lib/content";
+import { departures, formatDate, formatPrice, getTour, photo, tours } from "@/lib/content";
+import { useCurrency } from "@/lib/currency";
+import { cn } from "@/lib/utils";
 import { useReducedMotionSafe } from "@/lib/use-media-query";
 
 const places = ["Hunza", "Skardu", "Fairy Meadows", "Deosai", "Naran"];
+const nextDeparture = [...departures].sort((a, b) => a.date.localeCompare(b.date))[0];
+const fromPrice = Math.min(...tours.map((t) => t.pricePKR));
+
+/** Facts strip along the bottom edge of the hero: useful at a glance, and a clean straight edge. */
+function HeroFacts() {
+  const { currency } = useCurrency();
+  const tour = getTour(nextDeparture.tour)!;
+  const facts = [
+    { icon: CalendarDays, label: "Next departure", value: `${formatDate(nextDeparture.date)} · ${tour.name}`, href: `/tours/${tour.slug}/` },
+    { icon: Wallet, label: "Tours from", value: `${formatPrice(fromPrice, currency)} per person`, href: "#tours" },
+    { icon: Users, label: "Group size", value: "Small groups, max 12", href: "#why-us" },
+  ];
+  return (
+    <div className="animate-hero-rise border-t border-cream/15 bg-night/35 backdrop-blur-md" style={{ animationDelay: "0.6s" }}>
+      {/* Phones: the first two facts side by side; wider screens: all three plus the scroll cue */}
+      <div className="mx-auto grid max-w-7xl grid-cols-2 divide-x divide-cream/10 px-5 sm:grid-cols-3 sm:px-8 lg:grid-cols-[1fr_1fr_1fr_auto]">
+        {facts.map((f, i) => (
+          <a
+            key={f.label}
+            href={f.href}
+            className={cn(
+              "group flex items-center gap-3 py-4 pl-3 transition-colors first:pl-0 sm:gap-4 sm:px-6 sm:py-6",
+              i === 2 && "hidden sm:flex",
+            )}
+          >
+            <f.icon className="hidden h-5 w-5 shrink-0 text-apricot sm:block" aria-hidden />
+            <span>
+              <span className="block text-[0.65rem] tracking-[0.25em] text-cream/60 uppercase">{f.label}</span>
+              <span className="mt-1 block text-[0.8rem] text-cream transition-colors group-hover:text-apricot sm:text-sm">{f.value}</span>
+            </span>
+          </a>
+        ))}
+        <a
+          href="#destinations"
+          className="hidden items-center gap-3 pl-8 text-[0.65rem] tracking-[0.3em] text-cream/70 uppercase transition-colors hover:text-cream lg:flex"
+        >
+          <span aria-hidden className="relative h-10 w-px overflow-hidden bg-cream/25">
+            <span className="animate-scroll-cue absolute inset-x-0 top-0 h-3 bg-apricot" />
+          </span>
+          Scroll
+        </a>
+      </div>
+    </div>
+  );
+}
 
 export function Hero() {
   const reduce = useReducedMotionSafe();
@@ -18,29 +65,9 @@ export function Hero() {
   return (
     <LayeredParallaxHero
       image={{ ...photo("hero-skardu-shangrila"), alt: "Shangrila lake in Skardu beneath snow-capped Karakoram peaks" }}
-      layers={[
-        {
-          children: (
-            <svg viewBox="0 0 1440 320" preserveAspectRatio="none" className="absolute -bottom-2 left-[-5%] h-[22vh] w-[110%]">
-              <path
-                d="M0 320V210l120-60 110 40 140-110 120 80 150-120 160 110 120-50 170 90 130-70 170 100v100z"
-                fill="var(--night)"
-                opacity="0.55"
-              />
-            </svg>
-          ),
-        },
-        {
-          front: true,
-          children: (
-            <svg viewBox="0 0 1440 200" preserveAspectRatio="none" className="absolute -bottom-2 left-[-5%] h-[12vh] w-[110%]">
-              <path d="M0 200V120l180-50 200 60 220-80 240 70 200-40 220 60 180-30v110z" fill="var(--cream)" />
-            </svg>
-          ),
-        },
-      ]}
+      footer={<HeroFacts />}
     >
-      <div id="top" className="mx-auto max-w-7xl px-5 pt-28 pb-40 sm:px-8">
+      <div id="top" className="mx-auto w-full max-w-7xl px-5 pt-28 pb-12 sm:px-8">
         <p
           {...rise(0.05)}
           className="animate-hero-rise flex items-center gap-2 text-xs font-medium tracking-[0.3em] text-apricot uppercase"
@@ -90,17 +117,6 @@ export function Hero() {
           </CtaButton>
         </div>
 
-        {/* Scroll cue: part of the content, so it fades with it and slides behind the mountains */}
-        <a
-          href="#destinations"
-          {...rise(0.7)}
-          className="animate-hero-rise group mt-14 hidden w-fit items-center gap-4 text-[0.7rem] tracking-[0.3em] text-cream/70 uppercase transition-colors hover:text-cream lg:flex"
-        >
-          <span aria-hidden className="relative h-12 w-px overflow-hidden bg-cream/25">
-            <span className="animate-scroll-cue absolute inset-x-0 top-0 h-4 bg-apricot" />
-          </span>
-          Scroll to explore
-        </a>
       </div>
     </LayeredParallaxHero>
   );

@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 /** Departure rows; pass `tourSlug` to show one tour's dates (tour pages). */
 export function DepartureList({ tourSlug, tone = "dark" }: { tourSlug?: string; tone?: "dark" | "light" }) {
   const { currency } = useCurrency();
-  const { prices } = useLiveData();
+  const { prices, status } = useLiveData();
   const rows = useDepartures(tourSlug);
   const dark = tone === "dark";
 
@@ -36,11 +36,15 @@ export function DepartureList({ tourSlug, tone = "dark" }: { tourSlug?: string; 
         const full = d.seatsLeft <= 0;
         const low = !full && d.seatsLeft <= 4;
         // Within the online cutoff (72 h) or full: no online booking, talk to us instead.
+        // Online checkout when the live API is up and this departure can be booked; otherwise WhatsApp.
+        const online = status === "live" && d.id !== null && d.bookable && !full;
         const cta = full
-          ? { label: "Join the waitlist", text: `Assalam o Alaikum, ${tour.name} on ${date} is full. Please add me to the waitlist.` }
-          : d.bookable
-            ? { label: "Book seats", text: `Assalam o Alaikum, I'd like to book ${tour.name} departing ${date}.` }
-            : { label: "Contact us on WhatsApp", text: `Assalam o Alaikum, is there still space on ${tour.name} departing ${date}?` };
+          ? { label: "Join the waitlist", href: whatsappLink(`Assalam o Alaikum, ${tour.name} on ${date} is full. Please add me to the waitlist.`) }
+          : online
+            ? { label: "Book seats", href: `/checkout/?departure=${d.id}` }
+            : d.bookable
+              ? { label: "Book seats", href: whatsappLink(`Assalam o Alaikum, I'd like to book ${tour.name} departing ${date}.`) }
+              : { label: "Contact us on WhatsApp", href: whatsappLink(`Assalam o Alaikum, is there still space on ${tour.name} departing ${date}?`) };
         const taken = ((d.seats - d.seatsLeft) / d.seats) * 100;
         return (
           <li key={d.id ?? `${d.tour}-${d.date}`}>
@@ -80,13 +84,12 @@ export function DepartureList({ tourSlug, tone = "dark" }: { tourSlug?: string; 
                 </div>
 
                 <CtaButton
-                  href={whatsappLink(cta.text)}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={cta.href}
+                  {...(online ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                   variant={low && d.bookable ? "primary" : "outline"}
                   tone={tone}
                   className="w-full sm:w-auto"
-                  aria-label={`${cta.label}: ${tour.name} on ${date} (opens WhatsApp)`}
+                  aria-label={`${cta.label}: ${tour.name} on ${date}${online ? "" : " (opens WhatsApp)"}`}
                 >
                   {cta.label}
                 </CtaButton>

@@ -19,7 +19,8 @@ const links = [
   { href: "/#faq", label: "FAQ" },
 ];
 
-export function Navbar() {
+/** `solid`: always use the dark bar (pages without a dark hero behind the navbar). */
+export function Navbar({ solid = false }: { solid?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -41,7 +42,7 @@ export function Navbar() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        scrolled || open ? "bg-night/90 py-3 shadow-lg shadow-night/20 backdrop-blur-md" : "py-5",
+        solid || scrolled || open ? "bg-night/90 py-3 shadow-lg shadow-night/20 backdrop-blur-md" : "py-5",
       )}
     >
       {/* Magic UI Scroll Progress */}

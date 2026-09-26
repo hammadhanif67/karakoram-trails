@@ -2,6 +2,7 @@
 // Live tour prices and upcoming departures from D1 (the single source of truth). The site renders
 // content.ts values in the static HTML and replaces them with this response in the browser.
 import { isBookableOnline } from "../../src/lib/booking-rules";
+import { releaseExpiredHolds } from "../../server/bookings";
 import type { Env } from "../../server/env";
 
 type TourRow = { slug: string; price_pkr: number };
@@ -13,6 +14,8 @@ export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
   const today = new Date(now.getTime() + 5 * 3600_000).toISOString().slice(0, 10);
 
   try {
+    // Free seats from unpaid bookings whose hold has expired, so seatsLeft is accurate.
+    await releaseExpiredHolds(env.DB, now);
     const [tours, departures] = await env.DB.batch([
       env.DB.prepare("SELECT slug, price_pkr FROM tours WHERE active = 1 ORDER BY id"),
       env.DB.prepare(

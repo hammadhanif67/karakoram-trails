@@ -1,0 +1,14 @@
+# Cloudflare Pages response headers for static files (API responses set their own headers).
+
+# Booking status page: the URL carries the customer's access token.
+/booking
+  Referrer-Policy: no-referrer
+  Cache-Control: no-store
+  X-Robots-Tag: noindex
+/booking/*
+  Referrer-Policy: no-referrer
+  Cache-Control: no-store
+  X-Robots-Tag: noindex
+
+/checkout/*
+  X-Robots-Tag: noindex

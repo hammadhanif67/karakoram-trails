@@ -7,7 +7,7 @@ import { CurrencyToggle } from "@/components/ui/currency-toggle";
 import { CtaButton } from "@/components/ui/cta-button";
 import { formatDate, formatPrice, whatsappLink, type Tour } from "@/lib/content";
 import { useCurrency } from "@/lib/currency";
-import { useDepartures, useTourPrice } from "@/lib/live-data";
+import { useDepartures, useLiveData, useTourPrice } from "@/lib/live-data";
 
 /** Live price per person for a tour (D1 via /api/departures, content.ts as fallback). */
 export function TourPrice({ slug, prefix = "", className }: { slug: string; prefix?: string; className?: string }) {
@@ -29,6 +29,7 @@ const FLEXIBLE = "flexible";
  */
 export function TourBooking({ tour }: { tour: Tour }) {
   const { currency } = useCurrency();
+  const { status } = useLiveData();
   // Only departures that can still be booked online and have seats; the rest go through WhatsApp.
   const all = useDepartures(tour.slug);
   const departures = all.filter((d) => d.bookable && d.seatsLeft > 0);
@@ -38,7 +39,12 @@ export function TourBooking({ tour }: { tour: Tour }) {
   const setDate = setChoice;
 
   const when = date === FLEXIBLE ? "on my own dates" : `departing ${formatDate(date)}`;
-  const link = whatsappLink(`Assalam o Alaikum, I'd like to book ${tour.name} (${tour.days} days) ${when}.`);
+  const whatsapp = whatsappLink(`Assalam o Alaikum, I'd like to book ${tour.name} (${tour.days} days) ${when}.`);
+  // Online checkout for a scheduled departure once live data is loaded; private trips go to WhatsApp.
+  const chosen = departures.find((d) => d.date === date);
+  const checkout = status === "live" && chosen?.id != null ? `/checkout/?departure=${chosen.id}` : null;
+  const link = checkout ?? whatsapp;
+  const external = checkout ? {} : { target: "_blank", rel: "noopener noreferrer" };
   const price = formatPrice(useTourPrice(tour.slug), currency);
 
   return (
@@ -72,18 +78,25 @@ export function TourBooking({ tour }: { tour: Tour }) {
 
           <CtaButton
             href={link}
-            target="_blank"
-            rel="noopener noreferrer"
+            {...external}
             size="lg"
             shine
-            icon={<MessageCircle className="h-4 w-4" aria-hidden />}
+            arrow={!!checkout}
+            icon={checkout ? undefined : <MessageCircle className="h-4 w-4" aria-hidden />}
             className="mt-6 w-full"
           >
-            Book on WhatsApp
+            {checkout ? "Reserve seats" : "Book on WhatsApp"}
           </CtaButton>
+          {checkout && (
+            <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="mt-3 flex items-center justify-center gap-2 text-sm text-pine underline-offset-4 hover:underline">
+              <MessageCircle className="h-4 w-4" aria-hidden /> Questions first? Ask on WhatsApp
+            </a>
+          )}
           <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-mist">
             <ShieldCheck className="h-4 w-4 shrink-0 text-pine" aria-hidden />
-            No payment now. We confirm availability and send a day-by-day plan on WhatsApp.
+            {checkout
+              ? "Reserve now and pay a deposit by bank transfer. Nothing is charged on this site."
+              : "No payment now. We confirm availability and send a day-by-day plan on WhatsApp."}
           </p>
         </div>
       </aside>
@@ -97,15 +110,15 @@ export function TourBooking({ tour }: { tour: Tour }) {
           </div>
           <CtaButton
             href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            icon={<MessageCircle className="h-4 w-4" aria-hidden />}
+            {...external}
+            icon={checkout ? undefined : <MessageCircle className="h-4 w-4" aria-hidden />}
+            arrow={!!checkout}
             className="shrink-0"
-            aria-label="Book on WhatsApp"
+            aria-label={checkout ? "Reserve seats" : "Book on WhatsApp"}
           >
             {/* Short label on narrow phones so the price keeps its room */}
-            <span className="min-[400px]:hidden">Book</span>
-            <span className="hidden min-[400px]:inline">Book on WhatsApp</span>
+            <span className="min-[400px]:hidden">{checkout ? "Reserve" : "Book"}</span>
+            <span className="hidden min-[400px]:inline">{checkout ? "Reserve seats" : "Book on WhatsApp"}</span>
           </CtaButton>
         </div>
       </div>

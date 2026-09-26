@@ -19,18 +19,24 @@ export type LiveDeparture = {
 };
 
 type ApiResponse = {
+  depositPercent?: number;
   tours: { slug: string; pricePKR: number }[];
   departures: { id: number; tour: string; date: string; seats: number; seatsLeft: number; bookable: boolean }[];
 };
 
 type LiveData = {
+  /** fallback: static values; loading: API request in flight; live: from D1; unavailable: no API here. */
   source: "fallback" | "live";
+  status: "loading" | "live" | "unavailable";
+  depositPercent: number;
   prices: Record<string, number>;
   departures: LiveDeparture[];
 };
 
 const fallback: LiveData = {
   source: "fallback",
+  status: "loading",
+  depositPercent: 30,
   prices: Object.fromEntries(fallbackTours.map((t) => [t.slug, t.pricePKR])),
   // bookable: true until the browser can check the date (avoids a build-time vs. visit-time mismatch)
   departures: fallbackDepartures.map((d) => ({ id: null, ...d, bookable: true })),
@@ -70,12 +76,15 @@ export function LiveDataProvider({ children }: { children: React.ReactNode }) {
         if (!isApiResponse(json)) throw new Error("Unexpected /api/departures response");
         setData({
           source: "live",
+          status: "live",
+          depositPercent: Number.isInteger(json.depositPercent) ? (json.depositPercent as number) : 30,
           prices: { ...fallback.prices, ...Object.fromEntries(json.tours.map((t) => [t.slug, t.pricePKR])) },
           departures: json.departures.map((d) => ({ ...d })),
         });
       })
-      .catch(() => {
-        /* keep the fallback (no API on this host, offline, or an error) */
+      .catch((err) => {
+        // Keep the fallback values (no API on this host, offline, or an error).
+        if (err?.name !== "AbortError") setData((d) => ({ ...d, status: "unavailable" }));
       });
     return () => ctrl.abort();
   }, []);

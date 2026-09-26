@@ -2,12 +2,21 @@
 # In production set these in Cloudflare Pages → Settings → Variables and Secrets.
 # Non-secret defaults (DEPOSIT_PERCENT, HOLD_HOURS) live in wrangler.toml [vars].
 
-# Stage 2+ (not used yet):
-# TURNSTILE_SECRET_KEY=
-# BANK_NAME=
-# BANK_ACCOUNT_TITLE=
-# BANK_IBAN=
-# RAAST_ID=
+# Turnstile (stage 2). Production: your widget's secret, TURNSTILE_HOSTNAMES = your real domain(s),
+# and never TURNSTILE_ALLOW_TEST_KEYS. Local testing can use Cloudflare's public testing keys:
+#   site key 1x00000000000000000000AA (build with NEXT_PUBLIC_TURNSTILE_SITE_KEY), secret below,
+#   which returns hostname "example.com" and no action.
+TURNSTILE_SECRET_KEY=
+TURNSTILE_HOSTNAMES=
+# TURNSTILE_ALLOW_TEST_KEYS=true
+
+# Bank transfer instructions shown to the booking's owner (stage 2)
+BANK_NAME=
+BANK_ACCOUNT_TITLE=
+BANK_IBAN=
+RAAST_ID=
+
+# Later stages:
 # N8N_WEBHOOK_URL=
 # N8N_WEBHOOK_SECRET=
 # EMAIL_API_KEY=

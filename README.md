@@ -70,15 +70,17 @@ npm run db:seed:remote
   `N8N_WEBHOOK_URL` is empty; `X-KT-Signature: sha256=HMAC_SHA256(secret, "<X-KT-Timestamp>.<body>")`);
   customer emails through the provider in `server/email/provider.ts`, off until `EMAIL_API_KEY` is set.
 
-Before going live (Cloudflare dashboard, Pages → Settings → Variables and Secrets, Production):
-1. Turnstile widget for `karakoram-trails.pages.dev`; secret `TURNSTILE_SECRET_KEY`,
-   `TURNSTILE_HOSTNAMES=karakoram-trails.pages.dev`, build variable `NEXT_PUBLIC_TURNSTILE_SITE_KEY`.
-   (Preview URLs like `<hash>.karakoram-trails.pages.dev` fail the hostname check by design.)
-2. `node scripts/hash-admin-password.mjs` → secrets `ADMIN_PASSWORD_HASH` and `SESSION_SECRET`.
-3. Telegram: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`. Bank: `BANK_NAME`, `BANK_ACCOUNT_TITLE`, `BANK_IBAN`,
-   `RAAST_ID`. `PUBLIC_SITE_URL=https://karakoram-trails.pages.dev`.
-4. Never set `TURNSTILE_ALLOW_TEST_KEYS`, `ADMIN_DEV_EMAIL` or `TELEGRAM_API_BASE` in production.
-5. `npm run db:migrate:remote` (applies `0002` and `0003`).
+Before going live:
+1. Turnstile widget for `karakoram-trails.pages.dev`: put its public **site key** in `.env.production`
+   (`NEXT_PUBLIC_TURNSTILE_SITE_KEY`, committed; read by `next build`). `TURNSTILE_HOSTNAMES` and
+   `PUBLIC_SITE_URL` are in `wrangler.toml` `[vars]`.
+2. Secrets (each command prompts for the value; set them before the deploy that needs them):
+   `npx wrangler pages secret put NAME --project-name karakoram-trails` for `TURNSTILE_SECRET_KEY`,
+   `ADMIN_PASSWORD_HASH`, `SESSION_SECRET` (both from `node scripts/hash-admin-password.mjs`),
+   `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `BANK_NAME`, `BANK_ACCOUNT_TITLE`, `BANK_IBAN`, `RAAST_ID`.
+   Optional: `N8N_WEBHOOK_URL`, `N8N_WEBHOOK_SECRET`, `EMAIL_API_KEY`, `MAIL_FROM`.
+3. Never set `TURNSTILE_ALLOW_TEST_KEYS`, `ADMIN_DEV_EMAIL` or `TELEGRAM_API_BASE` in production.
+4. `npm run db:migrate:remote` (applies `0002` and `0003`).
 
 ## Photos
 

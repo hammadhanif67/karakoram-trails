@@ -5,9 +5,14 @@ name = "karakoram-trails"
 pages_build_output_dir = "out"
 compatibility_date = "2026-09-01"
 
+# Non-secret settings read by the Pages Functions (production and preview). Secrets are set with
+#   npx wrangler pages secret put NAME --project-name karakoram-trails
+# Locally, .dev.vars overrides these.
 [vars]
 DEPOSIT_PERCENT = "30"
 HOLD_HOURS = "48"
+TURNSTILE_HOSTNAMES = "karakoram-trails.pages.dev"
+PUBLIC_SITE_URL = "https://karakoram-trails.pages.dev"
 
 # Production D1 (created with `npx wrangler d1 create karakoram-trails`). The id is not a secret.
 [[d1_databases]]

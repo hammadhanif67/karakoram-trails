@@ -1,13 +1,15 @@
 # Copy to .dev.vars for local `wrangler pages dev` (never commit .dev.vars).
-# In production set these in Cloudflare Pages → Settings → Variables and Secrets.
-# Non-secret defaults (DEPOSIT_PERCENT, HOLD_HOURS) live in wrangler.toml [vars].
+# Production secrets: npx wrangler pages secret put NAME --project-name karakoram-trails
+# Non-secret settings live in wrangler.toml [vars] (DEPOSIT_PERCENT, HOLD_HOURS, TURNSTILE_HOSTNAMES,
+# PUBLIC_SITE_URL); values here override them locally. The Turnstile SITE key is in .env.production.
 
 # Turnstile (stage 2). Production: your widget's secret, TURNSTILE_HOSTNAMES = your real domain(s),
 # and never TURNSTILE_ALLOW_TEST_KEYS. Local testing can use Cloudflare's public testing keys:
 #   site key 1x00000000000000000000AA (build with NEXT_PUBLIC_TURNSTILE_SITE_KEY), secret below,
 #   which returns hostname "example.com" and no action.
 TURNSTILE_SECRET_KEY=
-TURNSTILE_HOSTNAMES=karakoram-trails.pages.dev
+# Local override of the wrangler.toml value (the testing keys report hostname example.com):
+TURNSTILE_HOSTNAMES=example.com
 # TURNSTILE_ALLOW_TEST_KEYS=true
 
 # Bank transfer instructions shown to the booking's owner (stage 2)
@@ -38,4 +40,5 @@ N8N_WEBHOOK_SECRET=
 # Customer emails: off until EMAIL_API_KEY is set (Resend; MAIL_FROM on a verified domain).
 EMAIL_API_KEY=
 MAIL_FROM=
-PUBLIC_SITE_URL=https://karakoram-trails.pages.dev
+# Local override of the wrangler.toml value:
+PUBLIC_SITE_URL=http://127.0.0.1:8788

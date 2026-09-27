@@ -270,7 +270,15 @@ export function CheckoutClient() {
               />
               <span>
                 I accept the booking conditions: a {live.depositPercent}% deposit confirms the seats, the balance is due 7 days before
-                departure, and the cancellation policy below applies.
+                departure, and the{" "}
+                <Link href="/terms/" target="_blank" className="text-pine underline underline-offset-2">
+                  terms and booking conditions
+                </Link>{" "}
+                and{" "}
+                <Link href="/refund-policy/" target="_blank" className="text-pine underline underline-offset-2">
+                  refund policy
+                </Link>{" "}
+                apply. In short:
               </span>
             </label>
             <ul aria-label="Cancellation policy" className="-mt-2 list-disc space-y-1 pl-12 text-sm text-mist">

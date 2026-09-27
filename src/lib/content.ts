@@ -420,6 +420,20 @@ export const gallery: { image: ImageName; alt: string }[] = [
   { image: "gallery-fairy-meadows-cabins", alt: "Old log cabins among pine trees at Fairy Meadows" },
 ];
 
+/* ------------------------------------------------------------ legal pages */
+
+// Booking rules quoted on /terms. Keep in step with wrangler.toml [vars] (DEPOSIT_PERCENT, HOLD_HOURS)
+// and ONLINE_CUTOFF_HOURS in src/lib/booking-rules.ts.
+export const bookingTerms = {
+  depositPercent: 30,
+  holdHours: 48,
+  balanceDueDays: 7,
+  maxGroup: 12,
+};
+
+// Terms, privacy and refund pages. Set draft: true to show a "Draft" banner on all three.
+export const legalMeta = { draft: false, updated: "27 Sep 2026" };
+
 /* ------------------------------------------------------ cancellation policy */
 
 // Part of the booking conditions accepted at checkout. When this changes, bump TERMS_VERSION in server/bookings.ts.

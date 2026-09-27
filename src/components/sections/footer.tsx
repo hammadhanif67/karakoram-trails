@@ -101,14 +101,26 @@ export function Footer() {
 
         {/* Bottom bar */}
         {/* Extra bottom room on phones so the floating WhatsApp button / booking bar never covers it */}
-        <div className="flex flex-col gap-4 border-t border-cream/10 pt-6 pb-28 text-xs sm:flex-row sm:items-center sm:justify-between lg:pb-6">
+        <div className="flex flex-col gap-4 border-t border-cream/10 pt-6 pb-28 text-xs md:flex-row md:items-center md:justify-between md:gap-8 lg:pb-6">
           <p>
             © {year} {brand.name}. All rights reserved.
-            <span aria-hidden className="mx-2 text-cream/30">·</span>
-            <Link href="/credits/" className="underline-offset-4 transition-colors hover:text-cream hover:underline">
-              Photo credits
-            </Link>
           </p>
+          <nav aria-label="Legal">
+            <ul className="flex flex-wrap gap-x-5 gap-y-2">
+              {[
+                { href: "/terms/", label: "Terms" },
+                { href: "/privacy/", label: "Privacy" },
+                { href: "/refund-policy/", label: "Refund policy" },
+                { href: "/credits/", label: "Photo credits" },
+              ].map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="underline-offset-4 transition-colors hover:text-cream hover:underline">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
           <BackToTop className="inline-flex cursor-pointer items-center gap-2 self-start tracking-[0.2em] uppercase transition-colors hover:text-cream">
             Back to top <ArrowUp className="h-3.5 w-3.5" aria-hidden />
           </BackToTop>

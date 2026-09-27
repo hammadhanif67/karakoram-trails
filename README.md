@@ -97,15 +97,13 @@ lowering quality (never below 50) and lightly denoising until each file fits its
 
 ## Before launch
 
-Everything marked `PLACEHOLDER` in `src/lib/content.ts` needs real information:
-
-- Tour prices and the PKR to USD rate (`USD_RATE`)
-- Departure dates and seats left
-- Day-by-day itineraries, included / not included lists
-- FAQ answers (booking, payment, cancellation policy)
-- Stats (years guiding, travellers, rating) and testimonials
-
-The contact form and booking buttons have no backend: they open WhatsApp with the enquiry pre-filled.
+- **Legal pages need review by the business owner.** `/terms/`, `/privacy/` and `/refund-policy/` were
+  written from the booking rules in code and the owner's instructions, not by a lawyer. Review them before
+  relying on them. Refund rules come from `cancellationPolicy` in `src/lib/content.ts` (also used by the FAQ
+  and checkout); booking numbers from `bookingTerms`. When the texts change, update `legalMeta.updated` and
+  bump `TERMS_VERSION` in `server/bookings.ts`. `legalMeta.draft = true` shows a "Draft" banner on all three.
+- Anything still marked `PLACEHOLDER` in `src/lib/content.ts` (for example `USD_RATE` and reply hours).
+- Prices and departures live in D1; keep `content.ts` in step (`npm run db:check:remote`).
 
 ## Build notes
 

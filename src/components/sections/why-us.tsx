@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import { NumberTicker } from "@/components/magicui/number-ticker";
 import { TextReveal } from "@/components/magicui/text-reveal";
 import { Photo } from "@/components/ui/photo";
@@ -30,9 +30,9 @@ export function WhyUs() {
 
       <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)] gap-12 px-5 pt-8 pb-24 sm:px-8 sm:pb-32 lg:grid-cols-[6fr_5fr] lg:gap-20">
         <div ref={photoRef} className="relative h-[28rem] overflow-hidden rounded-3xl sm:h-[36rem] lg:h-[44rem]">
-          <motion.div className="absolute inset-x-0 -top-[10%] h-[120%]" style={{ y }}>
+          <m.div className="absolute inset-x-0 -top-[10%] h-[120%]" style={{ y }}>
             <Photo name={whyUs.image} alt={whyUs.alt} sizes="(min-width: 1024px) 50vw, 100vw" className="h-full w-full object-cover" />
-          </motion.div>
+          </m.div>
         </div>
 
         <div className="flex flex-col justify-center">

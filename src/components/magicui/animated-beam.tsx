@@ -1,8 +1,8 @@
 "use client"
 
-// Magic UI "animated-beam" from https://magicui.design/r/animated-beam.json, unmodified except the framer-motion import.
+// Magic UI "animated-beam" from https://magicui.design/r/animated-beam.json, unmodified except the framer-motion import (using `m` components with LazyMotion).
 import { useEffect, useId, useState, type RefObject } from "react"
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 
 import { cn } from "@/lib/utils"
 
@@ -151,7 +151,7 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
         strokeLinecap="round"
       />
       <defs>
-        <motion.linearGradient
+        <m.linearGradient
           className="transform-gpu"
           id={id}
           gradientUnits={"userSpaceOnUse"}
@@ -183,7 +183,7 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
             stopColor={gradientStopColor}
             stopOpacity="0"
           ></stop>
-        </motion.linearGradient>
+        </m.linearGradient>
       </defs>
     </svg>
   )

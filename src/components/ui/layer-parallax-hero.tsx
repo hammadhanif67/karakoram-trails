@@ -7,7 +7,7 @@
 // switched off under prefers-reduced-motion.
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import { useReducedMotionSafe } from "@/lib/use-media-query";
 import { cn } from "@/lib/utils";
 
@@ -36,7 +36,7 @@ export function LayeredParallaxHero({ image, children, footer, className }: Prop
 
   return (
     <section ref={ref} className={cn("relative isolate flex min-h-svh flex-col overflow-hidden bg-night", className)}>
-      <motion.div className="absolute inset-0 -z-10" style={{ y: photoY, scale: photoScale }}>
+      <m.div className="absolute inset-0 -z-10" style={{ y: photoY, scale: photoScale }}>
         {/* eslint-disable-next-line @next/next/no-img-element -- static export; images are pre-optimized */}
         <img
           src={image.src}
@@ -46,20 +46,20 @@ export function LayeredParallaxHero({ image, children, footer, className }: Prop
           fetchPriority="high"
           className="h-full w-full object-cover"
         />
-      </motion.div>
+      </m.div>
 
       {/* Tints keep text at 4.5:1 contrast on any part of the photo */}
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-night/75 via-night/30 to-night/90" />
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-night/70 via-night/20 to-transparent" />
 
-      <motion.div className="relative z-10 flex w-full flex-1 items-center" style={{ y: contentY, opacity: contentOpacity }}>
+      <m.div className="relative z-10 flex w-full flex-1 items-center" style={{ y: contentY, opacity: contentOpacity }}>
         {children}
-      </motion.div>
+      </m.div>
 
       {footer && (
-        <motion.div className="relative z-10 w-full" style={{ opacity: contentOpacity }}>
+        <m.div className="relative z-10 w-full" style={{ opacity: contentOpacity }}>
           {footer}
-        </motion.div>
+        </m.div>
       )}
     </section>
   );

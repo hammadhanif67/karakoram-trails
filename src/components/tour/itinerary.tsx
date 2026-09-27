@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll } from "framer-motion";
+import { m, useScroll } from "framer-motion";
 import { BedDouble, Clock, Home } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import type { Tour } from "@/lib/content";
@@ -16,7 +16,7 @@ export function Itinerary({ days }: { days: Tour["itinerary"] }) {
   return (
     <ol ref={ref} className="relative mt-10 space-y-10">
       <span aria-hidden className="absolute top-2 bottom-2 left-[1.6rem] w-px bg-line" />
-      <motion.span
+      <m.span
         aria-hidden
         className="absolute top-2 bottom-2 left-[1.6rem] w-px origin-top bg-apricot"
         style={{ scaleY: reduce ? 1 : scrollYProgress }}

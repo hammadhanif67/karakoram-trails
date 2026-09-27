@@ -1,7 +1,7 @@
 "use client"
 
-// Magic UI "scroll-progress" from https://magicui.design/r/scroll-progress.json, unmodified except the framer-motion import.
-import { motion, useScroll, type MotionProps } from "framer-motion"
+// Magic UI "scroll-progress" from https://magicui.design/r/scroll-progress.json, unmodified except the framer-motion import (using `m` components with LazyMotion).
+import { m, useScroll, type MotionProps } from "framer-motion"
 
 import { cn } from "@/lib/utils"
 
@@ -20,7 +20,7 @@ export function ScrollProgress({
   const { scrollYProgress } = useScroll()
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       className={cn(
         "fixed inset-x-0 top-0 z-50 h-px origin-left bg-linear-to-r from-[#A97CF8] via-[#F38CB8] to-[#FDCC92]",

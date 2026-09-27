@@ -1,13 +1,13 @@
 "use client"
 
-// Magic UI "text-reveal" from https://magicui.design/r/text-reveal.json, unmodified except the framer-motion import; colours follow the parent text colour instead of black/white; one copy per word plus an sr-only sentence for accessibility.
+// Magic UI "text-reveal" from https://magicui.design/r/text-reveal.json, unmodified except the framer-motion import (using `m` components with LazyMotion); colours follow the parent text colour instead of black/white; one copy per word plus an sr-only sentence for accessibility.
 import {
   useRef,
   type ComponentPropsWithoutRef,
   type FC,
   type ReactNode,
 } from "react"
-import { motion, MotionValue, useScroll, useTransform } from "framer-motion"
+import { m, MotionValue, useScroll, useTransform } from "framer-motion"
 
 import { cn } from "@/lib/utils"
 
@@ -74,8 +74,8 @@ const Word: FC<WordProps> = ({ children, progress, range }) => {
   const output = input.map((v) => (v <= start ? DIM : 1))
   const opacity = useTransform(progress, input, output)
   return (
-    <motion.span style={{ opacity }} className="relative mx-1 text-current lg:mx-1.5">
+    <m.span style={{ opacity }} className="relative mx-1 text-current lg:mx-1.5">
       {children}
-    </motion.span>
+    </m.span>
   )
 }

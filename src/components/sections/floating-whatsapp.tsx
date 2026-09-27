@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 import { whatsappLink } from "@/lib/content";
 
@@ -19,7 +19,7 @@ export function FloatingWhatsApp() {
   return (
     <AnimatePresence>
       {show && (
-        <motion.a
+        <m.a
           href={whatsappLink("Assalam o Alaikum, I'd like to plan a trip.")}
           target="_blank"
           rel="noopener noreferrer"
@@ -32,7 +32,7 @@ export function FloatingWhatsApp() {
         >
           <MessageCircle className="h-4 w-4" aria-hidden />
           WhatsApp
-        </motion.a>
+        </m.a>
       )}
     </AnimatePresence>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { Menu, Mountain, X } from "lucide-react";
 import { brand } from "@/lib/content";
 import { ScrollProgress } from "@/components/magicui/scroll-progress";
@@ -81,7 +81,7 @@ export function Navbar({ solid = false }: { solid?: boolean }) {
 
       <AnimatePresence>
         {open && (
-          <motion.div
+          <m.div
             id="mobile-menu"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "100svh" }}
@@ -91,7 +91,7 @@ export function Navbar({ solid = false }: { solid?: boolean }) {
           >
             <ul className="flex flex-col gap-2 px-5 pt-8">
               {links.map((l, i) => (
-                <motion.li
+                <m.li
                   key={l.href}
                   initial={{ opacity: 0, x: -16 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -104,7 +104,7 @@ export function Navbar({ solid = false }: { solid?: boolean }) {
                   >
                     {l.label}
                   </a>
-                </motion.li>
+                </m.li>
               ))}
             </ul>
             <div className="px-6 pt-8">
@@ -112,7 +112,7 @@ export function Navbar({ solid = false }: { solid?: boolean }) {
                 Plan my trip
               </CtaButton>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </header>

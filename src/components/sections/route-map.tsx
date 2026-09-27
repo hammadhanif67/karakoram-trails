@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { animate, motion, useInView, useMotionValue, useTransform, type MotionValue } from "framer-motion";
+import { animate, m, useInView, useMotionValue, useTransform, type MotionValue } from "framer-motion";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { routeStops } from "@/lib/content";
 import { useReducedMotionSafe } from "@/lib/use-media-query";
@@ -48,8 +48,8 @@ function Stop({ p, i, progress }: { p: (typeof points)[number]; i: number; progr
     below: { x: p.x, y: p.y + 44, anchor: "middle" as const },
   }[p.label];
   return (
-    <motion.g style={{ opacity }}>
-      <motion.circle cx={p.x} cy={p.y} r={16} fill="var(--apricot)" opacity={0.18} style={{ scale, transformOrigin: `${p.x}px ${p.y}px` }} />
+    <m.g style={{ opacity }}>
+      <m.circle cx={p.x} cy={p.y} r={16} fill="var(--apricot)" opacity={0.18} style={{ scale, transformOrigin: `${p.x}px ${p.y}px` }} />
       <circle cx={p.x} cy={p.y} r={7} fill="var(--apricot)" stroke="var(--night)" strokeWidth={3} />
       {/* Names only (the notes are in the list beside the map); sized to stay legible on phones */}
       <text
@@ -60,7 +60,7 @@ function Stop({ p, i, progress }: { p: (typeof points)[number]; i: number; progr
       >
         {p.name}
       </text>
-    </motion.g>
+    </m.g>
   );
 }
 
@@ -127,7 +127,7 @@ export function RouteMap() {
             {/* Full route, faint */}
             <path d={pathD} fill="none" stroke="var(--cream)" strokeOpacity={0.15} strokeWidth={2} strokeDasharray="4 8" strokeLinecap="round" />
             {/* Route drawn on scroll */}
-            <motion.path
+            <m.path
               d={pathD}
               fill="none"
               stroke="var(--apricot)"

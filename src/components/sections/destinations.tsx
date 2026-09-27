@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { m, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { Calendar, Car, Check, Mountain } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import { Photo } from "@/components/ui/photo";
@@ -71,7 +71,7 @@ function Progress({ progress }: { progress: MotionValue<number> }) {
     <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-8 z-10 mx-auto hidden max-w-7xl items-center gap-4 px-8 pin:flex">
       <span className="text-xs tracking-[0.25em] text-cream/70 uppercase">Scroll</span>
       <div className="h-px flex-1 bg-cream/20">
-        <motion.div className="h-px origin-left bg-apricot" style={{ scaleX: progress }} />
+        <m.div className="h-px origin-left bg-apricot" style={{ scaleX: progress }} />
       </div>
     </div>
   );
@@ -105,7 +105,7 @@ export function Destinations() {
       {/* Pinned: a tall scroll area with a sticky viewport. Carousel: these wrappers are plain blocks. */}
       <div ref={ref} className="relative pin:mt-16 pin:h-(--pin-h)" style={{ "--pin-h": `${n * 100}svh` } as React.CSSProperties}>
         <div className="pin:sticky pin:top-0 pin:h-svh pin:overflow-hidden">
-          <motion.div
+          <m.div
             className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-5 pb-24 [scrollbar-width:none] sm:px-8 sm:pb-32 [&::-webkit-scrollbar]:hidden pin:h-full pin:snap-none pin:gap-0 pin:overflow-visible pin:p-0 pin:sm:p-0"
             style={pinned ? { x } : undefined}
             tabIndex={pinned ? undefined : 0}
@@ -115,7 +115,7 @@ export function Destinations() {
               <Panel key={d.slug} d={d} index={i} />
             ))}
             <div aria-hidden className="w-1 shrink-0 pin:hidden" />
-          </motion.div>
+          </m.div>
           <Progress progress={scrollYProgress} />
         </div>
       </div>

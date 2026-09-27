@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { m, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Photo } from "@/components/ui/photo";
 import { gallery } from "@/lib/content";
@@ -12,7 +12,7 @@ type Img = (typeof gallery)[number];
 
 function Column({ images, y, className }: { images: Img[]; y: MotionValue<string>; className?: string }) {
   return (
-    <motion.div style={{ y }} className={cn("flex flex-col gap-4 sm:gap-6", className)}>
+    <m.div style={{ y }} className={cn("flex flex-col gap-4 sm:gap-6", className)}>
       {images.map((img, i) => (
         <figure key={img.image} className="group relative overflow-hidden rounded-2xl sm:rounded-3xl">
           <Photo
@@ -28,7 +28,7 @@ function Column({ images, y, className }: { images: Img[]; y: MotionValue<string
           </figcaption>
         </figure>
       ))}
-    </motion.div>
+    </m.div>
   );
 }
 

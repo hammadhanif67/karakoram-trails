@@ -22,7 +22,7 @@ export function Packages() {
                 Journeys planned <em className="text-pine">down to the last chai stop</em>
               </>
             }
-            intro="Transport from Islamabad, stays, breakfast and dinner, a local guide and all permits in one price."
+            intro="Shared transport from Islamabad, standard hotels, breakfast and dinner and a tour leader. Each tour lists exactly what is and is not included."
           />
           <Reveal delay={0.1} className="flex items-center gap-3">
             <span className="text-xs tracking-[0.2em] text-mist uppercase">Prices in</span>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { brand, photo, type ImageName } from "./content";
+import { brand } from "./content";
+import { photo, type ImageName } from "./images";
 
 const DEFAULT_IMAGE: ImageName = "hero-skardu-shangrila";
 

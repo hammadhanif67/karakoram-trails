@@ -8,11 +8,13 @@
 
 import { useRef } from "react";
 import { m, useScroll, useTransform } from "framer-motion";
+import { Photo } from "@/components/ui/photo";
+import type { ImageName } from "@/lib/images";
 import { useReducedMotionSafe } from "@/lib/use-media-query";
 import { cn } from "@/lib/utils";
 
 type Props = {
-  image: { src: string; srcSet: string; alt: string };
+  image: { name: ImageName; alt: string };
   children: React.ReactNode;
   /** Pinned to the bottom edge of the hero (e.g. a facts strip). */
   footer?: React.ReactNode;
@@ -37,15 +39,7 @@ export function LayeredParallaxHero({ image, children, footer, className }: Prop
   return (
     <section ref={ref} className={cn("relative isolate flex min-h-svh flex-col overflow-hidden bg-night", className)}>
       <m.div className="absolute inset-0 -z-10" style={{ y: photoY, scale: photoScale }}>
-        {/* eslint-disable-next-line @next/next/no-img-element -- static export; images are pre-optimized */}
-        <img
-          src={image.src}
-          srcSet={image.srcSet}
-          sizes="100vw"
-          alt={image.alt}
-          fetchPriority="high"
-          className="h-full w-full object-cover"
-        />
+        <Photo name={image.name} alt={image.alt} priority sizes="100vw" className="h-full w-full object-cover" />
       </m.div>
 
       {/* Tints keep text at 4.5:1 contrast on any part of the photo */}

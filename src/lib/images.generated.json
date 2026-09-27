@@ -1,0 +1,456 @@
+{
+  "hero-skardu-shangrila": {
+    "width": 1920,
+    "height": 1280,
+    "placeholder": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADwAQCdASoQAAsAA4BaJaACdAELy78XwugA/vI9pg6qGIfXF+rT4oImAl0aq2ahy0HmQcT8kYsKWMlsWQREdVS7Ol9UFBIyC/DgHNLdq0hkHdXAuCOScn3AAAA=",
+    "avif": [
+      [
+        480,
+        "/images/hero-skardu-shangrila-480.23ae79fd.avif"
+      ],
+      [
+        768,
+        "/images/hero-skardu-shangrila-768.29ec496f.avif"
+      ],
+      [
+        1280,
+        "/images/hero-skardu-shangrila-1280.e73e951a.avif"
+      ],
+      [
+        1600,
+        "/images/hero-skardu-shangrila-1600.0d12bd23.avif"
+      ],
+      [
+        1920,
+        "/images/hero-skardu-shangrila-1920.16052345.avif"
+      ]
+    ],
+    "webp": [
+      [
+        480,
+        "/images/hero-skardu-shangrila-480.5f7ce025.webp"
+      ],
+      [
+        768,
+        "/images/hero-skardu-shangrila-768.a445506b.webp"
+      ],
+      [
+        1280,
+        "/images/hero-skardu-shangrila-1280.45f930ca.webp"
+      ],
+      [
+        1600,
+        "/images/hero-skardu-shangrila-1600.975ea8d7.webp"
+      ],
+      [
+        1920,
+        "/images/hero-skardu-shangrila-1920.edb953c0.webp"
+      ]
+    ]
+  },
+  "dest-hunza": {
+    "width": 1280,
+    "height": 800,
+    "placeholder": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAABQAgCdASoQAAoAA4BaJbACdAEQdQ9OhRn0sAAA+fJuIBJWmgsm60Up8BxrDYp24dOihLvuICYnZ0PHJCgnPcK7pt/2QJf2Gvn0OyNh8qSkJeR2OfZAixr3AAA=",
+    "avif": [
+      [
+        640,
+        "/images/dest-hunza-640.5fac7992.avif"
+      ],
+      [
+        1024,
+        "/images/dest-hunza-1024.68b62824.avif"
+      ],
+      [
+        1280,
+        "/images/dest-hunza-1280.e3b54ae9.avif"
+      ]
+    ],
+    "webp": [
+      [
+        640,
+        "/images/dest-hunza-640.d30feba2.webp"
+      ],
+      [
+        1024,
+        "/images/dest-hunza-1024.82d83acf.webp"
+      ],
+      [
+        1280,
+        "/images/dest-hunza-1280.a544826a.webp"
+      ]
+    ]
+  },
+  "dest-skardu": {
+    "width": 1600,
+    "height": 1000,
+    "placeholder": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAAAQAgCdASoQAAoAA4BaJYgCdGuAAoXCLxVwAP4nEq/paVTZTSoIOZ0d2mPXd5pScQN7+DlWfs3VhrPZ00jnG5CDwQp3jaztNvl9XIAA",
+    "avif": [
+      [
+        640,
+        "/images/dest-skardu-640.6076a7d6.avif"
+      ],
+      [
+        1024,
+        "/images/dest-skardu-1024.c4e4dc73.avif"
+      ],
+      [
+        1600,
+        "/images/dest-skardu-1600.1197eacc.avif"
+      ]
+    ],
+    "webp": [
+      [
+        640,
+        "/images/dest-skardu-640.86ee76fb.webp"
+      ],
+      [
+        1024,
+        "/images/dest-skardu-1024.cfa53b4c.webp"
+      ],
+      [
+        1600,
+        "/images/dest-skardu-1600.6246b04d.webp"
+      ]
+    ]
+  },
+  "dest-fairy-meadows": {
+    "width": 1600,
+    "height": 1000,
+    "placeholder": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAADwAQCdASoQAAoAA4BaJQBOgBl497uFEAAA/bbTjZ3sGcp9+hnHWGR1k1gx4gX12R9K16iTNNzI3ilGTiS79bSMURAi2fdffNcz1/dFqy1/zqHtTBrwgAAA",
+    "avif": [
+      [
+        640,
+        "/images/dest-fairy-meadows-640.f929c695.avif"
+      ],
+      [
+        1024,
+        "/images/dest-fairy-meadows-1024.bc9843f7.avif"
+      ],
+      [
+        1600,
+        "/images/dest-fairy-meadows-1600.936f009c.avif"
+      ]
+    ],
+    "webp": [
+      [
+        640,
+        "/images/dest-fairy-meadows-640.03dd7099.webp"
+      ],
+      [
+        1024,
+        "/images/dest-fairy-meadows-1024.2b5e144a.webp"
+      ],
+      [
+        1600,
+        "/images/dest-fairy-meadows-1600.e04a6327.webp"
+      ]
+    ]
+  },
+  "why-altit-fort": {
+    "width": 1000,
+    "height": 1559,
+    "placeholder": "data:image/webp;base64,UklGRswAAABXRUJQVlA4IMAAAADQBACdASoQABkAPu1iqU2ppaOiMAgBMB2JagCdFQAKoFAAKMGQmNc6413GhvLN4AD+8X4JZSzRR5QdOu6ZH4ICSS30R6iDiDvE9Owp9sYiuPwP+UT3tZPKqo+dHiRGC+MKvYlK1rO+rSpgA1mV4Tz5Afx3s46pZp+JlVV+pL3tSvg9qfgaNO7Sf9bqW05Te6v1eGTPabW6G/AILppSHf4EkT5259+WXf+a9zZjW0bAHg7/tUQ17/Ivvoh5bdSAAAA=",
+    "avif": [
+      [
+        480,
+        "/images/why-altit-fort-480.c4684e84.avif"
+      ],
+      [
+        800,
+        "/images/why-altit-fort-800.6b70c38a.avif"
+      ],
+      [
+        1000,
+        "/images/why-altit-fort-1000.af6c320a.avif"
+      ]
+    ],
+    "webp": [
+      [
+        480,
+        "/images/why-altit-fort-480.6d990018.webp"
+      ],
+      [
+        800,
+        "/images/why-altit-fort-800.6dad48a8.webp"
+      ],
+      [
+        1000,
+        "/images/why-altit-fort-1000.74eabfe2.webp"
+      ]
+    ]
+  },
+  "tour-hunza-escape": {
+    "width": 1600,
+    "height": 1000,
+    "placeholder": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADQAQCdASoQAAoAA4BaJZwAAqHaWIboAAD5YxiWmN67rub1tT6TJ/tvq3uufitOQgMJR2DAGAlgqwNIIYRdMJDfEAPiOpaq0gm1eZxI7LwAAA==",
+    "avif": [
+      [
+        480,
+        "/images/tour-hunza-escape-480.5362f00f.avif"
+      ],
+      [
+        800,
+        "/images/tour-hunza-escape-800.7378b522.avif"
+      ],
+      [
+        1280,
+        "/images/tour-hunza-escape-1280.a06bab65.avif"
+      ],
+      [
+        1600,
+        "/images/tour-hunza-escape-1600.6a7e5902.avif"
+      ]
+    ],
+    "webp": [
+      [
+        480,
+        "/images/tour-hunza-escape-480.070f630f.webp"
+      ],
+      [
+        800,
+        "/images/tour-hunza-escape-800.36229f12.webp"
+      ],
+      [
+        1280,
+        "/images/tour-hunza-escape-1280.151656ab.webp"
+      ],
+      [
+        1600,
+        "/images/tour-hunza-escape-1600.f9719cfc.webp"
+      ]
+    ]
+  },
+  "tour-grand-karakoram": {
+    "width": 1600,
+    "height": 1000,
+    "placeholder": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAAAQAgCdASoQAAoAA4BaJbACdAD6eO/SMWwAAP6DQkQdAQARRDirJDeC2vBiKODG1eoRQY63SnJ/odrSIgQVszDeQN9R7LGntWGIAA==",
+    "avif": [
+      [
+        480,
+        "/images/tour-grand-karakoram-480.bd2b5a12.avif"
+      ],
+      [
+        800,
+        "/images/tour-grand-karakoram-800.4b430150.avif"
+      ],
+      [
+        1280,
+        "/images/tour-grand-karakoram-1280.e93a479b.avif"
+      ],
+      [
+        1600,
+        "/images/tour-grand-karakoram-1600.ff9318d4.avif"
+      ]
+    ],
+    "webp": [
+      [
+        480,
+        "/images/tour-grand-karakoram-480.f8b99d02.webp"
+      ],
+      [
+        800,
+        "/images/tour-grand-karakoram-800.b2d7f05b.webp"
+      ],
+      [
+        1280,
+        "/images/tour-grand-karakoram-1280.cf731343.webp"
+      ],
+      [
+        1600,
+        "/images/tour-grand-karakoram-1600.03089c40.webp"
+      ]
+    ]
+  },
+  "tour-skardu-lakes": {
+    "width": 1600,
+    "height": 1000,
+    "placeholder": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAQCdASoQAAoAA4BaJQBOgCLaeuAJ+WgA/oIZZf1NcKkhvargM0b3wkXr3f61smLLza/pkUxWeedAZSz3ZU6KaF2sU8RtBetlD5IA",
+    "avif": [
+      [
+        480,
+        "/images/tour-skardu-lakes-480.96478bdb.avif"
+      ],
+      [
+        800,
+        "/images/tour-skardu-lakes-800.63fe21d9.avif"
+      ],
+      [
+        1280,
+        "/images/tour-skardu-lakes-1280.13d448d2.avif"
+      ],
+      [
+        1600,
+        "/images/tour-skardu-lakes-1600.8d2c1d66.avif"
+      ]
+    ],
+    "webp": [
+      [
+        480,
+        "/images/tour-skardu-lakes-480.4b9d8176.webp"
+      ],
+      [
+        800,
+        "/images/tour-skardu-lakes-800.8d6ceb0c.webp"
+      ],
+      [
+        1280,
+        "/images/tour-skardu-lakes-1280.3548af05.webp"
+      ],
+      [
+        1600,
+        "/images/tour-skardu-lakes-1600.8f20b196.webp"
+      ]
+    ]
+  },
+  "gallery-deosai": {
+    "width": 800,
+    "height": 532,
+    "placeholder": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAACwAQCdASoQAAsAA4BaJaACdAB87gAAAP7W19iP0gsQ0sOkMnpcrdbEcAEkxH6JRp4LQrPNofgSk8xVyw17TZhF1J25cyUVO40vyXQAAAA=",
+    "avif": [
+      [
+        400,
+        "/images/gallery-deosai-400.26b998af.avif"
+      ],
+      [
+        800,
+        "/images/gallery-deosai-800.0f78426e.avif"
+      ]
+    ],
+    "webp": [
+      [
+        400,
+        "/images/gallery-deosai-400.9252baed.webp"
+      ],
+      [
+        800,
+        "/images/gallery-deosai-800.9fe1b921.webp"
+      ]
+    ]
+  },
+  "gallery-kaghan-lake": {
+    "width": 800,
+    "height": 534,
+    "placeholder": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAAAwAgCdASoQAAsAA4BaJbACdAYs3gbxtiGpgADN8ZeyTqjBaji18YlUnePvIdLSLmrhKTtsvbJMPIhqc7T3slCkET/MK15RlQ/wBDjj0eDTUw4txYPZrYlxbkRYHdQAAAA=",
+    "avif": [
+      [
+        400,
+        "/images/gallery-kaghan-lake-400.3679c68d.avif"
+      ],
+      [
+        800,
+        "/images/gallery-kaghan-lake-800.7fe9203a.avif"
+      ]
+    ],
+    "webp": [
+      [
+        400,
+        "/images/gallery-kaghan-lake-400.272c4991.webp"
+      ],
+      [
+        800,
+        "/images/gallery-kaghan-lake-800.e430481d.webp"
+      ]
+    ]
+  },
+  "gallery-rakaposhi": {
+    "width": 800,
+    "height": 600,
+    "placeholder": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADwAQCdASoQAAwAA4BaJbACdAD6KcM3wjAA/qElPbFR7SFTF6aHh8wYOR8prhZtCf/b5u5AaViNt/diSLBr7RYXiQbGoENhq1Ni0yOJnWKUHu5ouKvDtXcUcAA=",
+    "avif": [
+      [
+        400,
+        "/images/gallery-rakaposhi-400.a20d8c4c.avif"
+      ],
+      [
+        800,
+        "/images/gallery-rakaposhi-800.6fb3612b.avif"
+      ]
+    ],
+    "webp": [
+      [
+        400,
+        "/images/gallery-rakaposhi-400.aade3da3.webp"
+      ],
+      [
+        800,
+        "/images/gallery-rakaposhi-800.f4424173.webp"
+      ]
+    ]
+  },
+  "gallery-karimabad-night": {
+    "width": 800,
+    "height": 521,
+    "placeholder": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAAAwAgCdASoQAAoAA4BaJbACdH8AFc1iE6OcAAD+954nZ5b1rFOl4SNmraC/EQmdeler4Dp+pEixWGlh9UJ29AuTKuKLpl7YKbRWgAAA",
+    "avif": [
+      [
+        400,
+        "/images/gallery-karimabad-night-400.0df38901.avif"
+      ],
+      [
+        800,
+        "/images/gallery-karimabad-night-800.c9241999.avif"
+      ]
+    ],
+    "webp": [
+      [
+        400,
+        "/images/gallery-karimabad-night-400.2805ecd1.webp"
+      ],
+      [
+        800,
+        "/images/gallery-karimabad-night-800.b5b46a90.webp"
+      ]
+    ]
+  },
+  "gallery-khunjerab": {
+    "width": 800,
+    "height": 533,
+    "placeholder": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAAAwAgCdASoQAAsAA4BaJZgCdAEWxp/8lPndAAD3SRPXC//MlzFgGEyOqknY889NVtMCGEmeJK/7nCRP0VsYl2+OhJXwm2dres/pxJc4KQAAAA==",
+    "avif": [
+      [
+        400,
+        "/images/gallery-khunjerab-400.fc98f557.avif"
+      ],
+      [
+        800,
+        "/images/gallery-khunjerab-800.157b1222.avif"
+      ]
+    ],
+    "webp": [
+      [
+        400,
+        "/images/gallery-khunjerab-400.55eb9649.webp"
+      ],
+      [
+        800,
+        "/images/gallery-khunjerab-800.a428940a.webp"
+      ]
+    ]
+  },
+  "gallery-fairy-meadows-cabins": {
+    "width": 800,
+    "height": 1067,
+    "placeholder": "data:image/webp;base64,UklGRp4AAABXRUJQVlA4IJIAAACwAwCdASoQABUAPu1iqU2ppaOiMAgBMB2JQAB8nDAtzn1GEMrwIAD+kbcrJCkmFud/K5Ydu2G2v5Ztd3K0GJmoYff4HAXM/JYrr9LKBOmooMEXGprxB0bCaJkcrLCXoj1qbb8x5mmQ5UCKNu8jMGg9rY8/nsDuRRm1NDxeilFKsTnyUrNVXVkrTuMR/BNM5AAAAA==",
+    "avif": [
+      [
+        400,
+        "/images/gallery-fairy-meadows-cabins-400.59619eae.avif"
+      ],
+      [
+        800,
+        "/images/gallery-fairy-meadows-cabins-800.fd2dbfea.avif"
+      ]
+    ],
+    "webp": [
+      [
+        400,
+        "/images/gallery-fairy-meadows-cabins-400.1113a77f.webp"
+      ],
+      [
+        800,
+        "/images/gallery-fairy-meadows-cabins-800.f5cc9f5e.webp"
+      ]
+    ]
+  }
+}

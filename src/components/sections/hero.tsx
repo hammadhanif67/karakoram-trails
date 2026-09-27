@@ -1,21 +1,24 @@
 import { MapPin } from "lucide-react";
 import { LayeredParallaxHero } from "@/components/ui/layer-parallax-hero";
 import { CtaButton } from "@/components/ui/cta-button";
-import { photo } from "@/lib/content";
 import { HeroFacts, HeroPlaces } from "./hero-client";
 
 const places = ["Hunza", "Skardu", "Fairy Meadows", "Khunjerab"];
 
 // Server component: the text is in the static HTML; only the rotating place name and the facts strip
 // (live prices and dates) are client components (hero-client.tsx).
+const HERO = "hero-skardu-shangrila" as const;
+
 export function Hero() {
+  // No preload() for the hero photo: React would also put the hint in the prefetched home-page data, so
+  // every page linking home would download it. The <img> already has fetchPriority="high".
   // Entrance is plain CSS (animate-hero-rise), so the text shows on first paint instead of
   // staying invisible until JavaScript has loaded and hydrated.
   const rise = (delay: number) => ({ style: { animationDelay: `${delay}s` } });
 
   return (
     <LayeredParallaxHero
-      image={{ ...photo("hero-skardu-shangrila"), alt: "Shangrila lake in Skardu beneath snow-capped Karakoram peaks" }}
+      image={{ name: HERO, alt: "Shangrila lake in Skardu beneath snow-capped Karakoram peaks" }}
       footer={<HeroFacts />}
     >
       <div id="top" className="mx-auto w-full max-w-7xl px-5 pt-28 pb-12 sm:px-8 [@media(max-height:720px)]:pt-20 [@media(max-height:720px)]:pb-8">

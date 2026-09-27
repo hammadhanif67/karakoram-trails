@@ -8,15 +8,13 @@ import { Photo } from "@/components/ui/photo";
 import { whyUs } from "@/lib/content";
 import { useReducedMotionSafe } from "@/lib/use-media-query";
 
-/** The statement: Magic UI Text Reveal (words brighten one by one as you scroll), plain text under reduced motion. */
+/**
+ * The statement: Magic UI Text Reveal (words brighten one by one as you scroll). Under reduced motion the
+ * same markup collapses to plain text with CSS, so the static HTML and the hydrated page have one layout.
+ */
 export function WhyUsStatement() {
-  const reduce = useReducedMotionSafe();
-  return reduce ? (
-    <p className="mx-auto max-w-4xl px-5 pt-24 font-serif text-4xl leading-tight text-ink sm:px-8 sm:pt-32 lg:text-5xl">
-      {whyUs.statement}
-    </p>
-  ) : (
-    <TextReveal className="h-[160vh] font-serif font-medium text-ink [&_span.flex]:text-4xl [&_span.flex]:leading-tight [&_span.flex]:font-medium lg:[&_span.flex]:text-6xl">
+  return (
+    <TextReveal className="h-[160vh] font-serif font-medium text-ink motion-reduce:h-auto [&_span.flex]:text-4xl [&_span.flex]:leading-tight [&_span.flex]:font-medium lg:[&_span.flex]:text-6xl">
       {whyUs.statement}
     </TextReveal>
   );

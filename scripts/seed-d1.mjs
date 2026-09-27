@@ -1,14 +1,15 @@
-// Seeds D1 with the tours and departures from src/lib/content.ts, then checks that the site's
-// build-time fallback (content.ts) still matches D1. D1 is the source of truth: seeding only inserts
-// rows that don't exist yet and never overwrites prices or seats already in D1.
+// Seeds D1 with the tours and departures from src/lib/content.ts, then compares the two. D1 is the source
+// of truth: seeding only inserts rows that don't exist yet and never overwrites prices or seats already in D1.
+// The public site no longer needs content.ts to match: every build snapshots D1 (scripts/snapshot-catalog.mjs)
+// and the admin's "Publish changes to site" rebuilds it.
 //
 // Usage:
 //   node scripts/seed-d1.mjs --local            seed + check the local D1 (wrangler pages dev)
 //   node scripts/seed-d1.mjs --remote           seed + check the production D1
 //   node scripts/seed-d1.mjs --local --check    check only
 //
-// Exits with code 1 if content.ts and D1 disagree on a tour name or price, or on the set of upcoming
-// departures (date + seats). Fix by updating content.ts to match D1 (or D1, if content.ts is right).
+// Exits with code 1 only if a tour is missing on either side (tour pages are generated from content.ts).
+// Different prices or departures are reported as notes: content.ts is just the seed and last-resort fallback.
 
 import { execFileSync, execSync } from "node:child_process";
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
@@ -74,14 +75,15 @@ const dbDeps = d1Query(
     ORDER BY d.start_date, t.slug`,
 );
 
-const problems = [];
+const problems = []; // exit 1
+const notes = []; // informational
 const dbTourBySlug = new Map(dbTours.map((t) => [t.slug, t]));
 for (const t of tours) {
   const db = dbTourBySlug.get(t.slug);
   if (!db) problems.push(`tour ${t.slug}: in content.ts, missing (or inactive) in D1`);
   else {
-    if (db.price_pkr !== t.pricePKR) problems.push(`tour ${t.slug}: price content.ts ${t.pricePKR} ≠ D1 ${db.price_pkr}`);
-    if (db.name !== t.name) problems.push(`tour ${t.slug}: name content.ts "${t.name}" ≠ D1 "${db.name}"`);
+    if (db.price_pkr !== t.pricePKR) notes.push(`tour ${t.slug}: price content.ts ${t.pricePKR} ≠ D1 ${db.price_pkr}`);
+    if (db.name !== t.name) notes.push(`tour ${t.slug}: name content.ts "${t.name}" ≠ D1 "${db.name}"`);
   }
 }
 for (const db of dbTours) if (!tours.some((t) => t.slug === db.slug)) problems.push(`tour ${db.slug}: active in D1, missing in content.ts`);
@@ -89,14 +91,18 @@ for (const db of dbTours) if (!tours.some((t) => t.slug === db.slug)) problems.p
 const key = (d) => `${d.tour} ${d.date} (${d.seats} seats)`;
 const fallbackKeys = new Set(departures.filter((d) => d.date >= today).map(key));
 const dbKeys = new Set(dbDeps.map(key));
-for (const k of fallbackKeys) if (!dbKeys.has(k)) problems.push(`departure ${k}: in content.ts, not open in D1`);
-for (const k of dbKeys) if (!fallbackKeys.has(k)) problems.push(`departure ${k}: open in D1, missing in content.ts`);
+for (const k of fallbackKeys) if (!dbKeys.has(k)) notes.push(`departure ${k}: in content.ts, not open in D1`);
+for (const k of dbKeys) if (!fallbackKeys.has(k)) notes.push(`departure ${k}: open in D1, missing in content.ts`);
 
 rmSync(tmp, { recursive: true, force: true });
 
 if (problems.length) {
-  console.error(`\n✗ content.ts fallback differs from D1 (${target.slice(2)}):\n  - ${problems.join("\n  - ")}`);
-  console.error("\nD1 is the source of truth. Update src/lib/content.ts to match (or fix D1), then run again.");
+  console.error(`\n✗ tours differ between content.ts and D1 (${target.slice(2)}):\n  - ${problems.join("\n  - ")}`);
+  console.error("\nEvery active tour needs a page in content.ts (and a row in D1).");
   process.exit(1);
 }
-console.log(`✓ content.ts fallback matches D1 (${target.slice(2)}): ${dbTours.length} tours, ${dbDeps.length} upcoming departures.`);
+if (notes.length) {
+  console.log(`\nℹ content.ts (seed / fallback) differs from D1 (${target.slice(2)}), which is fine after admin edits:\n  - ${notes.join("\n  - ")}`);
+  console.log("The public site is built from D1; use \"Publish changes to site\" in the admin to refresh it.");
+}
+console.log(`✓ tours match D1 (${target.slice(2)}): ${dbTours.length} tours, ${dbDeps.length} upcoming departures.`);

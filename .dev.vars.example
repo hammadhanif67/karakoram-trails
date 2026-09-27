@@ -42,3 +42,7 @@ EMAIL_API_KEY=
 MAIL_FROM=
 # Local override of the wrangler.toml value:
 PUBLIC_SITE_URL=http://127.0.0.1:8788
+
+# "Publish changes to site" (admin): Cloudflare Pages deploy hook URL. Leave empty locally, or point it at a
+# mock on 127.0.0.1 for testing (a localhost URL is only accepted while the admin runs on localhost).
+DEPLOY_HOOK_URL=

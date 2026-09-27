@@ -50,6 +50,10 @@ export interface Env {
   MAIL_FROM?: string;
   /** Public site origin used in email links, e.g. https://karakoramtrails.com */
   PUBLIC_SITE_URL?: string;
+
+  // "Publish changes to site" in admin
+  /** Cloudflare Pages deploy hook URL (secret: anyone holding it can start a build). */
+  DEPLOY_HOOK_URL?: string;
 }
 
 export const depositPercent = (env: Env) => clampInt(env.DEPOSIT_PERCENT, 30, 1, 100);

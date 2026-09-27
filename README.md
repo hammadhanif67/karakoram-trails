@@ -17,6 +17,24 @@ npm run build     # writes the static site to out/
 npm run preview   # serves out/ on http://localhost:4173
 ```
 
+### Prices and departures in the static HTML (catalog snapshot)
+
+`npm run build` and `npm run dev` first run `scripts/snapshot-catalog.mjs`, which fetches the live
+`/api/departures` (D1) and writes `src/lib/catalog-snapshot.json` (gitignored). The static pages and the
+admin's drift check are built from that snapshot; the live API still replaces it in the browser, and the
+server re-checks prices and seats on every booking.
+
+- **Cloudflare Pages builds** (`CF_PAGES` is set): if the fetch fails or the answer looks wrong, the
+  **build fails on purpose**, so Cloudflare keeps the previous good deployment live and stale prices are
+  never published. Retry the build (or publish again from the admin) once the API is healthy.
+- **Local builds**, or any build with `SNAPSHOT_ALLOW_FALLBACK=1`: the values in `src/lib/content.ts` are
+  used instead. Set `SNAPSHOT_ALLOW_FALLBACK=1` in the Cloudflare build variables only for a brand-new
+  project's first deploy (before `/api/departures` exists), then remove it.
+- `SNAPSHOT_API_URL` points the snapshot at another API, e.g. `http://127.0.0.1:8788/api/departures` to
+  build from the local D1.
+- `content.ts` prices and departures are now only the seed for a fresh D1 and this fallback;
+  `npm run db:check:*` reports differences as notes and fails only when a tour is missing.
+
 ## Deploy to Cloudflare Pages
 
 - Framework preset: **Next.js (Static HTML Export)**
@@ -85,11 +103,27 @@ npm run db:seed:remote
 - Local testing without the password: `npx wrangler pages dev out --port 8788 --ip 127.0.0.1 --binding
   ADMIN_DEV_EMAIL=dev@local.test --binding ADMIN_EMAILS=dev@local.test` (honoured on localhost only).
 
+### Admin: "Publish changes to site"
+
+The button starts a Cloudflare Pages build through a deploy hook; the build snapshots D1 (see above), so
+the drift banner clears once the new deployment is live (reload the admin after 2 to 3 minutes).
+
+- One attempt every 2 minutes for all admins together, failed attempts included. Every attempt is logged
+  in `admin_events` (`site_publish_requested`, then `site_publish_started` or `site_publish_failed`).
+- If a publish started more than 5 minutes ago and the admin still shows differences, the banner says
+  "Publish may have failed: check Cloudflare deployments" (a failed snapshot stops the build by design).
+- Setup (once): Cloudflare dashboard → Workers & Pages → karakoram-trails → Settings → Builds → Deploy
+  hooks → add a hook for branch `main`, then store its URL as a secret (paste it at the prompt):
+  `npx wrangler pages secret put DEPLOY_HOOK_URL --project-name karakoram-trails`.
+  The URL starts builds for anyone who has it: never commit it or send it in chat. The server only calls
+  URLs under `https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/`.
+- Without `DEPLOY_HOOK_URL` the button is replaced by "Publishing isn't configured yet".
+
 Before going live:
 1. Turnstile widget for `karakoram-trails.pages.dev`: put its public **site key** in `.env.production`
    (`NEXT_PUBLIC_TURNSTILE_SITE_KEY`, committed; read by `next build`). `TURNSTILE_HOSTNAMES` and
    `PUBLIC_SITE_URL` are in `wrangler.toml` `[vars]`.
-2. Secrets (each command prompts for the value; set them before the deploy that needs them):
+2. Secrets (each command prompts for the value; set them before the deploy that needs them; `DEPLOY_HOOK_URL` is optional, see "Publish changes to site"):
    `npx wrangler pages secret put NAME --project-name karakoram-trails` for `TURNSTILE_SECRET_KEY`,
    `ADMIN_PASSWORD_HASH`, `SESSION_SECRET` (both from `node scripts/hash-admin-password.mjs`),
    `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `BANK_NAME`, `BANK_ACCOUNT_TITLE`, `BANK_IBAN`, `RAAST_ID`.

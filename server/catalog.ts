@@ -7,6 +7,7 @@ import type { Admin } from "./access";
 import { releaseExpiredHolds } from "./bookings";
 import type { Env } from "./env";
 import { HttpError } from "./http";
+import { deployHook, publishRetryAfter } from "./publish";
 
 export const PRICE_MIN = 1_000;
 export const PRICE_MAX = 1_000_000;
@@ -39,7 +40,7 @@ const logEvent = (env: Env, admin: Admin, action: string, entity: string, entity
 
 const int = (v: unknown) => (typeof v === "number" && Number.isInteger(v) ? v : NaN);
 
-export async function getCatalog(env: Env) {
+export async function getCatalog(env: Env, requestUrl: string) {
   await releaseExpiredHolds(env.DB);
   const tours = await env.DB.prepare("SELECT slug, name, price_pkr, active FROM tours ORDER BY id").all();
   const departures = await env.DB.prepare(
@@ -51,7 +52,8 @@ export async function getCatalog(env: Env) {
   const events = await env.DB.prepare(
     "SELECT id, created_at, actor, action, entity, entity_id, old_value, new_value, note FROM admin_events ORDER BY id DESC LIMIT 50",
   ).all();
-  return { maxGroupSize, tours: tours.results, departures: departures.results, events: events.results };
+  const publish = { configured: deployHook(env, requestUrl) !== null, retryAfter: await publishRetryAfter(env) };
+  return { maxGroupSize, tours: tours.results, departures: departures.results, events: events.results, publish };
 }
 
 async function departure(env: Env, id: number): Promise<DepartureRow> {

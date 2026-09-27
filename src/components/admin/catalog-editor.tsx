@@ -1,9 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { AlertTriangle, Info, Plus, RefreshCw } from "lucide-react";
+import { AlertTriangle, Info, Plus, RefreshCw, UploadCloud } from "lucide-react";
 import { isBookableOnline } from "@/lib/booking-rules";
-import { departures as fallbackDepartures, formatDate, formatPrice, getTour, seasonWarnings, tours as fallbackTours, type SeasonWarning } from "@/lib/content";
+import { publishedCatalog } from "@/lib/catalog-fallback";
+import { formatDate, formatPrice, getTour, seasonWarnings, type SeasonWarning } from "@/lib/content";
 import { cn } from "@/lib/utils";
 import { api, ApiError } from "./api";
 
@@ -29,7 +30,13 @@ type AdminEvent = {
   new_value: string | null;
   note: string | null;
 };
-type Catalog = { maxGroupSize: number; tours: Tour[]; departures: Departure[]; events: AdminEvent[] };
+type Catalog = {
+  maxGroupSize: number;
+  tours: Tour[];
+  departures: Departure[];
+  events: AdminEvent[];
+  publish: { configured: boolean; retryAfter: number };
+};
 type ActiveBooking = { ref: string; status: string; travellers: number; lead_name: string };
 
 const btn = "cursor-pointer rounded border border-stone-300 bg-white px-3 py-1.5 text-sm hover:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-50";
@@ -49,28 +56,106 @@ function firstAllowedDate() {
   return d;
 }
 
-/** Differences between D1 and the build-time fallback in content.ts (same rules as scripts/seed-d1.mjs). */
+/**
+ * Differences between D1 and what the public site was built with (the catalog snapshot baked into this
+ * admin page by the same build). Publishing rebuilds both, so the list clears once the new build is live.
+ */
 function drift(c: Catalog): string[] {
   const out: string[] = [];
   const today = todayPk();
-  for (const t of fallbackTours) {
-    const db = c.tours.find((x) => x.slug === t.slug && x.active);
-    if (!db) out.push(`${t.name}: in content.ts but not active in D1.`);
-    else {
-      if (db.name !== t.name) out.push(`${t.slug}: name is "${db.name}" in D1, "${t.name}" in content.ts.`);
-      if (db.price_pkr !== t.pricePKR) out.push(`${t.name}: price is ${formatPrice(db.price_pkr, "PKR")} in D1, ${formatPrice(t.pricePKR, "PKR")} in content.ts.`);
-    }
+  for (const t of c.tours.filter((x) => x.active)) {
+    const published = publishedCatalog.prices[t.slug];
+    if (published === undefined) out.push(`${t.name}: not on the public site yet.`);
+    else if (published !== t.price_pkr) out.push(`${t.name}: price is ${formatPrice(t.price_pkr, "PKR")} in D1, ${formatPrice(published, "PKR")} on the site.`);
   }
   const key = (tour: string, date: string, seats: number) => `${tour}|${date}|${seats}`;
   const dbSet = new Set(c.departures.filter((d) => d.status === "open" && d.start_date >= today).map((d) => key(d.tour, d.start_date, d.seats_total)));
-  const fbSet = new Set(fallbackDepartures.filter((d) => d.date >= today).map((d) => key(d.tour, d.date, d.seats)));
+  const siteSet = new Set(publishedCatalog.departures.filter((d) => d.date >= today).map((d) => key(d.tour, d.date, d.seats)));
   const label = (k: string) => {
     const [tour, date, seats] = k.split("|");
     return `${getTour(tour)?.name ?? tour} ${formatDate(date)} (${seats} seats)`;
   };
-  for (const k of dbSet) if (!fbSet.has(k)) out.push(`${label(k)}: open in D1, missing from content.ts.`);
-  for (const k of fbSet) if (!dbSet.has(k)) out.push(`${label(k)}: in content.ts, not open in D1.`);
+  for (const k of dbSet) if (!siteSet.has(k)) out.push(`${label(k)}: open in D1, not on the site yet.`);
+  for (const k of siteSet) if (!dbSet.has(k)) out.push(`${label(k)}: on the site, no longer open in D1.`);
   return out;
+}
+
+const eventTime = (e: AdminEvent) => new Date(`${e.created_at.replace(" ", "T")}Z`);
+
+/** Publish state from the change log, relative to when this build's snapshot was taken. */
+function publishState(events: AdminEvent[]) {
+  const builtAt = new Date(publishedCatalog.generatedAt).getTime();
+  const started = events.find((e) => e.action === "site_publish_started");
+  const failed = events.find((e) => e.action === "site_publish_failed");
+  const startedAfterBuild = started && eventTime(started).getTime() > builtAt ? started : undefined;
+  const ageMin = startedAfterBuild ? (Date.now() - eventTime(startedAfterBuild).getTime()) / 60_000 : null;
+  const lastFailed = failed && (!started || failed.id > started.id) && eventTime(failed).getTime() > builtAt ? failed : undefined;
+  return {
+    started: startedAfterBuild,
+    inProgress: ageMin !== null && ageMin < 5,
+    overdue: ageMin !== null && ageMin >= 5,
+    failedError: lastFailed ? String((JSON.parse(lastFailed.new_value ?? "{}") as { error?: string }).error ?? "unknown error") : null,
+  };
+}
+
+function PublishButton({ publish, onDone, primary }: { publish: Catalog["publish"]; onDone: (m: string) => void; primary?: boolean }) {
+  const [confirming, setConfirming] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [wait, setWait] = useState(publish.retryAfter);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- countdown restarts when the server's value changes
+    setWait(publish.retryAfter);
+    if (publish.retryAfter <= 0) return;
+    const started = Date.now();
+    const id = setInterval(() => {
+      const left = Math.max(0, publish.retryAfter - Math.floor((Date.now() - started) / 1000));
+      setWait(left);
+      if (left === 0) clearInterval(id);
+    }, 1000);
+    return () => clearInterval(id);
+  }, [publish.retryAfter]);
+
+  async function go() {
+    setBusy(true);
+    setError(null);
+    try {
+      await api("/api/admin/publish", { method: "POST", body: "{}" });
+      setConfirming(false);
+      onDone("Publishing started. The public site updates in about 2 to 3 minutes; reload this page after that.");
+    } catch (e) {
+      setError((e as Error).message);
+      setConfirming(false);
+      if (e instanceof ApiError && typeof e.body.retryAfter === "number") setWait(e.body.retryAfter);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  if (!publish.configured) {
+    return <p className="text-xs text-stone-500">Publishing isn&apos;t configured yet (DEPLOY_HOOK_URL).</p>;
+  }
+  return (
+    <div className="text-sm">
+      {!confirming ? (
+        <button onClick={() => setConfirming(true)} disabled={wait > 0 || busy} className={cn(primary ? btnDark : btn, "inline-flex items-center gap-1.5")}>
+          <UploadCloud className="h-4 w-4" aria-hidden />
+          {wait > 0 ? `Publish again in ${wait}s` : "Publish changes to site"}
+        </button>
+      ) : (
+        <div role="alertdialog" aria-labelledby="publish-q" className="rounded border border-stone-300 bg-white p-3 text-stone-800">
+          <p id="publish-q" className="font-medium">Rebuild the public site from the current D1 data?</p>
+          <p className="mt-1 text-stone-600">It takes about 2 to 3 minutes. Allowed once every 2 minutes.</p>
+          <div className="mt-3 flex gap-2">
+            <button onClick={go} disabled={busy} className={btnDark}>{busy ? "Starting…" : "Publish now"}</button>
+            <button onClick={() => setConfirming(false)} disabled={busy} className={btn}>Cancel</button>
+          </div>
+        </div>
+      )}
+      {error && <p role="alert" className="mt-2 text-xs text-red-700">{error}</p>}
+    </div>
+  );
 }
 
 export function CatalogEditor() {
@@ -110,7 +195,13 @@ export function CatalogEditor() {
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 id="catalog-title" className="text-3xl font-semibold text-stone-900">Departures &amp; prices</h1>
-          <p className="mt-1 text-sm text-stone-500">Changes go live on the site within about 30 seconds. Every change is logged below.</p>
+          <p className="mt-1 text-sm text-stone-500">
+            Bookings and live prices use these values within about 30 seconds. Publish to update the site&apos;s built-in copy.
+          </p>
+          <p className="mt-0.5 text-xs text-stone-500">
+            Site data published {dt.format(new Date(publishedCatalog.generatedAt))} · source:{" "}
+            {publishedCatalog.source === "live" ? "live D1" : `content.ts (${publishedCatalog.reason ?? "local build"})`}
+          </p>
         </div>
         <div className="flex items-center gap-3 text-sm text-stone-600">
           <label className="inline-flex cursor-pointer items-center gap-2">
@@ -131,22 +222,7 @@ export function CatalogEditor() {
       )}
       {error && <p role="alert" className="mt-4 rounded bg-red-50 px-4 py-3 text-sm text-red-800">{error}</p>}
 
-      {diffs.length > 0 && (
-        <div role="note" className="mt-4 rounded border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950">
-          <p className="flex items-center gap-2 font-medium">
-            <AlertTriangle className="h-4 w-4" aria-hidden /> The site&apos;s fallback copy (content.ts) is out of date
-          </p>
-          <p className="mt-1">
-            The live site uses D1, so bookings are fine. Visitors without JavaScript, and the first moment of each page load,
-            still show the old values until content.ts is updated and the site redeployed.
-          </p>
-          <ul className="mt-2 list-disc space-y-0.5 pl-5">
-            {diffs.map((d) => (
-              <li key={d}>{d}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+      {data && <PublishBanner diffs={diffs} events={data.events} publish={data.publish} onDone={done} />}
 
       {!data && !error && <p className="mt-8 text-sm text-stone-500">Loading…</p>}
 
@@ -480,6 +556,9 @@ const ACTION: Record<string, string> = {
   departure_closed: "Closed departure",
   departure_reopened: "Reopened departure",
   price_changed: "Changed price",
+  site_publish_requested: "Publish requested",
+  site_publish_started: "Publish started",
+  site_publish_failed: "Publish failed",
 };
 
 function describe(e: AdminEvent, departures: Departure[]) {
@@ -488,6 +567,10 @@ function describe(e: AdminEvent, departures: Departure[]) {
   const newV = parse(e.new_value);
   const note = parse(e.note);
   let what: string;
+  if (e.entity === "site") {
+    const change = e.action === "site_publish_failed" ? String(newV.error ?? "") : e.action === "site_publish_started" ? "Cloudflare build started" : "";
+    return { what: "Public site", change, extra: "" };
+  }
   if (e.entity === "tour") what = getTour(e.entity_id)?.name ?? e.entity_id;
   else {
     const d = departures.find((x) => String(x.id) === e.entity_id);
@@ -547,5 +630,57 @@ function ChangeLog({ events, departures }: { events: AdminEvent[]; departures: D
       </div>
       <p className="px-5 py-3 text-xs text-stone-500">Last 50 changes, Pakistan time.</p>
     </section>
+  );
+}
+
+function PublishBanner({ diffs, events, publish, onDone }: { diffs: string[]; events: AdminEvent[]; publish: Catalog["publish"]; onDone: (m: string) => void }) {
+  const state = publishState(events);
+  const list = (
+    <ul className="mt-2 list-disc space-y-0.5 pl-5">
+      {diffs.map((d) => (
+        <li key={d}>{d}</li>
+      ))}
+    </ul>
+  );
+
+  if (state.inProgress && state.started) {
+    return (
+      <div role="status" className="mt-4 rounded border border-sky-300 bg-sky-50 px-4 py-3 text-sm text-sky-950">
+        <p className="flex items-center gap-2 font-medium">
+          <RefreshCw className="h-4 w-4" aria-hidden /> Publishing started {dt.format(eventTime(state.started))} by {state.started.actor}
+        </p>
+        <p className="mt-1">The site updates in about 2 to 3 minutes. Reload this page after that to see the result.</p>
+        {diffs.length > 0 && list}
+      </div>
+    );
+  }
+
+  if (!diffs.length) {
+    return (
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded border border-stone-200 bg-white px-4 py-3 text-sm text-stone-600">
+        <span>The public site matches D1.</span>
+        <PublishButton publish={publish} onDone={onDone} />
+      </div>
+    );
+  }
+
+  const overdue = state.overdue;
+  return (
+    <div role="note" className={cn("mt-4 rounded border px-4 py-3 text-sm", overdue ? "border-red-300 bg-red-50 text-red-950" : "border-amber-300 bg-amber-50 text-amber-950")}>
+      <p className="flex items-center gap-2 font-medium">
+        <AlertTriangle className="h-4 w-4" aria-hidden />
+        {overdue ? "Publish may have failed: check Cloudflare deployments" : "Changes not on the public site yet"}
+      </p>
+      <p className="mt-1">
+        {overdue && state.started
+          ? `A publish started ${dt.format(eventTime(state.started))}, but this page was built with older data. Check the build in Cloudflare (Workers & Pages → karakoram-trails → Deployments), then reload.`
+          : "Bookings and live prices already use D1. Visitors without JavaScript, and the first moment of each page load, still see the older values until you publish."}
+      </p>
+      {state.failedError && <p className="mt-1 font-medium text-red-800">Last publish attempt failed: {state.failedError}</p>}
+      {list}
+      <div className="mt-3">
+        <PublishButton publish={publish} onDone={onDone} primary />
+      </div>
+    </div>
   );
 }

@@ -17,6 +17,9 @@
 /.next/
 /out/
 
+# generated before every build/dev run (scripts/snapshot-catalog.mjs)
+/src/lib/catalog-snapshot.json
+
 # production
 /build
 

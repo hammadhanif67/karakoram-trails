@@ -2,7 +2,8 @@
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { isBookableOnline } from "./booking-rules";
-import { departures as fallbackDepartures, tours as fallbackTours } from "./content";
+import { publishedCatalog } from "./catalog-fallback";
+import { tours as fallbackTours } from "./content";
 
 // Prices and departures come from D1 via /api/departures, so what the site shows always matches
 // the checkout. The static content.ts values are only the build-time fallback: they render in the
@@ -37,9 +38,10 @@ const fallback: LiveData = {
   source: "fallback",
   status: "loading",
   depositPercent: 30,
-  prices: Object.fromEntries(fallbackTours.map((t) => [t.slug, t.pricePKR])),
+  // Build-time snapshot of D1 (scripts/snapshot-catalog.mjs); content.ts only for a tour missing from it.
+  prices: { ...Object.fromEntries(fallbackTours.map((t) => [t.slug, t.pricePKR])), ...publishedCatalog.prices },
   // bookable: true until the browser can check the date (avoids a build-time vs. visit-time mismatch)
-  departures: fallbackDepartures.map((d) => ({ id: null, ...d, bookable: true })),
+  departures: publishedCatalog.departures.map((d) => ({ ...d, bookable: true })),
 };
 
 const LiveDataContext = createContext<LiveData>(fallback);

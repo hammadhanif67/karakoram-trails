@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Pinned desktop layouts (Destinations): the same condition the scroll animation uses, decided by CSS so the
+   static HTML already has the final layout and nothing shifts when JavaScript loads. */
+@custom-variant pin (@media (min-width: 1024px) and (prefers-reduced-motion: no-preference));
+
 /* Design tokens from the approved direction (UI/UX Pro Max: Parallax Storytelling, Luxury Serif). */
 :root {
   --night: #0f1e22;

@@ -1,6 +1,7 @@
 "use client"
 
-// Magic UI "word-rotate" from https://magicui.design/r/word-rotate.json, unmodified except the framer-motion import; renders <span> instead of <h1> so it can sit inside a heading.
+// Magic UI "word-rotate" from https://magicui.design/r/word-rotate.json, unmodified except the framer-motion import; renders <span> instead of <h1> so it can sit inside a heading;
+// the first word renders without its entrance animation (AnimatePresence initial={false}) so it is visible in the static HTML.
 import { useEffect, useState } from "react"
 import { AnimatePresence, motion, type MotionProps } from "framer-motion"
 
@@ -37,7 +38,7 @@ export function WordRotate({
 
   return (
     <span className="inline-block overflow-hidden align-bottom">
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         <motion.span
           key={words[index]}
           className={cn("inline-block", className)}

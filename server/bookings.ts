@@ -1,5 +1,6 @@
 // Booking creation, lookup and hold expiry on D1.
 import { depositFor, holdExpiresAt, isBookableOnline } from "../src/lib/booking-rules";
+import { maxGroupSize } from "../src/lib/content";
 import { depositPercent, holdHours, type Env } from "./env";
 import { HttpError } from "./http";
 import { randomToken, safeEqual } from "./tokens";
@@ -31,7 +32,7 @@ export function parseBookingInput(body: unknown): BookingInput & { acceptTerms: 
   const departureId = Number(b.departureId);
   if (!Number.isInteger(departureId) || departureId <= 0) bad("departure", "Choose a departure.");
   const travellers = Number(b.travellers);
-  if (!Number.isInteger(travellers) || travellers < 1 || travellers > 12) bad("travellers", "Travellers must be between 1 and 12.");
+  if (!Number.isInteger(travellers) || travellers < 1 || travellers > maxGroupSize) bad("travellers", `Travellers must be between 1 and ${maxGroupSize}.`);
   const name = str(b.name);
   if (name.length < 2 || name.length > 80) bad("name", "Enter the lead traveller's full name.");
   const email = str(b.email).toLowerCase();

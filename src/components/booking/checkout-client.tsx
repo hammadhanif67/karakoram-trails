@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { depositFor, holdExpiresAt, ONLINE_CUTOFF_HOURS } from "@/lib/booking-rules";
-import { cancellationPolicy, formatDate, formatPrice, getTour, whatsappLink } from "@/lib/content";
+import { cancellationPolicy, formatDate, formatPrice, getTour, maxGroupSize, whatsappLink } from "@/lib/content";
 import { useLiveData } from "@/lib/live-data";
 import { cn } from "@/lib/utils";
 import { Turnstile, type TurnstileHandle } from "./turnstile";
@@ -113,7 +113,7 @@ export function CheckoutClient() {
     );
   }
 
-  const maxTravellers = Math.min(12, departure.seatsLeft);
+  const maxTravellers = Math.min(maxGroupSize, departure.seatsLeft);
   const count = Math.min(travellers, maxTravellers);
   const price = live.prices[tour.slug];
   const total = price * count;

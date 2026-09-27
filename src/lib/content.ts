@@ -12,6 +12,13 @@ export const brand = {
   hours: "Replies within a few hours, 9 am to 10 pm PKT", // PLACEHOLDER: your real reply hours
 };
 
+/**
+ * Largest group on any departure: used by the admin (seats per departure), the checkout (travellers per
+ * booking) and every "max 12 travellers" text. The database also caps one booking at 12 travellers
+ * (bookings.travellers CHECK), so raising this above 12 needs a migration as well.
+ */
+export const maxGroupSize = 12;
+
 // Feature flags (move to site.config.ts in the config phase).
 export const features = {
   // Off until there are real reviews from real travellers; the "Our promises" block shows instead.
@@ -79,6 +86,78 @@ export const seasonNotes = [
   { name: "Autumn", when: "Oct to early Nov", text: "Golden poplars in Hunza; cold nights; Babusar closing." },
   { name: "Winter", when: "Dec to Feb", text: "Snow and short days; most tours paused; Hunza still reachable via the KKH." },
 ];
+
+/* ---------------------------------------------------- season rules (admin) */
+
+// Approximate opening windows ("MM-DD", inclusive). Edit here; the admin's "Season warning" when adding
+// a departure and the server's check both read these.
+export const seasonWindows = {
+  babusar: { name: "Babusar Pass", from: "06-20", to: "10-31" },
+  deosai: { name: "Deosai Plains", from: "06-15", to: "09-30" },
+  khunjerab: { name: "Khunjerab Pass", from: "04-01", to: "11-30" },
+} as const;
+type WindowName = keyof typeof seasonWindows;
+
+type SeasonRule =
+  /** The pass/plain visited on `day` (1-based) must be inside its window. */
+  | { kind: "window"; day: number; window: WindowName; level: "warning" | "info"; note?: string }
+  /** No listed day may fall in a month the destination's season strip marks closed or not advised. */
+  | { kind: "strip"; days: number[]; destination: "hunza" | "skardu" | "fairy-meadows" };
+
+export const tourSeasonRules: Record<string, SeasonRule[]> = {
+  "hunza-escape": [
+    { kind: "window", day: 3, window: "khunjerab", level: "info", note: "Day 3 ends at Passu and Sost." },
+    { kind: "strip", days: [2, 3, 4], destination: "hunza" },
+  ],
+  "skardu-lakes": [
+    { kind: "window", day: 4, window: "deosai", level: "info", note: "This departure runs the Shigar and Khaplu version of Day 4." },
+    { kind: "strip", days: [2, 3, 4, 5], destination: "skardu" },
+  ],
+  "grand-karakoram": [
+    { kind: "window", day: 2, window: "babusar", level: "warning" },
+    { kind: "strip", days: [2, 3, 4], destination: "fairy-meadows" },
+    { kind: "window", day: 5, window: "khunjerab", level: "warning" },
+    { kind: "window", day: 7, window: "deosai", level: "warning" },
+  ],
+};
+
+export type SeasonWarning = { level: "warning" | "info"; message: string };
+
+const addDays = (iso: string, n: number) => new Date(Date.parse(`${iso}T00:00:00Z`) + n * 86_400_000).toISOString().slice(0, 10);
+const md = (mmdd: string) => {
+  const [m, d] = mmdd.split("-").map(Number);
+  return `${d} ${months[m - 1]}`;
+};
+
+/** Season warnings for a departure of `tourSlug` starting on `date` (YYYY-MM-DD). */
+export function seasonWarnings(tourSlug: string, date: string): SeasonWarning[] {
+  const out: SeasonWarning[] = [];
+  for (const rule of tourSeasonRules[tourSlug] ?? []) {
+    if (rule.kind === "window") {
+      const w = seasonWindows[rule.window];
+      const day = addDays(date, rule.day - 1);
+      const mmdd = day.slice(5);
+      if (mmdd >= w.from && mmdd <= w.to) continue;
+      out.push({
+        level: rule.level,
+        message: `${w.name} is usually closed on Day ${rule.day} (${formatDate(day)}); open roughly ${md(w.from)} to ${md(w.to)}.${rule.note ? ` ${rule.note}` : ""}`,
+      });
+    } else {
+      const dest = destinations.find((d) => d.slug === rule.destination);
+      if (!dest) continue;
+      const closed = rule.days.map((n) => addDays(date, n - 1)).filter((day) => dest.season[Number(day.slice(5, 7)) - 1] === "x");
+      if (closed.length) {
+        out.push({
+          level: "warning",
+          message: `${dest.title} is marked closed or not advised in ${[...new Set(closed.map((d) => months[Number(d.slice(5, 7)) - 1]))].join(" and ")} (Day ${rule.days
+            .filter((n) => closed.includes(addDays(date, n - 1)))
+            .join(", ")}).`,
+        });
+      }
+    }
+  }
+  return out;
+}
 
 /* ------------------------------------------------------------ destinations */
 
@@ -243,7 +322,7 @@ export const tours: Tour[] = [
     alt: "Boats on the turquoise water of Attabad Lake between steep mountains",
     difficulty: "Easy",
     maxAltitude: "4,693 m (Khunjerab)",
-    groupSize: "Max 12 travellers",
+    groupSize: `Max ${maxGroupSize} travellers`,
     season: "Apr to early Nov",
     startEnd: "Islamabad → Islamabad",
     highlights: [
@@ -282,7 +361,7 @@ export const tours: Tour[] = [
     difficulty: "Moderate",
     difficultyNote: "includes a 2.5–4 h hike",
     maxAltitude: "4,693 m (Khunjerab)",
-    groupSize: "Max 12 travellers",
+    groupSize: `Max ${maxGroupSize} travellers`,
     season: "Mid-Jun to Sep only",
     startEnd: "Islamabad → Islamabad",
     highlights: [
@@ -324,7 +403,7 @@ export const tours: Tour[] = [
     alt: "Red-roofed Shangrila resort reflected in a still lake below mountains in Skardu",
     difficulty: "Easy",
     maxAltitude: "approx. 4,100 m (Deosai, in season)",
-    groupSize: "Max 12 travellers",
+    groupSize: `Max ${maxGroupSize} travellers`,
     season: "May to Oct",
     startEnd: "Islamabad → Islamabad",
     highlights: [
@@ -380,7 +459,7 @@ export const whyUs = {
   // Facts only (CONTENT_BRIEF section 2).
   stats: [
     { value: 3, start: 0, suffix: "", label: "Signature routes" },
-    { value: 12, start: 0, suffix: "", label: "Travellers max per group" },
+    { value: maxGroupSize, start: 0, suffix: "", label: "Travellers max per group" },
     { value: 4693, start: 3000, suffix: "m", label: "Highest point: Khunjerab Pass" },
     { value: 8126, start: 6000, suffix: "m", label: "Nanga Parbat, seen from Fairy Meadows" },
   ],
@@ -391,7 +470,7 @@ export const whyUs = {
 // Shown instead of testimonials while features.showTestimonials is false.
 export const promises = [
   { title: "Honest drive times", text: "Every itinerary day shows its approximate drive or hike time." },
-  { title: "Small groups", text: "12 travellers maximum on every departure." },
+  { title: "Small groups", text: `${maxGroupSize} travellers maximum on every departure.` },
   { title: "Simple booking", text: "A 30% deposit holds your seats; the balance is paid before departure." },
   { title: "A real person on WhatsApp", text: "Before, during and after the trip." },
 ];
@@ -428,7 +507,7 @@ export const bookingTerms = {
   depositPercent: 30,
   holdHours: 48,
   balanceDueDays: 7,
-  maxGroup: 12,
+  maxGroup: maxGroupSize,
 };
 
 // Terms, privacy and refund pages. Set draft: true to show a "Draft" banner on all three.

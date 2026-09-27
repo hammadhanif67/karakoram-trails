@@ -70,6 +70,21 @@ npm run db:seed:remote
   `N8N_WEBHOOK_URL` is empty; `X-KT-Signature: sha256=HMAC_SHA256(secret, "<X-KT-Timestamp>.<body>")`);
   customer emails through the provider in `server/email/provider.ts`, off until `EMAIL_API_KEY` is set.
 
+### Admin: departures and prices (`/admin/#departures`)
+
+- Add a departure (tour, date, seats from 1 to `maxGroupSize`; dates under 72 h away are refused), change
+  seat totals (never below booked + held), close or reopen (closing a departure with active bookings lists
+  them first), and change tour prices (new bookings only; existing bookings keep their frozen total).
+- Season warnings come from `seasonWindows` / `tourSeasonRules` in `src/lib/content.ts`. A warning must be
+  acknowledged to add the departure; the acknowledgement is logged.
+- Every change is logged in `admin_events` (who, what, old and new value) and shown in the change log.
+- A banner lists any difference between D1 and the `content.ts` fallback; update `content.ts` and redeploy
+  to clear it. `npm run db:check:*` does the same check from the terminal.
+- `maxGroupSize` in `content.ts` is the one group-size setting (admin, checkout, site text). The database
+  also caps one booking at 12 travellers, so going above 12 needs a migration.
+- Local testing without the password: `npx wrangler pages dev out --port 8788 --ip 127.0.0.1 --binding
+  ADMIN_DEV_EMAIL=dev@local.test --binding ADMIN_EMAILS=dev@local.test` (honoured on localhost only).
+
 Before going live:
 1. Turnstile widget for `karakoram-trails.pages.dev`: put its public **site key** in `.env.production`
    (`NEXT_PUBLIC_TURNSTILE_SITE_KEY`, committed; read by `next build`). `TURNSTILE_HOSTNAMES` and
@@ -80,7 +95,7 @@ Before going live:
    `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `BANK_NAME`, `BANK_ACCOUNT_TITLE`, `BANK_IBAN`, `RAAST_ID`.
    Optional: `N8N_WEBHOOK_URL`, `N8N_WEBHOOK_SECRET`, `EMAIL_API_KEY`, `MAIL_FROM`.
 3. Never set `TURNSTILE_ALLOW_TEST_KEYS`, `ADMIN_DEV_EMAIL` or `TELEGRAM_API_BASE` in production.
-4. `npm run db:migrate:remote` (applies `0002` and `0003`).
+4. `npm run db:migrate:remote` (applies any new migrations, e.g. `0005_admin_events`).
 
 ## Photos
 

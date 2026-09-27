@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import { CheckCircle2, ExternalLink, FileText, LogOut, MessageCircle, RefreshCw, Search, XCircle } from "lucide-react";
 import { formatDate, formatPrice } from "@/lib/content";
 import { cn } from "@/lib/utils";
+import { api } from "./api";
+import { CatalogEditor } from "./catalog-editor";
 
 type Status = "pending_payment" | "verifying" | "confirmed" | "cancelled";
 type Row = {
@@ -38,12 +40,6 @@ const TONE: Record<Status, string> = {
 const dt = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit", timeZone: "Asia/Karachi" });
 const utc = (s: string) => new Date(s.includes("T") ? s : `${s.replace(" ", "T")}Z`);
 
-async function api<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(path, { cache: "no-store", ...init, headers: { "content-type": "application/json", ...(init?.headers ?? {}) } });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error((data as { message?: string }).message ?? `Request failed (${res.status})`);
-  return data as T;
-}
 
 /** Customer phone as wa.me digits: 0300… → 92300…, +92… / 0092… → 92… */
 function waNumber(phone: string) {
@@ -164,8 +160,66 @@ function Detail({ row, onDone }: { row: Row; onDone: () => void }) {
   );
 }
 
+type Section = "bookings" | "catalog";
+
+/** Admin shell: signed-in user, sign out, and the two sections. The section is kept in the URL hash. */
 export function AdminClient() {
   const [me, setMe] = useState<string | null>(null);
+  const [section, setSection] = useState<Section>("bookings");
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    api<{ email: string }>("/api/admin/me").then((d) => setMe(d.email), (e) => setError(e.message));
+    const fromHash = () => setSection(window.location.hash === "#departures" ? "catalog" : "bookings");
+    fromHash();
+    window.addEventListener("hashchange", fromHash);
+    return () => window.removeEventListener("hashchange", fromHash);
+  }, []);
+
+  async function logout() {
+    await fetch("/api/admin/logout", { method: "POST" }).catch(() => undefined);
+    // Full page load on purpose: drop all admin state after signing out.
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+    window.location.assign("/admin/login/");
+  }
+
+  const sections: { key: Section; label: string; hash: string }[] = [
+    { key: "bookings", label: "Bookings", hash: "#bookings" },
+    { key: "catalog", label: "Departures & prices", hash: "#departures" },
+  ];
+
+  return (
+    <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8">
+      <header className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="text-xs tracking-widest text-stone-500 uppercase">Karakoram Trails admin</p>
+          <nav aria-label="Admin sections" className="mt-2 flex gap-1 rounded-lg bg-stone-200/70 p-1">
+            {sections.map((t) => (
+              <a
+                key={t.key}
+                href={t.hash}
+                aria-current={section === t.key ? "page" : undefined}
+                className={cn("rounded-md px-4 py-1.5 text-sm font-medium", section === t.key ? "bg-white text-stone-900 shadow-sm" : "text-stone-600 hover:text-stone-900")}
+              >
+                {t.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+        <div className="flex items-center gap-3 text-sm text-stone-600">
+          {me && <span>Signed in as {me}</span>}
+          <button onClick={logout} className="inline-flex cursor-pointer items-center gap-1.5 rounded border border-stone-300 px-3 py-1.5 hover:bg-stone-100">
+            <LogOut className="h-4 w-4" aria-hidden /> Sign out
+          </button>
+        </div>
+      </header>
+      {error && <p role="alert" className="mt-4 rounded bg-red-50 px-4 py-3 text-sm text-red-800">{error}</p>}
+      {section === "bookings" ? <BookingsPanel /> : <CatalogEditor />}
+    </div>
+  );
+}
+
+function BookingsPanel() {
   const [rows, setRows] = useState<Row[]>([]);
   const [counts, setCounts] = useState<Partial<Record<Status, number>>>({});
   const [status, setStatus] = useState<Status | "">("verifying");
@@ -193,9 +247,6 @@ export function AdminClient() {
   }, [status, q]);
 
   useEffect(() => {
-    api<{ email: string }>("/api/admin/me").then((d) => setMe(d.email), (e) => setError(e.message));
-  }, []);
-  useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- data fetch on filter change
     load();
   }, [load]);
@@ -209,13 +260,6 @@ export function AdminClient() {
     }
   }
 
-  async function logout() {
-    await fetch("/api/admin/logout", { method: "POST" }).catch(() => undefined);
-    // Full page load on purpose: drop all admin state after signing out.
-    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-    window.location.assign("/admin/login/");
-  }
-
   const tabs: { key: Status | ""; label: string }[] = [
     { key: "verifying", label: "Check receipt" },
     { key: "pending_payment", label: "Awaiting payment" },
@@ -225,20 +269,13 @@ export function AdminClient() {
   ];
 
   return (
-    <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8">
+    <section aria-labelledby="bookings-title" className="mt-8">
       <header className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="text-xs tracking-widest text-stone-500 uppercase">Karakoram Trails</p>
-          <h1 className="text-3xl font-semibold text-stone-900">Bookings</h1>
-        </div>
+        <h1 id="bookings-title" className="text-3xl font-semibold text-stone-900">Bookings</h1>
         <div className="flex items-center gap-3 text-sm text-stone-600">
-          {me && <span>Signed in as {me}</span>}
           <button onClick={retry} className="cursor-pointer rounded border border-stone-300 px-3 py-1.5 hover:bg-stone-100">Retry notifications</button>
           <button onClick={load} aria-label="Refresh" className="cursor-pointer rounded border border-stone-300 p-1.5 hover:bg-stone-100">
             <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} aria-hidden />
-          </button>
-          <button onClick={logout} className="inline-flex cursor-pointer items-center gap-1.5 rounded border border-stone-300 px-3 py-1.5 hover:bg-stone-100">
-            <LogOut className="h-4 w-4" aria-hidden /> Sign out
           </button>
         </div>
       </header>
@@ -290,7 +327,7 @@ export function AdminClient() {
         </table>
       </div>
       <p className="mt-3 text-xs text-stone-500">Times are Pakistan time. Showing up to 200 bookings.</p>
-    </div>
+    </section>
   );
 }
 

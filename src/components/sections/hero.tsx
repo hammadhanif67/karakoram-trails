@@ -4,7 +4,7 @@ import { CalendarDays, MapPin, Users, Wallet } from "lucide-react";
 import { LayeredParallaxHero } from "@/components/ui/layer-parallax-hero";
 import { CtaButton } from "@/components/ui/cta-button";
 import { WordRotate } from "@/components/magicui/word-rotate";
-import { formatDate, formatPrice, getTour, photo } from "@/lib/content";
+import { formatDate, formatPrice, getTour, maxGroupSize, photo } from "@/lib/content";
 import { useCurrency } from "@/lib/currency";
 import { useDepartures, useFromPrice } from "@/lib/live-data";
 import { cn } from "@/lib/utils";
@@ -31,7 +31,7 @@ function HeroFacts() {
         }
       : { icon: CalendarDays, label: "Departures", value: "Private trips on your dates", short: "Private trips", href: "#contact" },
     { icon: Wallet, label: "Tours from", value: `${formatPrice(fromPrice, currency)} per person`, short: formatPrice(fromPrice, currency), href: "#tours" },
-    { icon: Users, label: "Group size", value: "Small groups, max 12", short: "Max 12 travellers", href: "#why-us" },
+    { icon: Users, label: "Group size", value: `Small groups, max ${maxGroupSize}`, short: `Max ${maxGroupSize} travellers`, href: "#why-us" },
   ];
   return (
     <div className="animate-hero-rise border-t border-cream/15 bg-night/35 backdrop-blur-md" style={{ animationDelay: "0.6s" }}>

@@ -11,5 +11,5 @@
     "isolatedModules": true,
     "allowImportingTsExtensions": true
   },
-  "include": ["./**/*.ts", "../server/**/*.ts", "../src/lib/booking-rules.ts"]
+  "include": ["./**/*.ts", "../server/**/*.ts", "../src/lib/booking-rules.ts", "../src/lib/content.ts"]
 }

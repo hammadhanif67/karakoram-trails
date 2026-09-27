@@ -11,9 +11,9 @@ export function json(body: unknown, status = 200, headers: HeadersInit = PRIVATE
   return Response.json(body, { status, headers });
 }
 
-/** Error body shape the frontend understands: { error: code, message }. */
-export function fail(status: number, error: string, message: string) {
-  return json({ error, message }, status);
+/** Error body shape the frontend understands: { error: code, message, ...details }. */
+export function fail(status: number, error: string, message: string, details?: Record<string, unknown>) {
+  return json({ ...details, error, message }, status);
 }
 
 export async function readJson(request: Request, maxBytes = 16 * 1024): Promise<unknown> {
@@ -35,6 +35,8 @@ export class HttpError extends Error {
     public status: number,
     public code: string,
     message: string,
+    /** Extra fields for the response body (e.g. the list a confirmation dialog shows). */
+    public details?: Record<string, unknown>,
   ) {
     super(message);
   }
@@ -45,7 +47,7 @@ export async function handle(fn: () => Promise<Response>): Promise<Response> {
   try {
     return await fn();
   } catch (err) {
-    if (err instanceof HttpError) return fail(err.status, err.code, err.message);
+    if (err instanceof HttpError) return fail(err.status, err.code, err.message, err.details);
     console.error(err);
     return fail(500, "server_error", "Something went wrong. Please try again or contact us on WhatsApp.");
   }

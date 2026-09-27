@@ -9,9 +9,12 @@ import { Hero } from "@/components/sections/hero";
 import { HowItWorks } from "@/components/sections/how-it-works";
 import { Navbar } from "@/components/sections/navbar";
 import { Packages } from "@/components/sections/packages";
+import { Promises } from "@/components/sections/promises";
 import { RouteMap } from "@/components/sections/route-map";
 import { Testimonials } from "@/components/sections/testimonials";
+import { WhenToGo } from "@/components/sections/when-to-go";
 import { WhyUs } from "@/components/sections/why-us";
+import { features } from "@/lib/content";
 
 export default function Home() {
   return (
@@ -26,12 +29,13 @@ export default function Home() {
       <main>
         <Hero />
         <Destinations />
+        <WhenToGo />
         <RouteMap />
         <Packages />
         <Departures />
         <WhyUs />
         <HowItWorks />
-        <Testimonials />
+        {features.showTestimonials ? <Testimonials /> : <Promises />}
         <Gallery />
         <Faq />
         <Contact />

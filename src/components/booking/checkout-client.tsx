@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { depositFor, holdExpiresAt, ONLINE_CUTOFF_HOURS } from "@/lib/booking-rules";
-import { formatDate, formatPrice, getTour, whatsappLink } from "@/lib/content";
+import { cancellationPolicy, formatDate, formatPrice, getTour, whatsappLink } from "@/lib/content";
 import { useLiveData } from "@/lib/live-data";
 import { cn } from "@/lib/utils";
 import { Turnstile, type TurnstileHandle } from "./turnstile";
@@ -270,13 +270,14 @@ export function CheckoutClient() {
               />
               <span>
                 I accept the booking conditions: a {live.depositPercent}% deposit confirms the seats, the balance is due 7 days before
-                departure, and the cancellation policy in the{" "}
-                <Link href="/#faq" className="text-pine underline" target="_blank">
-                  FAQ
-                </Link>{" "}
-                applies.
+                departure, and the cancellation policy below applies.
               </span>
             </label>
+            <ul aria-label="Cancellation policy" className="-mt-2 list-disc space-y-1 pl-12 text-sm text-mist">
+              {cancellationPolicy.map((x) => (
+                <li key={x}>{x}</li>
+              ))}
+            </ul>
             {err("acceptTerms")}
 
             <Turnstile ref={turnstile} action="booking_create" onToken={setToken} />

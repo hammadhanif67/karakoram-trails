@@ -2,10 +2,11 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
-import { Calendar, Mountain } from "lucide-react";
+import { Calendar, Car, Check, Mountain } from "lucide-react";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { Photo } from "@/components/ui/photo";
 import { CtaButton } from "@/components/ui/cta-button";
+import { SeasonStrip } from "@/components/ui/season-strip";
 import { destinations } from "@/lib/content";
 import { useMediaQuery, useReducedMotionSafe } from "@/lib/use-media-query";
 import { cn } from "@/lib/utils";
@@ -19,7 +20,7 @@ function Panel({ d, index, pinned }: { d: Destination; index: number; pinned: bo
       aria-label={`${index + 1} of ${destinations.length}: ${d.title}`}
       className={cn(
         "relative isolate flex shrink-0 overflow-hidden bg-night text-cream",
-        pinned ? "h-svh w-screen items-end" : "h-[78svh] min-h-[32rem] w-[86vw] snap-center items-end rounded-3xl sm:w-[70vw]",
+        pinned ? "h-svh w-screen items-end" : "h-[82svh] min-h-[38rem] w-[86vw] snap-center items-end rounded-3xl sm:w-[70vw]",
       )}
     >
       <Photo
@@ -31,7 +32,7 @@ function Panel({ d, index, pinned }: { d: Destination; index: number; pinned: bo
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-night via-night/40 to-night/10" />
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-night/60 to-transparent" />
 
-      <div className={cn("w-full", pinned ? "mx-auto max-w-7xl px-8 pb-20" : "p-6 pb-8")}>
+      <div className={cn("w-full", pinned ? "mx-auto max-w-7xl px-8 pb-20" : "p-6 pb-7")}>
         <BlurFade inView direction="up" offset={16} duration={0.7}>
           <p className="font-serif text-lg text-apricot italic">
             {String(index + 1).padStart(2, "0")} / {String(destinations.length).padStart(2, "0")}
@@ -46,14 +47,24 @@ function Panel({ d, index, pinned }: { d: Destination; index: number; pinned: bo
           </h3>
           <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-xs tracking-[0.2em] text-cream/80 uppercase">
             <span className="flex items-center gap-2">
-              <Mountain className="h-4 w-4 text-apricot" aria-hidden /> {d.region} · {d.altitude}
+              <Mountain className="h-4 w-4 text-apricot" aria-hidden /> {d.altitudeNote} {d.altitude}
             </span>
             <span className="flex items-center gap-2">
               <Calendar className="h-4 w-4 text-apricot" aria-hidden /> Best {d.best}
             </span>
           </div>
-          <p className={cn("mt-5 max-w-xl leading-relaxed text-cream/90", pinned ? "text-lg" : "text-base")}>{d.blurb}</p>
-          <CtaButton href="#tours" variant="outline" arrow className="mt-7">
+          <p className={cn("mt-4 flex max-w-xl gap-2 text-cream/90", pinned ? "text-base" : "text-sm")}>
+            <Car className="mt-0.5 h-4 w-4 shrink-0 text-apricot" aria-hidden /> {d.gettingThere}
+          </p>
+          <ul className={cn("mt-4 max-w-xl space-y-1.5 text-cream/90", pinned ? "text-base" : "text-sm")}>
+            {d.highlights.slice(0, 3).map((h) => (
+              <li key={h} className="flex gap-2">
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-apricot" aria-hidden /> {h}
+              </li>
+            ))}
+          </ul>
+          <SeasonStrip codes={d.season} tone="dark" label={`${d.title}: season by month`} className="mt-5 max-w-sm" />
+          <CtaButton href="#tours" variant="outline" arrow className={pinned ? "mt-7" : "mt-5"}>
             See tours
           </CtaButton>
         </BlurFade>

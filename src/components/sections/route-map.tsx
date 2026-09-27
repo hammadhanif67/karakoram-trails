@@ -40,12 +40,13 @@ function Stop({ p, i, progress }: { p: (typeof points)[number]; i: number; progr
   const at = stopAt[i];
   const opacity = useTransform(progress, [Math.max(0, at - 0.04), at], [0, 1]);
   const scale = useTransform(progress, [Math.max(0, at - 0.04), at], [0.4, 1]);
-  const pos =
-    p.label === "right"
-      ? { x: p.x + 20, y: p.y + 9, anchor: "start" as const }
-      : p.label === "above"
-        ? { x: p.x, y: p.y - 26, anchor: "middle" as const }
-        : { x: p.x, y: p.y + 44, anchor: "middle" as const };
+  const pos = {
+    right: { x: p.x + 20, y: p.y + 9, anchor: "start" as const },
+    left: { x: p.x - 20, y: p.y + 9, anchor: "end" as const },
+    above: { x: p.x, y: p.y - 26, anchor: "middle" as const },
+    "above-left": { x: p.x - 16, y: p.y - 16, anchor: "end" as const },
+    below: { x: p.x, y: p.y + 44, anchor: "middle" as const },
+  }[p.label];
   return (
     <motion.g style={{ opacity }}>
       <motion.circle cx={p.x} cy={p.y} r={16} fill="var(--apricot)" opacity={0.18} style={{ scale, transformOrigin: `${p.x}px ${p.y}px` }} />
@@ -95,7 +96,7 @@ export function RouteMap() {
                 From the capital <em className="text-apricot">to the foot of Nanga Parbat</em>
               </>
             }
-            intro="Our Grand Karakoram loop follows the old caravan roads: up the Kaghan Valley, over Babusar Pass, along the Karakoram Highway to Hunza, east to Skardu and back to Fairy Meadows."
+            intro="Our Grand Karakoram loop, in summer: up the Kaghan Valley to Naran, over Babusar Pass to Fairy Meadows under Nanga Parbat, along the Karakoram Highway to Hunza, then east through the Indus gorge to Skardu, returning via Chilas."
           />
           <ol className="mt-10 space-y-4 border-l border-cream/15 pl-6">
             {routeStops.map((s, i) => (
@@ -115,7 +116,7 @@ export function RouteMap() {
             viewBox={`0 0 ${W} ${H}`}
             className="h-auto w-full"
             role="img"
-            aria-label="Map of the route: Islamabad, Naran, Hunza, Skardu, Fairy Meadows"
+            aria-label={`Map of the route: ${routeStops.map((s) => s.name).join(", ")}`}
           >
             {/* Decorative contour rings */}
             <g fill="none" stroke="var(--cream)" strokeOpacity={0.06}>

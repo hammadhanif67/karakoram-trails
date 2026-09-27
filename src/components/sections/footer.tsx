@@ -6,6 +6,7 @@ import { brand, tours, whatsappLink } from "@/lib/content";
 
 const explore = [
   { href: "/#destinations", label: "Destinations" },
+  { href: "/#when-to-go", label: "When to go" },
   { href: "/#route", label: "The route" },
   { href: "/#departures", label: "Departures" },
   { href: "/#why-us", label: "Why travel with us" },
@@ -31,8 +32,8 @@ export function Footer() {
               <span className="font-serif text-3xl font-semibold">{brand.name}</span>
             </HomeLink>
             <p className="mt-4 leading-relaxed">
-              Small-group and private journeys through Hunza, Skardu and Fairy Meadows, planned by a team from
-              Gilgit-Baltistan.
+              Small-group road journeys through Hunza, Skardu and Fairy Meadows, planned day by day by a team on the
+              ground in Gilgit-Baltistan.
             </p>
           </div>
           <CtaButton
@@ -103,6 +104,10 @@ export function Footer() {
         <div className="flex flex-col gap-4 border-t border-cream/10 pt-6 pb-28 text-xs sm:flex-row sm:items-center sm:justify-between lg:pb-6">
           <p>
             © {year} {brand.name}. All rights reserved.
+            <span aria-hidden className="mx-2 text-cream/30">·</span>
+            <Link href="/credits/" className="underline-offset-4 transition-colors hover:text-cream hover:underline">
+              Photo credits
+            </Link>
           </p>
           <BackToTop className="inline-flex cursor-pointer items-center gap-2 self-start tracking-[0.2em] uppercase transition-colors hover:text-cream">
             Back to top <ArrowUp className="h-3.5 w-3.5" aria-hidden />

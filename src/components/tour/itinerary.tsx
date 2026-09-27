@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll } from "framer-motion";
-import { BedDouble } from "lucide-react";
+import { BedDouble, Clock, Home } from "lucide-react";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import type { Tour } from "@/lib/content";
 import { useReducedMotionSafe } from "@/lib/use-media-query";
@@ -30,11 +30,24 @@ export function Itinerary({ days }: { days: Tour["itinerary"] }) {
           <BlurFade inView direction="up" offset={12} duration={0.6}>
             <h3 className="pt-2 font-serif text-2xl leading-snug font-medium text-ink sm:text-3xl">{d.title}</h3>
             <p className="mt-2 leading-relaxed text-mist">{d.text}</p>
-            {d.stay && (
-              <p className="mt-3 inline-flex items-center gap-2 rounded-full bg-[#efe8da] px-3 py-1 text-xs text-ink">
-                <BedDouble className="h-3.5 w-3.5 text-pine" aria-hidden /> Overnight in {d.stay}
-              </p>
-            )}
+            <p className="mt-3 flex flex-wrap gap-2 text-xs text-ink">
+              <span className="inline-flex items-center gap-2 rounded-2xl bg-[#efe8da] px-3 py-1">
+                <Clock className="h-3.5 w-3.5 shrink-0 text-pine" aria-hidden /> <span>Approx. {d.time}</span>
+              </span>
+              {d.stay ? (
+                <span className="inline-flex items-center gap-2 rounded-2xl bg-[#efe8da] px-3 py-1">
+                  <BedDouble className="h-3.5 w-3.5 shrink-0 text-pine" aria-hidden />
+                  <span>
+                    Overnight in {d.stay}
+                    {d.altitude && <span className="whitespace-nowrap text-mist"> · {d.altitude}</span>}
+                  </span>
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-2 rounded-2xl bg-[#efe8da] px-3 py-1">
+                  <Home className="h-3.5 w-3.5 text-pine" aria-hidden /> Trip ends
+                </span>
+              )}
+            </p>
           </BlurFade>
         </li>
       ))}

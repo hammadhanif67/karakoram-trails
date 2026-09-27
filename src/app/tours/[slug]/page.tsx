@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, Check, Clock, Gauge, MapPin, Sun, Users, X } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Check, Clock, Gauge, Info, MapPin, Mountain, Sun, Users, X } from "lucide-react";
 import { DepartureList } from "@/components/sections/departures";
 import { FaqList } from "@/components/sections/faq";
 import { Footer } from "@/components/sections/footer";
@@ -10,7 +10,7 @@ import { Itinerary } from "@/components/tour/itinerary";
 import { TourBooking, TourPrice } from "@/components/tour/booking";
 import { Photo } from "@/components/ui/photo";
 import { Reveal } from "@/components/ui/reveal";
-import { faqs, getTour, photo, tours } from "@/lib/content";
+import { faqs, getTour, goodToKnow, photo, tours } from "@/lib/content";
 
 // Only the tours listed in content.ts exist; anything else is a 404 in the static export.
 export const dynamicParams = false;
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: PageProps<"/tours/[slug]">): 
   if (!tour) return {};
   return {
     title: `${tour.name}: ${tour.days}-day tour | Karakoram Trails`,
-    description: `${tour.tagline} ${tour.route}. Day-by-day itinerary, what's included and upcoming departures.`,
+    description: `${tour.overview} Day-by-day itinerary with approx. drive times, what's included and upcoming departures.`,
     openGraph: { images: [photo(tour.image).src] },
   };
 }
@@ -45,8 +45,9 @@ export default async function TourPage({ params }: PageProps<"/tours/[slug]">) {
   if (!tour) notFound();
 
   const facts = [
-    { icon: Clock, label: "Duration", value: `${tour.days} days` },
-    { icon: Gauge, label: "Difficulty", value: tour.difficulty },
+    { icon: Clock, label: "Duration", value: `${tour.days} days / ${tour.nights} nights` },
+    { icon: Gauge, label: "Difficulty", value: tour.difficultyNote ? `${tour.difficulty} (${tour.difficultyNote})` : tour.difficulty },
+    { icon: Mountain, label: "Max altitude", value: tour.maxAltitude },
     { icon: Users, label: "Group size", value: tour.groupSize },
     { icon: Sun, label: "Best season", value: tour.season },
     { icon: MapPin, label: "Start / end", value: tour.startEnd },
@@ -78,7 +79,7 @@ export default async function TourPage({ params }: PageProps<"/tours/[slug]">) {
 
         {/* Quick facts */}
         <section aria-label="Quick facts" className="border-b border-line bg-[#efe8da]">
-          <dl className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-6 px-5 py-8 sm:px-8 md:grid-cols-5">
+          <dl className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-6 px-5 py-8 sm:px-8 md:grid-cols-3 xl:grid-cols-6">
             {facts.map((f) => (
               <div key={f.label} className="flex items-start gap-3">
                 <f.icon className="mt-0.5 h-5 w-5 shrink-0 text-pine" aria-hidden />
@@ -98,6 +99,9 @@ export default async function TourPage({ params }: PageProps<"/tours/[slug]">) {
               <SectionTitle eyebrow="Highlights">
                 <span id="highlights">Why you&apos;ll love it</span>
               </SectionTitle>
+              <Reveal>
+                <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink">{tour.overview}</p>
+              </Reveal>
               <ul className="mt-8 grid gap-4 sm:grid-cols-2">
                 {tour.highlights.map((h) => (
                   <li key={h} className="flex gap-3 rounded-2xl border border-line bg-white/60 p-5 text-ink">
@@ -112,6 +116,10 @@ export default async function TourPage({ params }: PageProps<"/tours/[slug]">) {
               <SectionTitle eyebrow="Day by day">
                 <span id="itinerary">The itinerary</span>
               </SectionTitle>
+              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-mist">
+                All drive and hike times are approximate. Roads in Gilgit-Baltistan change with weather, roadworks and
+                landslides.
+              </p>
               <Itinerary days={tour.itinerary} />
             </section>
 
@@ -146,6 +154,23 @@ export default async function TourPage({ params }: PageProps<"/tours/[slug]">) {
               </div>
             </section>
 
+            {/* Route/season notes and the shared "good to know" list */}
+            <section aria-labelledby="good-to-know">
+              <SectionTitle eyebrow="Before you book">
+                <span id="good-to-know">Good to know</span>
+              </SectionTitle>
+              <Reveal className="mt-8 rounded-3xl border border-line bg-white/60 p-7">
+                <ul className="space-y-4">
+                  {[...tour.notes, ...goodToKnow].map((x) => (
+                    <li key={x} className="flex gap-3 leading-relaxed text-ink">
+                      <Info className="mt-1 h-5 w-5 shrink-0 text-apricot" aria-hidden />
+                      {x}
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+            </section>
+
             {/* Departures (live from D1; the list shows its own empty state) */}
             <section aria-labelledby="dates">
               <SectionTitle eyebrow="Upcoming departures">
@@ -162,7 +187,7 @@ export default async function TourPage({ params }: PageProps<"/tours/[slug]">) {
                 <span id="tour-faq">Before you go</span>
               </SectionTitle>
               <div className="mt-8">
-                <FaqList items={faqs.slice(0, 4)} />
+                <FaqList items={faqs.filter((f) => f.tour)} />
               </div>
             </section>
           </div>

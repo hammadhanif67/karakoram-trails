@@ -59,19 +59,18 @@ export function WhyUs() {
 
       {/* Stats in large type on a dark band, counted up with Magic UI Number Ticker */}
       <div className="bg-night text-cream">
-        <dl className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-cream/10 px-5 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:px-8">
+        <dl className="mx-auto grid max-w-7xl grid-cols-1 gap-x-10 px-5 pb-6 sm:grid-cols-2 sm:px-8 lg:grid-cols-4 lg:gap-x-0 lg:pb-0">
           {whyUs.stats.map((s, i) => (
-            <div key={s.label} className="py-10 sm:px-10 sm:py-16 sm:first:pl-0">
+            <div key={s.label} className="border-cream/10 py-10 not-first:border-t sm:nth-2:border-t-0 lg:not-first:border-t-0 lg:px-8 lg:py-16 lg:not-first:border-l lg:first:pl-0">
               <dt className="text-xs tracking-[0.25em] text-cream/60 uppercase">{s.label}</dt>
-              <dd className="mt-4 flex items-baseline font-serif text-7xl leading-none font-medium tabular-nums lg:text-8xl">
+              <dd className="mt-4 flex items-baseline font-serif text-7xl leading-none font-medium tabular-nums lg:text-6xl xl:text-7xl">
                 <NumberTicker
                   value={s.value}
                   startValue={s.start}
-                  decimalPlaces={s.decimals ?? 0}
                   delay={0.15 * i}
                   className="tracking-normal text-cream"
                 />
-                <span className="ml-1 text-4xl text-apricot lg:text-5xl">{s.suffix}</span>
+                {s.suffix && <span className="ml-2 text-4xl text-apricot lg:text-4xl xl:text-5xl">{s.suffix}</span>}
               </dd>
             </div>
           ))}

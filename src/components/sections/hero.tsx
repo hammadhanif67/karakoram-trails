@@ -10,7 +10,7 @@ import { useDepartures, useFromPrice } from "@/lib/live-data";
 import { cn } from "@/lib/utils";
 import { useReducedMotionSafe } from "@/lib/use-media-query";
 
-const places = ["Hunza", "Skardu", "Fairy Meadows", "Deosai", "Naran"];
+const places = ["Hunza", "Skardu", "Fairy Meadows", "Khunjerab"];
 
 /** Facts strip along the bottom edge of the hero: useful at a glance, and a clean straight edge. */
 function HeroFacts() {
@@ -120,8 +120,8 @@ export function Hero() {
         </h1>
 
         <p {...rise(0.3)} className="animate-hero-rise mt-6 max-w-xl [@media(max-height:720px)]:mt-4 text-base leading-relaxed text-cream/85 sm:text-lg">
-          Curated journeys through the Karakoram and Himalaya with local guides, small groups and stays we have
-          chosen ourselves.
+          Small-group road journeys through Gilgit-Baltistan, planned day by day, with honest drive times and a local
+          team on the ground.
         </p>
 
         <div {...rise(0.45)} className="animate-hero-rise mt-9 flex flex-wrap gap-3 sm:gap-4 [@media(max-height:720px)]:mt-6">

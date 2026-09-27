@@ -5,7 +5,7 @@ import { HttpError } from "./http";
 import { randomToken, safeEqual } from "./tokens";
 
 /** Terms / booking conditions version the customer accepts at checkout (bump when the texts change). */
-export const TERMS_VERSION = "2026-09-draft";
+export const TERMS_VERSION = "2026-09-27";
 
 export const PAYMENT_METHODS = ["bank_transfer"] as const; // JazzCash, Easypaisa, card: later providers
 export type PaymentMethod = (typeof PAYMENT_METHODS)[number];

@@ -5,6 +5,9 @@ Next.js 16 + Tailwind CSS 4 + Framer Motion, exported as a fully static site.
 
 ## Develop
 
+Node 22 (`.nvmrc`, `engines` in `package.json`; Cloudflare Pages builds use the same). The `db:*` scripts
+run `content.ts` directly with Node's TypeScript support, which needs Node 22.18 or newer.
+
 ```bash
 npm install
 npm run dev

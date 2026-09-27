@@ -47,7 +47,7 @@ export function WhenToGo() {
             <li key={s.name}>
               <Reveal delay={i * 0.08} className="h-full rounded-2xl border border-line bg-cream/60 p-6">
                 <p className="font-serif text-2xl text-pine">{s.name}</p>
-                <p className="mt-1 text-xs tracking-[0.15em] text-apricot uppercase">{s.when}</p>
+                <p className="mt-1 text-xs tracking-[0.15em] text-apricot-deep uppercase">{s.when}</p>
                 <p className="mt-3 text-sm leading-relaxed text-ink">{s.text}</p>
               </Reveal>
             </li>

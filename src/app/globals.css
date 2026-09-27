@@ -7,6 +7,10 @@
   --pine-deep: #173b39;
   --apricot: #d08a3c;
   --apricot-ink: #1a1206;
+  /* Apricot for text on light backgrounds (cream/sand/white): 4.96:1 or better. --apricot stays for dark backgrounds, fills and icons. */
+  --apricot-deep: #92531a;
+  /* Apricot for text on the green (pine-deep) section: 5.43:1. */
+  --apricot-bright: #e0a059;
   --cream: #f6f1e7;
   --ink: #1c1917;
   --mist: #5f5e57;
@@ -19,6 +23,7 @@
   --color-pine-deep: var(--pine-deep);
   --color-apricot: var(--apricot);
   --color-apricot-ink: var(--apricot-ink);
+  --color-apricot-deep: var(--apricot-deep);
   --color-cream: var(--cream);
   --color-ink: var(--ink);
   --color-mist: var(--mist);

@@ -20,7 +20,7 @@ export function HowItWorks() {
   const refs = [r0, r1, r2];
 
   return (
-    <section id="how-it-works" className="bg-pine-deep py-24 text-cream sm:py-32">
+    <section id="how-it-works" className="bg-pine-deep py-24 text-cream [--apricot:var(--apricot-bright)] sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
           tone="dark"

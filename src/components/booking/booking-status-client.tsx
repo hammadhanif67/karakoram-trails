@@ -159,7 +159,7 @@ export function BookingStatusClient() {
         <XCircle className="mx-auto h-10 w-10 text-mist" aria-hidden />
         <h1 className="mt-4 font-serif text-3xl text-ink">We couldn&apos;t open this booking</h1>
         <p className="mt-3 text-mist">{error}</p>
-        <CtaButton href={whatsappLink(`Assalam o Alaikum, I need help with booking ${ref}.`)} target="_blank" rel="noopener noreferrer" variant="outline" tone="light" className="mt-6">
+        <CtaButton href={whatsappLink(ref ? `Assalam o Alaikum, I need help with booking ${ref}.` : "Assalam o Alaikum, I need help with my booking.")} target="_blank" rel="noopener noreferrer" variant="outline" tone="light" className="mt-6">
           Contact us on WhatsApp
         </CtaButton>
       </div>
@@ -174,7 +174,7 @@ export function BookingStatusClient() {
     <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
       <div className="space-y-6">
         <div>
-          <p className="text-xs tracking-[0.2em] text-apricot uppercase">Booking {b.ref}</p>
+          <p className="text-xs tracking-[0.2em] text-apricot-deep uppercase">Booking {b.ref}</p>
           <h1 className="mt-2 font-serif text-5xl leading-tight text-ink">
             {b.status === "pending_payment" && "Seats reserved"}
             {b.status === "verifying" && "Receipt received"}

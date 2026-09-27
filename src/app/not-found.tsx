@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Mountain } from "lucide-react";
 import { CtaButton } from "@/components/ui/cta-button";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = { title: "Page not found | Karakoram Trails" };
+export const metadata: Metadata = pageMetadata({
+  title: "Page not found | Karakoram Trails",
+  description: "This page doesn't exist. Head back to the home page for tours to Hunza, Skardu and Fairy Meadows.",
+  path: null,
+  noindex: true,
+});
 
 export default function NotFound() {
   return (

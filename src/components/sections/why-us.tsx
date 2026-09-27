@@ -37,21 +37,21 @@ export function WhyUs() {
 
         <div className="flex flex-col justify-center">
           <Reveal>
-            <p className="text-xs font-medium tracking-[0.25em] text-apricot uppercase">Why travel with us</p>
+            <p className="text-xs font-medium tracking-[0.25em] text-apricot-deep uppercase">Why travel with us</p>
           </Reveal>
           <ol className="mt-8 space-y-10">
             {whyUs.points.map((p, i) => (
-              <Reveal key={p.title} delay={i * 0.1}>
-                <li className="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-4 border-t border-line pt-8">
-                  <span className="font-serif text-5xl leading-none text-apricot italic" aria-hidden>
+              <li key={p.title}>
+                <Reveal delay={i * 0.1} className="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-4 border-t border-line pt-8">
+                  <span className="font-serif text-5xl leading-none text-apricot-deep italic" aria-hidden>
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <div>
                     <h3 className="font-serif text-3xl leading-tight font-medium text-ink">{p.title}</h3>
                     <p className="mt-3 leading-relaxed text-mist">{p.text}</p>
                   </div>
-                </li>
-              </Reveal>
+                </Reveal>
+              </li>
             ))}
           </ol>
         </div>

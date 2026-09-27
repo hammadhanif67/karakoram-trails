@@ -10,7 +10,8 @@ import { Itinerary } from "@/components/tour/itinerary";
 import { TourBooking, TourPrice } from "@/components/tour/booking";
 import { Photo } from "@/components/ui/photo";
 import { Reveal } from "@/components/ui/reveal";
-import { faqs, getTour, goodToKnow, photo, tours } from "@/lib/content";
+import { faqs, getTour, goodToKnow, tours } from "@/lib/content";
+import { pageMetadata } from "@/lib/seo";
 
 // Only the tours listed in content.ts exist; anything else is a 404 in the static export.
 export const dynamicParams = false;
@@ -23,17 +24,19 @@ export async function generateMetadata({ params }: PageProps<"/tours/[slug]">): 
   const { slug } = await params;
   const tour = getTour(slug);
   if (!tour) return {};
-  return {
+  return pageMetadata({
     title: `${tour.name}: ${tour.days}-day tour | Karakoram Trails`,
-    description: `${tour.overview} Day-by-day itinerary with approx. drive times, what's included and upcoming departures.`,
-    openGraph: { images: [photo(tour.image).src] },
-  };
+    description: tour.overview,
+    path: `/tours/${tour.slug}/`,
+    image: tour.image,
+    imageAlt: tour.alt,
+  });
 }
 
 function SectionTitle({ eyebrow, children }: { eyebrow: string; children: React.ReactNode }) {
   return (
     <Reveal>
-      <p className="text-xs font-medium tracking-[0.25em] text-apricot uppercase">{eyebrow}</p>
+      <p className="text-xs font-medium tracking-[0.25em] text-apricot-deep uppercase">{eyebrow}</p>
       <h2 className="mt-3 font-serif text-4xl leading-tight font-medium text-ink sm:text-5xl">{children}</h2>
     </Reveal>
   );
@@ -81,12 +84,12 @@ export default async function TourPage({ params }: PageProps<"/tours/[slug]">) {
         <section aria-label="Quick facts" className="border-b border-line bg-[#efe8da]">
           <dl className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-6 px-5 py-8 sm:px-8 md:grid-cols-3 xl:grid-cols-6">
             {facts.map((f) => (
-              <div key={f.label} className="flex items-start gap-3">
-                <f.icon className="mt-0.5 h-5 w-5 shrink-0 text-pine" aria-hidden />
-                <div>
-                  <dt className="text-xs tracking-[0.15em] text-mist uppercase">{f.label}</dt>
-                  <dd className="mt-1 font-medium text-ink">{f.value}</dd>
-                </div>
+              <div key={f.label} className="relative pl-8">
+                <dt className="text-xs tracking-[0.15em] text-mist uppercase">
+                  <f.icon className="absolute top-0.5 left-0 h-5 w-5 text-pine" aria-hidden />
+                  {f.label}
+                </dt>
+                <dd className="mt-1 font-medium text-ink">{f.value}</dd>
               </div>
             ))}
           </dl>

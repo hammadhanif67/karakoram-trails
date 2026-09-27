@@ -24,12 +24,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Karakoram Trails | Tours to Hunza, Skardu and Fairy Meadows",
   description:
-    "Small-group and private tours through Northern Pakistan: Hunza Valley, Skardu and Fairy Meadows, with local guides, 4x4 transport and handpicked stays.",
-  openGraph: {
-    title: "Karakoram Trails",
-    description: "Curated journeys through Hunza, Skardu and Fairy Meadows.",
-    images: ["/images/hero-skardu-shangrila-1280.webp"],
-  },
+    "Small-group road journeys through Gilgit-Baltistan, planned day by day, with honest drive times and a local team on the ground.",
+  // Every page builds its own canonical, Open Graph and Twitter tags with pageMetadata() (src/lib/seo.ts).
 };
 
 export const viewport: Viewport = {

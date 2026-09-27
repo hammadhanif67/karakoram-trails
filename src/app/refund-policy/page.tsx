@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPage } from "@/components/legal/legal-page";
 import { brand, cancellationPolicy, whatsappLink } from "@/lib/content";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: `Refund policy | ${brand.name}`,
-  description: "Deposit refunds and date changes for Karakoram Trails group tours.",
-};
+  description: "How deposit refunds and free date changes work on Karakoram Trails group tours, and how to cancel a booking.",
+  path: "/refund-policy/",
+});
 
 export default function RefundPolicyPage() {
   return (

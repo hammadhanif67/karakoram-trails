@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Contact } from "@/components/sections/contact";
 import { Departures } from "@/components/sections/departures";
 import { Destinations } from "@/components/sections/destinations";
@@ -15,6 +16,15 @@ import { Testimonials } from "@/components/sections/testimonials";
 import { WhenToGo } from "@/components/sections/when-to-go";
 import { WhyUs } from "@/components/sections/why-us";
 import { features } from "@/lib/content";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = pageMetadata({
+  title: "Karakoram Trails | Tours to Hunza, Skardu and Fairy Meadows",
+  description:
+    "Small-group road journeys through Gilgit-Baltistan, planned day by day, with honest drive times and a local team on the ground.",
+  path: "/",
+  imageAlt: "Shangrila lake in Skardu beneath snow-capped Karakoram peaks",
+});
 
 export default function Home() {
   return (

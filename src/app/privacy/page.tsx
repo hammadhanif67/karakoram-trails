@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/legal/legal-page";
 import { brand, whatsappLink } from "@/lib/content";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: `Privacy policy | ${brand.name}`,
   description: "What personal data Karakoram Trails collects for bookings, how it is used and how to have it deleted.",
-};
+  path: "/privacy/",
+});
 
 export default function PrivacyPage() {
   return (

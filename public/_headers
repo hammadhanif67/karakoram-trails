@@ -12,3 +12,11 @@
 
 /checkout/*
   X-Robots-Tag: noindex
+
+# Hashed build output: the file name changes whenever the content does, so it can be cached for a year.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Photos keep their names when replaced, so only one day for now (versioned file names come with the images update).
+/images/*
+  Cache-Control: public, max-age=86400

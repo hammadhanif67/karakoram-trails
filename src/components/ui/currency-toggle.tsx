@@ -24,7 +24,7 @@ export function CurrencyToggle({ tone = "dark", className }: { tone?: "dark" | "
         <ToggleGroupItem
           key={c}
           value={c}
-          aria-label={c === "PKR" ? "Pakistani rupees" : "US dollars"}
+          aria-label={c === "PKR" ? "PKR, Pakistani rupees" : "USD, US dollars"}
           className={cn(
             "h-10 min-w-16 cursor-pointer rounded-full! px-4 text-xs font-medium tracking-[0.15em] transition-colors",
             tone === "dark"

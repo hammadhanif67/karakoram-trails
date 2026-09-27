@@ -3,13 +3,18 @@ import { Suspense } from "react";
 import { BookingStatusClient } from "@/components/booking/booking-status-client";
 import { Footer } from "@/components/sections/footer";
 import { Navbar } from "@/components/sections/navbar";
+import { pageMetadata } from "@/lib/seo";
 
 // The URL carries the customer's access token: never send it as a Referer and never index the page.
 // Cloudflare Pages also sends Referrer-Policy: no-referrer and Cache-Control: no-store (public/_headers).
 export const metadata: Metadata = {
-  title: "Your booking | Karakoram Trails",
+  ...pageMetadata({
+    title: "Your booking | Karakoram Trails",
+    description: "The status of your Karakoram Trails booking.",
+    path: "/booking/",
+    noindex: true,
+  }),
   referrer: "no-referrer",
-  robots: { index: false, follow: false },
 };
 
 export default function BookingPage() {

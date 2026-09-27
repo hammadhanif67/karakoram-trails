@@ -12,7 +12,7 @@ type Props = {
 export function SectionHeading({ eyebrow, title, intro, tone = "light", align = "left" }: Props) {
   return (
     <Reveal className={cn("max-w-2xl", align === "center" && "mx-auto text-center")}>
-      <p className="text-xs font-medium tracking-[0.25em] text-apricot uppercase">{eyebrow}</p>
+      <p className={cn("text-xs font-medium tracking-[0.25em] uppercase", tone === "dark" ? "text-apricot" : "text-apricot-deep")}>{eyebrow}</p>
       <h2
         className={cn(
           "mt-3 font-serif text-4xl leading-[1.05] font-medium text-balance sm:text-5xl lg:text-6xl",

@@ -104,7 +104,7 @@ export function Destinations() {
   const intro = (
     <div className={cn("mx-auto max-w-7xl px-5 sm:px-8", pinned ? "pt-24 sm:pt-32" : "py-24 sm:py-32 pb-10 sm:pb-12")}>
       <BlurFade inView direction="up" offset={20}>
-        <p className="text-xs font-medium tracking-[0.25em] text-apricot uppercase">Popular destinations</p>
+        <p className="text-xs font-medium tracking-[0.25em] text-apricot-deep uppercase">Popular destinations</p>
         <h2 className="mt-3 max-w-3xl font-serif text-4xl leading-[1.05] font-medium text-balance text-ink sm:text-5xl lg:text-6xl">
           Three valleys, <em className="text-pine">one unforgettable north</em>
         </h2>

@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/sections/footer";
 import { Navbar } from "@/components/sections/navbar";
 import { brand } from "@/lib/content";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: `Photo credits | ${brand.name}`,
-  description: "Sources, photographers and licences for the photos used on this site.",
-};
+  description: "Sources, photographers and licences for the photos of Hunza, Skardu and Fairy Meadows used on this site.",
+  path: "/credits/",
+});
 
 // The per-photo list (file, source, author, licence) is added with the image update (CONTENT_BRIEF section 9),
 // from public/images/CREDITS.md.
@@ -16,7 +18,7 @@ export default function CreditsPage() {
       <Navbar solid />
       <main className="min-h-[70svh] bg-cream px-5 pt-36 pb-24 sm:px-8">
         <div className="mx-auto max-w-3xl">
-          <p className="text-xs font-medium tracking-[0.25em] text-apricot uppercase">Photo credits</p>
+          <p className="text-xs font-medium tracking-[0.25em] text-apricot-deep uppercase">Photo credits</p>
           <h1 className="mt-3 font-serif text-5xl leading-tight font-medium text-ink sm:text-6xl">Who took these photos</h1>
           <p className="mt-6 text-lg leading-relaxed text-mist">
             We are replacing the photos on this site with verified images of each place, from Unsplash, Pexels and

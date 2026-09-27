@@ -56,7 +56,7 @@ export function Footer() {
                 <li key={t.slug}>
                   <Link href={`/tours/${t.slug}/`} className="transition-colors hover:text-cream">
                     {t.name}
-                    <span className="text-cream/40"> · {t.days} days</span>
+                    <span className="text-cream/60"> · {t.days} days</span>
                   </Link>
                 </li>
               ))}

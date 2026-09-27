@@ -3,11 +3,13 @@ import Link from "next/link";
 import { LegalPage } from "@/components/legal/legal-page";
 import { ONLINE_CUTOFF_HOURS } from "@/lib/booking-rules";
 import { bookingTerms, brand, cancellationPolicy, whatsappLink } from "@/lib/content";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: `Terms and booking conditions | ${brand.name}`,
   description: "How booking, payment, changes and cancellations work on Karakoram Trails group tours.",
-};
+  path: "/terms/",
+});
 
 export default function TermsPage() {
   const t = bookingTerms;

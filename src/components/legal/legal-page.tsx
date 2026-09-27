@@ -22,7 +22,7 @@ export function LegalPage({ eyebrow, title, current, children }: { eyebrow: stri
               change before it is final.
             </p>
           )}
-          <p className="text-xs font-medium tracking-[0.25em] text-apricot uppercase">{eyebrow}</p>
+          <p className="text-xs font-medium tracking-[0.25em] text-apricot-deep uppercase">{eyebrow}</p>
           <h1 className="mt-3 font-serif text-5xl leading-tight font-medium text-ink sm:text-6xl">{title}</h1>
           <p className="mt-3 text-sm text-mist">Last updated {legalMeta.updated}</p>
           <div className="mt-10 space-y-10 leading-relaxed text-ink [&_h2]:font-serif [&_h2]:text-3xl [&_h2]:font-medium [&_h2]:text-ink [&_li]:mt-2 [&_p]:mt-3 [&_section>ul]:mt-3 [&_section>ul]:list-disc [&_section>ul]:pl-5 [&_a]:text-pine [&_a]:underline [&_a]:underline-offset-4 [&_a:hover]:text-apricot">

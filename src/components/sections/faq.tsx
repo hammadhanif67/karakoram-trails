@@ -1,23 +1,27 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { ChevronDown } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { brand, faqs, whatsappLink } from "@/lib/content";
 
 type Faq = (typeof faqs)[number];
 
-/** FAQ list on shadcn Accordion, styled for the site. */
+/**
+ * FAQ list on native <details>/<summary>: opens and closes without JavaScript, works with the keyboard and
+ * screen readers, and `name` keeps one answer open at a time (older browsers may open several).
+ */
 export function FaqList({ items = faqs }: { items?: Faq[] }) {
   return (
-    <Accordion type="single" collapsible className="border-t border-line">
-      {items.map((f, i) => (
-        <AccordionItem key={f.q} value={`q${i}`} className="border-line">
-          <AccordionTrigger className="cursor-pointer py-6 font-serif text-xl leading-snug font-medium text-ink hover:text-pine hover:no-underline sm:text-2xl [&>svg]:size-5 [&>svg]:text-apricot">
+    <div className="border-t border-line">
+      {items.map((f) => (
+        <details key={f.q} name="faq" className="group border-b border-line">
+          <summary className="flex cursor-pointer list-none items-start justify-between gap-4 rounded-md py-6 text-left font-serif text-xl leading-snug font-medium text-ink outline-none hover:text-pine focus-visible:ring-[3px] focus-visible:ring-ring/50 sm:text-2xl [&::-webkit-details-marker]:hidden">
             {f.q}
-          </AccordionTrigger>
-          <AccordionContent className="max-w-3xl pb-6 text-base leading-relaxed text-mist">{f.a}</AccordionContent>
-        </AccordionItem>
+            <ChevronDown aria-hidden className="mt-1 size-5 shrink-0 text-apricot transition-transform duration-200 group-open:rotate-180" />
+          </summary>
+          <p className="max-w-3xl pb-6 text-base leading-relaxed text-mist">{f.a}</p>
+        </details>
       ))}
-    </Accordion>
+    </div>
   );
 }
 

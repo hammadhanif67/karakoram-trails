@@ -9,18 +9,6 @@ import { formatDate, formatPrice, whatsappLink, type Tour } from "@/lib/content"
 import { useCurrency } from "@/lib/currency";
 import { useDepartures, useLiveData, useTourPrice } from "@/lib/live-data";
 
-/** Live price per person for a tour (D1 via /api/departures, content.ts as fallback). */
-export function TourPrice({ slug, prefix = "", className }: { slug: string; prefix?: string; className?: string }) {
-  const { currency } = useCurrency();
-  const pkr = useTourPrice(slug);
-  return (
-    <span className={`tabular-nums ${className ?? ""}`}>
-      {prefix}
-      {formatPrice(pkr, currency)}
-    </span>
-  );
-}
-
 const FLEXIBLE = "flexible";
 
 /**

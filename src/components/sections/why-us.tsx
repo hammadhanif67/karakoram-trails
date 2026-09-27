@@ -1,39 +1,16 @@
-"use client";
-
-import { useRef } from "react";
-import { m, useScroll, useTransform } from "framer-motion";
 import { NumberTicker } from "@/components/magicui/number-ticker";
-import { TextReveal } from "@/components/magicui/text-reveal";
-import { Photo } from "@/components/ui/photo";
 import { Reveal } from "@/components/ui/reveal";
 import { whyUs } from "@/lib/content";
-import { useReducedMotionSafe } from "@/lib/use-media-query";
+import { WhyUsPhoto, WhyUsStatement } from "./why-us-client";
 
+// Server component; the Text Reveal statement, the parallax photo and the number tickers are client parts.
 export function WhyUs() {
-  const reduce = useReducedMotionSafe();
-  const photoRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: photoRef, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], reduce ? ["0%", "0%"] : ["-8%", "8%"]);
-
   return (
     <section id="why-us" className="bg-cream">
-      {/* Magic UI Text Reveal: words brighten one by one as you scroll */}
-      {reduce ? (
-        <p className="mx-auto max-w-4xl px-5 pt-24 font-serif text-4xl leading-tight text-ink sm:px-8 sm:pt-32 lg:text-5xl">
-          {whyUs.statement}
-        </p>
-      ) : (
-        <TextReveal className="h-[160vh] font-serif font-medium text-ink [&_span.flex]:text-4xl [&_span.flex]:leading-tight [&_span.flex]:font-medium lg:[&_span.flex]:text-6xl">
-          {whyUs.statement}
-        </TextReveal>
-      )}
+      <WhyUsStatement />
 
       <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)] gap-12 px-5 pt-8 pb-24 sm:px-8 sm:pb-32 lg:grid-cols-[6fr_5fr] lg:gap-20">
-        <div ref={photoRef} className="relative h-[28rem] overflow-hidden rounded-3xl sm:h-[36rem] lg:h-[44rem]">
-          <m.div className="absolute inset-x-0 -top-[10%] h-[120%]" style={{ y }}>
-            <Photo name={whyUs.image} alt={whyUs.alt} sizes="(min-width: 1024px) 50vw, 100vw" className="h-full w-full object-cover" />
-          </m.div>
-        </div>
+        <WhyUsPhoto />
 
         <div className="flex flex-col justify-center">
           <Reveal>

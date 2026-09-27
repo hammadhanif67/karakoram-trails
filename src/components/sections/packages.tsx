@@ -1,5 +1,3 @@
-"use client";
-
 import { Check, Clock, Route } from "lucide-react";
 import { ShineBorder } from "@/components/magicui/shine-border";
 import { CurrencyToggle } from "@/components/ui/currency-toggle";
@@ -7,15 +5,12 @@ import { Photo } from "@/components/ui/photo";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { CtaButton } from "@/components/ui/cta-button";
-import { formatPrice, tours } from "@/lib/content";
-import { useCurrency } from "@/lib/currency";
-import { useLiveData } from "@/lib/live-data";
+import { TourPrice, UsdApproxNote } from "@/components/ui/tour-price";
+import { tours } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
+// Server component; live prices and the currency note are small client components (ui/tour-price.tsx).
 export function Packages() {
-  const { currency } = useCurrency();
-  const { prices } = useLiveData();
-
   return (
     <section id="tours" className="relative overflow-hidden bg-cream py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
@@ -89,7 +84,9 @@ export function Packages() {
                     <div className="mt-6 flex flex-wrap items-end justify-between gap-4 border-t border-line pt-5">
                       <div>
                         <p className="text-xs text-mist">From, per person</p>
-                        <p className="font-serif text-3xl font-medium whitespace-nowrap text-ink tabular-nums">{formatPrice(prices[t.slug], currency)}</p>
+                        <p className="font-serif text-3xl font-medium whitespace-nowrap text-ink">
+                          <TourPrice slug={t.slug} />
+                        </p>
                       </div>
                       <CtaButton
                         href={href}
@@ -109,7 +106,8 @@ export function Packages() {
           })}
         </div>
         <p className="mt-8 text-center text-sm text-mist">
-          {currency === "USD" ? "US dollar prices are approximate. " : ""}Private and family departures available on any date.
+          <UsdApproxNote />
+          Private and family departures available on any date.
         </p>
       </div>
     </section>

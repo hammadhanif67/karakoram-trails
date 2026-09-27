@@ -48,17 +48,6 @@
   --color-primary-foreground: var(--cream);
   --color-destructive: #b91c1c;
 
-  /* shadcn Accordion open/close */
-  --animate-accordion-down: accordion-down 0.25s ease-out;
-  --animate-accordion-up: accordion-up 0.2s ease-out;
-  @keyframes accordion-down {
-    from { height: 0; }
-    to { height: var(--radix-accordion-content-height); }
-  }
-  @keyframes accordion-up {
-    from { height: var(--radix-accordion-content-height); }
-    to { height: 0; }
-  }
 
   /* Hero entrance (CSS, runs on first paint) and scroll cue */
   --animate-hero-rise: hero-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;

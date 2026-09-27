@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll } from "framer-motion";
 import { BedDouble, Clock, Home } from "lucide-react";
-import { BlurFade } from "@/components/magicui/blur-fade";
+import { Reveal } from "@/components/ui/reveal";
 import type { Tour } from "@/lib/content";
 import { useReducedMotionSafe } from "@/lib/use-media-query";
 
@@ -27,7 +27,7 @@ export function Itinerary({ days }: { days: Tour["itinerary"] }) {
             <span className="text-[0.6rem] leading-none tracking-[0.15em] text-mist uppercase">Day</span>
             <span className="font-serif text-xl leading-none text-pine">{i + 1}</span>
           </div>
-          <BlurFade inView direction="up" offset={12} duration={0.6}>
+          <Reveal>
             <h3 className="pt-2 font-serif text-2xl leading-snug font-medium text-ink sm:text-3xl">{d.title}</h3>
             <p className="mt-2 leading-relaxed text-mist">{d.text}</p>
             <p className="mt-3 flex flex-wrap gap-2 text-xs text-ink">
@@ -48,7 +48,7 @@ export function Itinerary({ days }: { days: Tour["itinerary"] }) {
                 </span>
               )}
             </p>
-          </BlurFade>
+          </Reveal>
         </li>
       ))}
     </ol>

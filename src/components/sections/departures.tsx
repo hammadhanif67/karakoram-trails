@@ -1,7 +1,7 @@
 "use client";
 
 import { CalendarDays, Users } from "lucide-react";
-import { BlurFade } from "@/components/magicui/blur-fade";
+import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { CtaButton } from "@/components/ui/cta-button";
 import { formatDate, formatPrice, getTour, whatsappLink } from "@/lib/content";
@@ -48,7 +48,7 @@ export function DepartureList({ tourSlug, tone = "dark" }: { tourSlug?: string; 
         const taken = ((d.seats - d.seatsLeft) / d.seats) * 100;
         return (
           <li key={d.id ?? `${d.tour}-${d.date}`}>
-            <BlurFade inView direction="up" offset={10} delay={i * 0.05}>
+            <Reveal delay={i * 0.05}>
               <div className="grid grid-cols-[minmax(0,1fr)] items-center gap-4 py-6 sm:grid-cols-[10rem_minmax(0,1fr)_12rem_auto] sm:gap-8">
                 <div className="flex items-center gap-3 sm:block">
                   <CalendarDays className={cn("h-5 w-5 sm:hidden", dark ? "text-apricot" : "text-pine")} aria-hidden />
@@ -94,7 +94,7 @@ export function DepartureList({ tourSlug, tone = "dark" }: { tourSlug?: string; 
                   {cta.label}
                 </CtaButton>
               </div>
-            </BlurFade>
+            </Reveal>
           </li>
         );
       })}

@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { Calendar, Car, Check, Mountain } from "lucide-react";
-import { BlurFade } from "@/components/magicui/blur-fade";
+import { Reveal } from "@/components/ui/reveal";
 import { Photo } from "@/components/ui/photo";
 import { CtaButton } from "@/components/ui/cta-button";
 import { SeasonStrip } from "@/components/ui/season-strip";
@@ -33,7 +33,7 @@ function Panel({ d, index }: { d: Destination; index: number }) {
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-night/60 to-transparent" />
 
       <div className="w-full p-6 pb-7 pin:mx-auto pin:max-w-7xl pin:px-8 pin:pt-0 pin:pb-20">
-        <BlurFade inView direction="up" offset={16} duration={0.7}>
+        <Reveal>
           <p className="font-serif text-lg text-apricot italic">
             {String(index + 1).padStart(2, "0")} / {String(destinations.length).padStart(2, "0")}
           </p>
@@ -60,7 +60,7 @@ function Panel({ d, index }: { d: Destination; index: number }) {
           <CtaButton href="#tours" variant="outline" arrow className="mt-5 pin:mt-7">
             See tours
           </CtaButton>
-        </BlurFade>
+        </Reveal>
       </div>
     </article>
   );
@@ -94,12 +94,12 @@ export function Destinations() {
   return (
     <section id="destinations" className="bg-cream" aria-label="Popular destinations">
       <div className="mx-auto max-w-7xl px-5 pt-24 pb-10 sm:px-8 sm:pt-32 sm:pb-12 pin:pb-0">
-        <BlurFade inView direction="up" offset={20}>
+        <Reveal>
           <p className="text-xs font-medium tracking-[0.25em] text-apricot-deep uppercase">Popular destinations</p>
           <h2 className="mt-3 max-w-3xl font-serif text-4xl leading-[1.05] font-medium text-balance text-ink sm:text-5xl lg:text-6xl">
             Three valleys, <em className="text-pine">one unforgettable north</em>
           </h2>
-        </BlurFade>
+        </Reveal>
       </div>
 
       {/* Pinned: a tall scroll area with a sticky viewport. Carousel: these wrappers are plain blocks. */}

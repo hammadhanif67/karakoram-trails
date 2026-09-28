@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUp, Mail, MapPin, MessageCircle, Mountain, Phone } from "lucide-react";
 import { CtaButton } from "@/components/ui/cta-button";
 import { BackToTop, HomeLink } from "@/components/ui/home-link";
-import { brand, tours, whatsappLink } from "@/lib/content";
+import { brand, destinations, tours, whatsappLink } from "@/lib/content";
 
 const explore = [
   { href: "/#destinations", label: "Destinations" },
@@ -48,7 +48,7 @@ export function Footer() {
         </div>
 
         {/* Link columns */}
-        <div className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
           <nav aria-label="Tours">
             <Heading>Tours</Heading>
             <ul className="mt-5 space-y-3 text-sm">
@@ -57,6 +57,19 @@ export function Footer() {
                   <Link href={`/tours/${t.slug}/`} className="transition-colors hover:text-cream">
                     {t.name}
                     <span className="text-cream/60"> · {t.days} days</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav aria-label="Destinations">
+            <Heading>Destinations</Heading>
+            <ul className="mt-5 space-y-3 text-sm">
+              {destinations.map((d) => (
+                <li key={d.slug}>
+                  <Link href={`/destinations/${d.slug}/`} className="transition-colors hover:text-cream">
+                    {d.title}
                   </Link>
                 </li>
               ))}

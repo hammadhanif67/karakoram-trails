@@ -57,8 +57,8 @@ function Panel({ d, index }: { d: Destination; index: number }) {
             ))}
           </ul>
           <SeasonStrip codes={d.season} tone="dark" label={`${d.title}: season by month`} className="mt-5 max-w-sm" />
-          <CtaButton href="#tours" variant="outline" arrow className="mt-5 pin:mt-7">
-            See tours
+          <CtaButton href={`/destinations/${d.slug}/`} variant="outline" arrow className="mt-5 pin:mt-7">
+            Explore {d.title}
           </CtaButton>
         </Reveal>
       </div>

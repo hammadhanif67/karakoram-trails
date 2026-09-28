@@ -12,7 +12,7 @@ import { TourPrice } from "@/components/ui/tour-price";
 import { Photo } from "@/components/ui/photo";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionTitle } from "@/components/ui/section-title";
-import { faqs, getTour, goodToKnow, tours } from "@/lib/content";
+import { faqs, getDestination, getTour, goodToKnow, tours } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
 
 // Only the tours listed in content.ts exist; anything else is a 404 in the static export.
@@ -112,6 +112,18 @@ export default async function TourPage({ params }: PageProps<"/tours/[slug]">) {
                   </li>
                 ))}
               </ul>
+              <nav aria-label="Destinations on this tour" className="mt-6 flex flex-wrap items-center gap-2 text-sm">
+                <span className="mr-1 text-mist">Destinations on this tour:</span>
+                {tour.destinations.map((slug) => (
+                  <Link
+                    key={slug}
+                    href={`/destinations/${slug}/`}
+                    className="rounded-full border border-line bg-white/60 px-3 py-1 text-ink transition-colors hover:border-pine hover:text-pine"
+                  >
+                    {getDestination(slug)?.title}
+                  </Link>
+                ))}
+              </nav>
             </section>
 
             {/* Itinerary */}

@@ -6,7 +6,7 @@ import { Faq } from "@/components/sections/faq";
 import { FloatingWhatsApp } from "@/components/sections/floating-whatsapp";
 import { Footer } from "@/components/sections/footer";
 import { Gallery } from "@/components/sections/gallery";
-import { Hero } from "@/components/sections/hero";
+import { Hero, heroImage } from "@/components/sections/hero";
 import { HowItWorks } from "@/components/sections/how-it-works";
 import { Navbar } from "@/components/sections/navbar";
 import { Packages } from "@/components/sections/packages";
@@ -23,7 +23,8 @@ export const metadata: Metadata = pageMetadata({
   description:
     "Small-group road journeys through Gilgit-Baltistan, planned day by day, with honest drive times and a local team on the ground.",
   path: "/",
-  imageAlt: "The jagged Passu Cones under a wide, cloud-streaked sky in upper Hunza",
+  image: heroImage.name,
+  imageAlt: heroImage.alt,
 });
 
 export default function Home() {

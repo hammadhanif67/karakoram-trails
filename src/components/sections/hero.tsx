@@ -7,7 +7,12 @@ const places = ["Hunza", "Skardu", "Fairy Meadows", "Khunjerab"];
 
 // Server component: the text is in the static HTML; only the rotating place name and the facts strip
 // (live prices and dates) are client components (hero-client.tsx).
-const HERO = "hero-passu-cones" as const;
+
+/** The hero photo; also the home page's social-preview image (app/page.tsx), so both share one alt text. */
+export const heroImage = {
+  name: "hero-passu-cones",
+  alt: "The jagged Passu Cones under white clouds, above the wide grey riverbed at Passu in upper Hunza",
+} as const;
 
 export function Hero() {
   // No preload() for the hero photo: React would also put the hint in the prefetched home-page data, so
@@ -18,7 +23,7 @@ export function Hero() {
 
   return (
     <LayeredParallaxHero
-      image={{ name: HERO, alt: "The jagged Passu Cones under white clouds, above the wide grey riverbed at Passu in upper Hunza" }}
+      image={heroImage}
       footer={<HeroFacts />}
     >
       <div id="top" className="mx-auto w-full max-w-7xl px-5 pt-28 pb-12 sm:px-8 [@media(max-height:720px)]:pt-20 [@media(max-height:720px)]:pb-8">

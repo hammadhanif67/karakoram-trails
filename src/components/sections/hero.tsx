@@ -38,7 +38,9 @@ export function Hero() {
           Where the mountains <em className="text-apricot-bright">still keep secrets</em>
         </h1>
 
-        <p {...rise(0.3)} className="animate-hero-rise mt-6 max-w-xl [@media(max-height:720px)]:mt-4 text-base leading-relaxed text-cream/85 sm:text-lg">
+        {/* 38rem: two lines in both Montserrat and its fallback font, so the font swap doesn't add a line and
+            move the whole (vertically centred) hero. At max-w-xl the last word only fitted in the fallback. */}
+        <p {...rise(0.3)} className="animate-hero-rise mt-6 max-w-[38rem] [@media(max-height:720px)]:mt-4 text-base leading-relaxed text-cream/85 sm:text-lg">
           Small-group road journeys through Gilgit-Baltistan, planned day by day, with honest drive times and a local
           team on the ground.
         </p>

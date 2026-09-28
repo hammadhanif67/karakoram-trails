@@ -25,8 +25,11 @@ const UNSPLASH = { site: "Unsplash", license: "Unsplash License", licenseUrl: "h
 // subject: what the photo shows (for the credits); the alt text for each use lives with the component/content.
 const images = [
   // Home hero. 1600 sits between 1280 and 1920 so a 1440 px desktop doesn't download the 1920 file.
+  // AVIF capped at q45: under the hero scrim it looked the same as q60 side by side, at about 55-70% of the
+  // bytes (1280 px: 163 -> 89 KB).
   {
     file: "hero-passu-cones-abdul-rafay.jpg", name: "hero-passu-cones", widths: [480, 768, 1280, 1600, 1920], budget: 300 * KB,
+    maxQuality: { avif: 45 },
     credit: { ...UNSPLASH, author: "Abdul Rafay", url: "https://unsplash.com/photos/-lL3UsOn41A", subject: "Passu Cones from the viewpoint at Passu, Hunza" },
   },
 
@@ -91,7 +94,8 @@ const images = [
   },
 ];
 
-// Quality never drops below 50 for WebP / 35 for AVIF (visible blockiness). Very grainy photos (e.g. dense
+// Quality starts at the top of the list (or at an image's maxQuality) and never drops below 50 for WebP / 35
+// for AVIF (visible blockiness). Very grainy photos (e.g. dense
 // foliage) that still don't fit get a light denoise first, which removes sensor grain that the encoder
 // spends bytes on.
 const DENOISE = [0, 0.5, 0.8, 1.1];
@@ -100,8 +104,9 @@ const FORMATS = {
   avif: { qualities: [60, 55, 50, 45, 40, 35], encode: (p, quality) => p.avif({ quality, effort: 5 }), budgetFactor: 0.75 },
 };
 
-async function encodeWithin(pipeline, format, budget) {
-  const { qualities, encode } = FORMATS[format];
+async function encodeWithin(pipeline, format, budget, maxQuality = 100) {
+  const { encode } = FORMATS[format];
+  const qualities = FORMATS[format].qualities.filter((q) => q <= maxQuality);
   let last;
   for (const sigma of DENOISE) {
     const base = sigma ? pipeline.clone().blur(sigma).sharpen({ sigma: 0.6 }) : pipeline.clone();
@@ -121,13 +126,13 @@ rmSync(OUT, { recursive: true, force: true });
 mkdirSync(OUT, { recursive: true });
 
 const manifest = {};
-for (const { file, name, widths, budget = 150 * KB, aspect, position = sharp.strategy.attention, credit } of images) {
+for (const { file, name, widths, budget = 150 * KB, aspect, position = sharp.strategy.attention, maxQuality = {}, credit } of images) {
   const entry = { width: 0, height: 0, placeholder: "", avif: [], webp: [], credit };
   for (const w of widths) {
     const resize = aspect ? { width: w, height: Math.round(w / aspect), fit: "cover", position } : { width: w, withoutEnlargement: true };
     const pipeline = sharp(`${SRC}/${file}`).rotate().resize(resize);
     for (const format of ["avif", "webp"]) {
-      const out = await encodeWithin(pipeline, format, budget * FORMATS[format].budgetFactor);
+      const out = await encodeWithin(pipeline, format, budget * FORMATS[format].budgetFactor, maxQuality[format]);
       // Write the exact bytes; sharp().toFile() would re-encode.
       const path = `${name}-${w}.${hash(out.data)}.${format}`;
       writeFileSync(`${OUT}/${path}`, out.data);

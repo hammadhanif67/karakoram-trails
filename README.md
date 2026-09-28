@@ -145,7 +145,8 @@ npm run optimize-images
 
 This writes responsive AVIF and WebP files (400 px up to 1920 px for the hero) to `public/images/`, one photo
 per slot, lowering quality and lightly denoising until each file fits its budget (hero up to 300 KB, everything
-else under 150 KB; AVIF gets 75% of that). File names carry a hash of their bytes
+else under 150 KB; AVIF gets 75% of that). An entry can also cap the starting quality with `maxQuality`: the
+hero's AVIF is capped at q45, which looked the same as q60 under the hero scrim. File names carry a hash of their bytes
 (`name-1280.3f9a1c2b.avif`), so `/images/*` is cached for a year; a changed photo gets a new name.
 It also writes `src/lib/images.generated.json` (sizes, intrinsic width/height and a ~200-byte blur
 placeholder per photo), which `src/lib/images.ts` and `<Photo>` read: `<picture>` with AVIF first, WebP as

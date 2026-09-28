@@ -171,6 +171,12 @@ Commit `public/images/` and the manifest after running it.
   `@font-face` rules for Noto Serif and Roboto with their own `size-adjust` and ascent/descent overrides,
   listed after the current fallbacks. So far the swap was only measured on Windows (CLS 0.002 at most with
   the fonts held back 2.5 s).
+- **Uppercase labels in the fallback font.** The Arial fallback is sized for Montserrat's lowercase, so
+  spaced-out uppercase labels come out wider and can wrap onto an extra line until Montserrat arrives. The
+  tour-page route is split by hand on phones for this reason. One case is left: on the home page with
+  reduced motion, at 360-379 px, the list of places in the hero eyebrow takes one more line in the fallback
+  (CLS 0.013 when the fonts arrive late). A separate fallback face for uppercase labels, with its own
+  `size-adjust`, would fix both.
 
 ## Build notes
 

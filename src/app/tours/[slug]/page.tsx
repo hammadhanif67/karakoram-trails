@@ -57,6 +57,9 @@ export default async function TourPage({ params }: PageProps<"/tours/[slug]">) {
     { icon: MapPin, label: "Start / end", value: tour.startEnd },
   ];
   const others = tours.filter((t) => t.slug !== tour.slug);
+  // Route stops, split in half for the two-line route on phones.
+  const stops = tour.route.split(" · ");
+  const half = Math.ceil(stops.length / 2);
 
   return (
     <>
@@ -72,7 +75,11 @@ export default async function TourPage({ params }: PageProps<"/tours/[slug]">) {
             </Link>
             <h1 className="mt-6 font-serif text-6xl leading-[0.92] font-medium sm:text-7xl lg:text-8xl">{tour.name}</h1>
             <p className="mt-5 max-w-2xl text-lg leading-relaxed text-cream/85">{tour.tagline}</p>
-            <p className="mt-3 text-xs tracking-[0.2em] text-cream/70 uppercase">{tour.route}</p>
+            {/* Phones: always two lines, split between stops. Left to wrap on its own, the route took two lines in
+                the fallback font but one in Montserrat on some phones, so the font swap moved the hero text. */}
+            <p className="mt-3 text-xs tracking-[0.2em] text-cream/70 uppercase">
+              {stops.slice(0, half).join(" · ")} ·<br className="sm:hidden" /> {stops.slice(half).join(" · ")}
+            </p>
             <div className="mt-8 flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <span className="text-sm text-cream/70">From</span>
               <TourPrice slug={tour.slug} className="font-serif text-4xl whitespace-nowrap text-apricot sm:text-5xl" />

@@ -72,7 +72,7 @@ export const seasonWindows = {
   deosai: { name: "Deosai Plains", from: "06-15", to: "09-30" },
   khunjerab: { name: "Khunjerab Pass", from: "04-01", to: "11-30" },
 } as const;
-type WindowName = keyof typeof seasonWindows;
+export type WindowName = keyof typeof seasonWindows;
 
 type SeasonRule =
   /** The pass/plain visited on `day` (1-based) must be inside its window. */
@@ -86,7 +86,7 @@ export const tourSeasonRules: Record<string, SeasonRule[]> = {
     { kind: "strip", days: [2, 3, 4], destination: "hunza" },
   ],
   "skardu-lakes": [
-    { kind: "window", day: 4, window: "deosai", level: "info", note: "This departure runs the Shigar and Khaplu version of Day 4." },
+    { kind: "window", day: 4, window: "deosai", level: "info", note: "This departure runs the Shigar Fort or Khaplu version of Day 4." },
     { kind: "strip", days: [2, 3, 4, 5], destination: "skardu" },
   ],
   "grand-karakoram": [
@@ -103,6 +103,12 @@ const addDays = (iso: string, n: number) => new Date(Date.parse(`${iso}T00:00:00
 const md = (mmdd: string) => {
   const [m, d] = mmdd.split("-").map(Number);
   return `${d} ${months[m - 1]}`;
+};
+
+/** { name: "Babusar Pass", open: "20 Jun to 31 Oct" } (for the destination pages). */
+export const passWindow = (name: WindowName) => {
+  const w = seasonWindows[name];
+  return { name: w.name, open: `${md(w.from)} to ${md(w.to)}` };
 };
 
 /** Season warnings for a departure of `tourSlug` starting on `date` (YYYY-MM-DD). */
@@ -158,6 +164,29 @@ export const destinations = [
       "Passu Cones and the Hussaini suspension bridge",
       "Sunrise over Rakaposhi and Ultar from Eagle's Nest (Duikar)",
     ],
+    intro: [
+      "Hunza is a valley in Gilgit-Baltistan on the Karakoram Highway, which continues north to the Khunjerab Pass on the China border. Our tours stay in Karimabad, at 2,438 m, where Baltit Fort and Altit Fort stand above the town.",
+      "From Karimabad, the road up the valley passes Attabad Lake, formed by a landslide in 2010, then the Hussaini suspension bridge and the Passu Cones, before climbing to the Khunjerab Pass at 4,693 m. The pass is open roughly April to November. For sunrise over Rakaposhi and Ultar, the viewpoint is Eagle's Nest (Duikar), above Karimabad.",
+      "By road, Karimabad is approx. 18–20 hours from Islamabad, split over two days with a night in Chilas or Naran. The drive in from Chilas stops at the Nanga Parbat viewpoint at Raikot and the Rakaposhi viewpoint.",
+      "The valley is visited from late March to early November: apricot and cherry blossom in late March and April, summer from May to September, and golden poplars with cold nights in October and early November. From December to February there is snow and the days are short, though the KKH keeps Hunza reachable. Hunza Escape (5 days) and Grand Karakoram (9 days) both stay in Karimabad.",
+    ],
+    passes: ["khunjerab"],
+    travel: [
+      { tour: "hunza-escape", day: 1 },
+      { tour: "hunza-escape", day: 2 },
+      { tour: "hunza-escape", day: 3 },
+      { tour: "hunza-escape", day: 4 },
+      { tour: "grand-karakoram", day: 4 },
+      { tour: "grand-karakoram", day: 6 },
+    ],
+    photos: [
+      { image: "hero-passu-cones", alt: "The jagged Passu Cones under white clouds, above the wide grey riverbed at Passu in upper Hunza" },
+      { image: "gallery-baltit-fort", alt: "Baltit Fort on its rocky hill above green trees in Karimabad, Hunza" },
+      { image: "why-altit-fort", alt: "Hunza Valley and snowy peaks seen through a window of Altit Fort" },
+      { image: "gallery-attabad-lake", alt: "A traveller looking out over the turquoise water of Attabad Lake" },
+      { image: "gallery-kkh-ganish", alt: "The Karakoram Highway and a bridge above the Hunza River at Ganish" },
+      { image: "gallery-khunjerab-gate", alt: "Khunjerab Pass border gate" },
+    ],
   },
   {
     slug: "skardu",
@@ -180,6 +209,26 @@ export const destinations = [
       "Shigar Fort",
       "Deosai Plains, approx. 4,100 m on average",
     ],
+    intro: [
+      "Skardu is a town in Baltistan at approx. 2,230 m. From the Karakoram Highway at Jaglot, the road to Skardu follows the Indus gorge.",
+      "Close to the town are the two Kachura lakes, Lower Kachura (also called Shangrila) and Upper Kachura, and the cold desert at Sarfaranga and Katpana. Shigar Fort or Khaplu makes a day trip from Skardu.",
+      "The Deosai Plains, at approx. 4,100 m on average, are a 6–8 hour round trip from Skardu that includes Sheosar Lake. Deosai is usually open from mid-June to September, with flowers in July and August. Outside that window, Skardu Lakes goes to Shigar Fort or Khaplu instead.",
+      "By road, Skardu is approx. 20–22 hours from Islamabad over two days, via the KKH and the Jaglot–Skardu road. Flights from Islamabad take approx. 1 hour, but they depend on the weather and are often cancelled; our tours travel by road.",
+      "The season runs from May to October, with April and November possible and December to March not advised. Skardu Lakes (6 days) and Grand Karakoram (9 days) both stay in Skardu.",
+    ],
+    passes: ["deosai"],
+    travel: [
+      { tour: "skardu-lakes", day: 1 },
+      { tour: "skardu-lakes", day: 2 },
+      { tour: "skardu-lakes", day: 3 },
+      { tour: "skardu-lakes", day: 4 },
+      { tour: "skardu-lakes", day: 5 },
+      { tour: "grand-karakoram", day: 6 },
+    ],
+    photos: [
+      { image: "tour-skardu-lakes", alt: "Red-roofed Shangrila resort reflected in a still lake below mountains in Skardu" },
+      { image: "gallery-deosai", alt: "A car on the dirt road across the Deosai Plains, with snowy peaks behind" },
+    ],
   },
   {
     slug: "fairy-meadows",
@@ -201,8 +250,40 @@ export const destinations = [
       "The hike to Beyal Camp and the Nanga Parbat viewpoint (approx. 3–4 h each way)",
       "Night skies with almost no light pollution",
     ],
+    intro: [
+      "Fairy Meadows is a stretch of alpine meadow in Diamer at approx. 3,300 m, facing Nanga Parbat (8,126 m).",
+      "The last part of the way is on foot. From Raikot Bridge on the Karakoram Highway, a local jeep takes approx. 1.5–2 hours up a mountain track to Tatto or Jhel, and from there the hike takes approx. 2.5–4 hours. Ponies are available at extra cost.",
+      "From the meadows, a day hike leads to Beyal Camp and the Nanga Parbat viewpoint, approx. 3–4 hours each way. At night there is almost no light pollution.",
+      "The meadows are visited from mid-June to September, with May and October possible. Grand Karakoram (9 days) gets there in two days: up the Kaghan Valley to Naran (6–7 hours), then over Babusar Pass (4,173 m) to Raikot Bridge, the jeep track and the hike. Babusar is open roughly late June to October, depending on snowfall. The tour spends two nights at Fairy Meadows, then hikes down and continues up the Karakoram Highway to Hunza and Skardu.",
+    ],
+    passes: ["babusar"],
+    travel: [
+      { tour: "grand-karakoram", day: 1 },
+      { tour: "grand-karakoram", day: 2 },
+      { tour: "grand-karakoram", day: 3 },
+      { tour: "grand-karakoram", day: 4 },
+    ],
+    photos: [
+      { image: "tour-grand-karakoram", alt: "Pine forest at Fairy Meadows below snow-covered peaks in cloud" },
+      { image: "gallery-fairy-meadows-night", alt: "Stars over Nanga Parbat, seen from Fairy Meadows at night" },
+    ],
   },
-] satisfies { image: ImageName; season: SeasonCode[]; [k: string]: unknown }[];
+] satisfies {
+  slug: DestinationSlug;
+  image: ImageName;
+  season: SeasonCode[];
+  /** Destination page intro, one string per paragraph. Only facts found elsewhere in this file (checked below). */
+  intro: string[];
+  /** Passes or plains whose opening window matters for this destination. */
+  passes: WindowName[];
+  /** Rows of the travel-times table: itinerary days, read from the tours so the times can't drift. */
+  travel: { tour: string; day: number }[];
+  /** More photos for the destination page (the panel photo is its hero). */
+  photos: { image: ImageName; alt: string }[];
+  [k: string]: unknown;
+}[];
+
+export const getDestination = (slug: string) => destinations.find((d) => d.slug === slug);
 
 /* --------------------------------------------------------------- route map */
 
@@ -229,6 +310,8 @@ type ItineraryDay = {
   altitude?: string;
 };
 
+export type DestinationSlug = "hunza" | "skardu" | "fairy-meadows";
+
 export type Tour = {
   slug: string;
   name: string;
@@ -241,6 +324,8 @@ export type Tour = {
   image: ImageName;
   alt: string;
   featured?: boolean;
+  /** Destinations with a night on this tour (their pages list the tour). */
+  destinations: DestinationSlug[];
   /** Short factual label on the card photo (e.g. a season limit). Never a popularity claim. */
   badge?: string;
   difficulty: "Easy" | "Moderate" | "Active";
@@ -293,6 +378,7 @@ export const tours: Tour[] = [
     nights: 4,
     pricePKR: 18000,
     route: "Islamabad · Chilas · Hunza · Khunjerab",
+    destinations: ["hunza"],
     tagline: "Two forts, a turquoise lake and the China border in five days.",
     overview:
       "Five days on the Karakoram Highway into the heart of Hunza: two forts, a turquoise lake, the Passu Cones and the China border at Khunjerab.",
@@ -331,6 +417,7 @@ export const tours: Tour[] = [
     nights: 8,
     pricePKR: 30000,
     route: "Naran · Fairy Meadows · Hunza · Skardu",
+    destinations: ["fairy-meadows", "hunza", "skardu"],
     tagline: "Fairy Meadows, Hunza and Skardu in one summer loop.",
     overview: "Fairy Meadows, Hunza and Skardu in one journey: the classic summer circuit of the north.",
     image: "tour-grand-karakoram",
@@ -375,6 +462,7 @@ export const tours: Tour[] = [
     nights: 5,
     pricePKR: 24000,
     route: "Islamabad · Chilas · Skardu · Deosai",
+    destinations: ["skardu"],
     tagline: "Lakes, a cold desert and the high plains of Baltistan.",
     overview:
       "The lakes, deserts and high plains of Baltistan, reached by one of the most dramatic river gorges in Pakistan.",
@@ -388,26 +476,63 @@ export const tours: Tour[] = [
     highlights: [
       "Shangrila and Upper Kachura lakes",
       "Sarfaranga cold desert",
-      "Deosai Plains in season, or Shigar and Khaplu",
+      "Deosai Plains in season, or Shigar Fort or Khaplu",
       "The Indus gorge road",
     ],
     itinerary: [
       { title: "Islamabad to Chilas", text: "North on the Karakoram Highway along the Indus to Chilas.", time: "11–13 h drive", stay: "Chilas", altitude: "~1,250 m" },
       { title: "Chilas to Skardu", text: "Via Jaglot and the Indus gorge road to Skardu.", time: "6–7 h drive", stay: "Skardu", altitude: "~2,230 m" },
       { title: "Kachura lakes and Sarfaranga", text: "Lower Kachura (Shangrila), Upper Kachura and the Sarfaranga cold desert.", time: "Half to full day", stay: "Skardu", altitude: "~2,230 m" },
-      { title: "Deosai, or Shigar and Khaplu", text: "Mid-June to September: Deosai Plains and Sheosar Lake. Other months: Shigar Fort and Khaplu instead.", time: "6–8 h round trip", stay: "Skardu", altitude: "~2,230 m" },
+      { title: "Deosai, or Shigar Fort or Khaplu", text: "Mid-June to September: Deosai Plains and Sheosar Lake. Other months: Shigar Fort or Khaplu instead.", time: "6–8 h round trip", stay: "Skardu", altitude: "~2,230 m" },
       { title: "Skardu to Chilas", text: "Back through the Indus gorge to Chilas.", time: "6–7 h drive", stay: "Chilas", altitude: "~1,250 m" },
       { title: "Chilas to Islamabad", text: "Down the Karakoram Highway to Islamabad.", time: "11–13 h drive" },
     ],
     included,
     excluded,
     notes: [
-      "Deosai is usually open mid-June to September. Outside that window, Day 4 goes to Shigar Fort and Khaplu instead (the May departure runs this version).",
+      "Deosai is usually open mid-June to September. Outside that window, Day 4 goes to Shigar Fort or Khaplu instead (the May departure runs this version).",
     ],
   },
 ];
 
 export const getTour = (slug: string) => tours.find((t) => t.slug === slug);
+
+/**
+ * The destination pages repeat facts from this file, so the build fails if they drift apart: every time
+ * ("18–20 hours"), altitude ("2,438 m") and year in an intro must appear in that destination's data or its
+ * tours, a tour quoted as "Name (N days)" must have N days and visit the destination, and every
+ * travel-times row must point at a real itinerary day of such a tour.
+ */
+function checkDestinationPages() {
+  const escape = (x: string) => x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const has = (corpus: string, token: string) => new RegExp(`(^|[^\\d.,–])${escape(token)}`).test(corpus);
+  for (const d of destinations) {
+    const visiting = tours.filter((t) => t.destinations.includes(d.slug));
+    const { intro, ...rest } = d;
+    const corpus = JSON.stringify([rest, visiting, seasonWindows, seasonNotes]);
+    const text = intro.join(" ");
+    const tokens = [
+      ...[...text.matchAll(/(\d+(?:\.\d+)?(?:–\d+(?:\.\d+)?)?) hours?\b/g)].map((m) => `${m[1]} h`),
+      ...(text.match(/\d,\d{3} m\b/g) ?? []),
+      ...(text.match(/\b(?:19|20)\d{2}\b/g) ?? []),
+    ];
+    for (const token of tokens) {
+      if (!has(corpus, token)) throw new Error(`destinations.${d.slug}.intro mentions "${token}", which isn't in its data or its tours.`);
+    }
+    for (const t of tours) {
+      const quoted = text.match(new RegExp(`${escape(t.name)} \\((\\d+) days\\)`));
+      if (!quoted) continue;
+      if (Number(quoted[1]) !== t.days) throw new Error(`destinations.${d.slug}.intro says ${t.name} is ${quoted[1]} days; it is ${t.days}.`);
+      if (!visiting.includes(t)) throw new Error(`destinations.${d.slug}.intro names ${t.name}, which doesn't list ${d.slug}.`);
+    }
+    for (const row of d.travel) {
+      if (!visiting.find((t) => t.slug === row.tour)?.itinerary[row.day - 1]) {
+        throw new Error(`destinations.${d.slug}.travel: ${row.tour} day ${row.day} isn't a day of a tour that visits ${d.slug}.`);
+      }
+    }
+  }
+}
+checkDestinationPages();
 
 /* -------------------------------------------------------------- departures */
 

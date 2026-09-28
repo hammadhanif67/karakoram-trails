@@ -80,7 +80,7 @@ Sample prices below are a starting point. The operator sets real prices; update 
 | 1 | Islamabad → Chilas via KKH | 11–13 h | Chilas |
 | 2 | Chilas → Jaglot → Skardu along the Indus gorge | 6–7 h | Skardu (~2,230 m) |
 | 3 | Lower Kachura (Shangrila), Upper Kachura, Sarfaranga cold desert | half/full day | Skardu |
-| 4 | Mid-June–Sept: Deosai Plains and Sheosar Lake. Other months: Shigar Fort and Khaplu | 6–8 h round trip | Skardu |
+| 4 | Mid-June–Sept: Deosai Plains and Sheosar Lake. Other months: Shigar Fort or Khaplu (not both: they are in different directions) | 6–8 h round trip | Skardu |
 | 5 | Skardu → Chilas | 6–7 h | Chilas |
 | 6 | Chilas → Islamabad | 11–13 h | Home |
 
@@ -113,7 +113,7 @@ Sample prices below are a starting point. The operator sets real prices; update 
 
 - Remove all fake "seats booked": every departure starts with all 12 seats free.
 - Hunza Escape: keep 10 Oct 2026 and 24 Oct 2026 (KKH route; 24 Oct lands in autumn-colour season).
-- Skardu Lakes: 15 May 2027 (runs the Shigar/Khaplu version of Day 4, since Deosai is closed in May).
+- Skardu Lakes: 15 May 2027 (runs the Shigar Fort or Khaplu version of Day 4, since Deosai is closed in May).
 - Grand Karakoram: move to 26 Jun 2027 and 7 Aug 2027 (Babusar and Deosai reliably open).
 
 ## 6. "When to go" section (new, home page)

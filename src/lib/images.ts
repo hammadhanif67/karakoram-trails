@@ -22,6 +22,9 @@ export function photo(name: ImageName) {
   };
 }
 
+/** What a photo shows, as checked against its source page (used as a caption). */
+export const photoSubject = (name: ImageName) => (manifest[name] as Entry).credit.subject;
+
 /** Every photo with its source, photographer and licence (for /credits/). */
 export const photoCredits = () =>
   (Object.keys(manifest) as ImageName[]).map((name) => ({ name, ...(manifest[name] as Entry).credit }));

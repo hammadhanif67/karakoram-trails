@@ -3,7 +3,8 @@
 // - Each output is re-encoded at decreasing quality (and, for very grainy photos, a light denoise) until it
 //   fits its byte budget. AVIF gets a tighter budget than WebP.
 // - File names carry a hash of their bytes (name-1280.3f9a1c2b.avif), so /images/* can be cached for a
-//   year: a changed photo gets a new name. Every photo is used in exactly one place on the site.
+//   year: a changed photo gets a new name. Each slot has its own photo; the destination pages reuse some of
+//   them (their hero is the photo of the destination's home-page panel).
 // Run with: npm run optimize-images (commit public/images and the manifest afterwards).
 
 import sharp from "sharp";

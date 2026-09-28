@@ -11,6 +11,7 @@ import { TourBooking } from "@/components/tour/booking";
 import { TourPrice } from "@/components/ui/tour-price";
 import { Photo } from "@/components/ui/photo";
 import { Reveal } from "@/components/ui/reveal";
+import { SectionTitle } from "@/components/ui/section-title";
 import { faqs, getTour, goodToKnow, tours } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
 
@@ -32,15 +33,6 @@ export async function generateMetadata({ params }: PageProps<"/tours/[slug]">): 
     image: tour.image,
     imageAlt: tour.alt,
   });
-}
-
-function SectionTitle({ eyebrow, children }: { eyebrow: string; children: React.ReactNode }) {
-  return (
-    <Reveal>
-      <p className="text-xs font-medium tracking-[0.25em] text-apricot-deep uppercase">{eyebrow}</p>
-      <h2 className="mt-3 font-serif text-4xl leading-tight font-medium text-ink sm:text-5xl">{children}</h2>
-    </Reveal>
-  );
 }
 
 export default async function TourPage({ params }: PageProps<"/tours/[slug]">) {

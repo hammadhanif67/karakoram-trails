@@ -143,6 +143,20 @@ body {
   }
 }
 
+/* Destination page hero scrim (app/destinations/[slug]/page.tsx), in --night. The text block reaches high up
+   the hero on phones, so it is dark almost to the top there; from 1024px it is dark on the left, behind the
+   text, and lighter on the right. Every hero text line stays at 4.5:1 or better (worst 1% of pixels). */
+.destination-scrim {
+  background-image: linear-gradient(to top, rgb(15 30 34 / 0.95), rgb(15 30 34 / 0.85) 45%, rgb(15 30 34 / 0.7) 75%, rgb(15 30 34 / 0.55));
+}
+@media (min-width: 1024px) {
+  .destination-scrim {
+    background-image:
+      linear-gradient(to right, rgb(15 30 34 / 0.85), rgb(15 30 34 / 0.7) 45%, rgb(15 30 34 / 0.15) 75%, transparent),
+      linear-gradient(to top, rgb(15 30 34 / 0.9), rgb(15 30 34 / 0.35) 60%, rgb(15 30 34 / 0.3));
+  }
+}
+
 /* Scroll-in reveal (components/ui/reveal.tsx): a scroll-driven animation, no JavaScript. Progressive
    enhancement only: without animation-timeline support, or with reduced motion, none of this applies and
    the content is fully visible. The animation finishes while the element is still entering the viewport,

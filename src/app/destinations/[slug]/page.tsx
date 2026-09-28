@@ -72,7 +72,7 @@ export default async function DestinationPage({ params }: PageProps<"/destinatio
         </section>
 
         {/* Quick facts */}
-        <section aria-label="Quick facts" className="border-b border-line bg-[#efe8da]">
+        <section aria-label="Quick facts" className="border-b border-line bg-sand">
           <dl className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-6 px-5 py-8 sm:px-8 lg:grid-cols-4">
             {facts.map((f) => (
               <div key={f.label} className="relative pl-8">
@@ -271,7 +271,7 @@ export default async function DestinationPage({ params }: PageProps<"/destinatio
         </section>
 
         {/* Other destinations */}
-        <section aria-labelledby="other-destinations" className="bg-[#efe8da] py-20 sm:py-24">
+        <section aria-labelledby="other-destinations" className="bg-sand py-20 sm:py-24">
           <div className="mx-auto max-w-7xl px-5 sm:px-8">
             <SectionTitle eyebrow="Keep exploring">
               <span id="other-destinations">Other destinations</span>

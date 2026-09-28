@@ -3,7 +3,7 @@ import { Cormorant, Montserrat } from "next/font/google";
 import { CurrencyProvider } from "@/lib/currency";
 import { LiveDataProvider } from "@/lib/live-data";
 import { MotionProvider } from "@/lib/motion-provider";
-import { site, siteUrl } from "@/lib/site";
+import { colorVariables, site, siteUrl } from "@/lib/site";
 import "./globals.css";
 
 // Both families are variable fonts: one file per style (latin subset only), whatever the number of weights.
@@ -43,12 +43,17 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0f1e22",
+  themeColor: site.colors.night,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" className={`${cormorant.variable} ${cormorantItalic.variable} ${montserrat.variable}`}>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${cormorant.variable} ${cormorantItalic.variable} ${montserrat.variable}`}
+      style={colorVariables()}
+    >
       {/* suppressHydrationWarning: browser extensions (e.g. ColorZilla) add attributes to <body> before React hydrates */}
       <body suppressHydrationWarning>
         <MotionProvider>

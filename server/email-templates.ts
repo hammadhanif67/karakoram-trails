@@ -33,13 +33,13 @@ const when = (iso: string) =>
   new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit", timeZone: "Asia/Karachi" }).format(new Date(iso)) + " PKT";
 
 function layout(title: string, paragraphs: string[], cta?: { label: string; href: string }) {
-  const html = `<!doctype html><html><body style="margin:0;background:#f6f1e7;font-family:Arial,Helvetica,sans-serif;color:#1c1917">
+  const html = `<!doctype html><html><body style="margin:0;background:${site.colors.cream};font-family:Arial,Helvetica,sans-serif;color:${site.colors.ink}">
 <div style="max-width:560px;margin:0 auto;padding:32px 24px">
-<p style="font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#d08a3c;margin:0 0 8px">${esc(site.name)}</p>
+<p style="font-size:13px;letter-spacing:2px;text-transform:uppercase;color:${site.colors.apricot};margin:0 0 8px">${esc(site.name)}</p>
 <h1 style="font-family:Georgia,serif;font-weight:normal;font-size:28px;margin:0 0 20px">${esc(title)}</h1>
 ${paragraphs.map((p) => `<p style="font-size:15px;line-height:1.6;margin:0 0 14px">${p}</p>`).join("\n")}
-${cta ? `<p style="margin:24px 0"><a href="${esc(cta.href)}" style="background:#d08a3c;color:#1a1206;text-decoration:none;padding:12px 20px;border-radius:4px;font-size:14px;letter-spacing:1px;text-transform:uppercase">${esc(cta.label)}</a></p>` : ""}
-<p style="font-size:12px;color:#5f5e57;margin-top:32px">This link gives access to your booking. Please don't forward this email.</p>
+${cta ? `<p style="margin:24px 0"><a href="${esc(cta.href)}" style="background:${site.colors.apricot};color:${site.colors.apricotInk};text-decoration:none;padding:12px 20px;border-radius:4px;font-size:14px;letter-spacing:1px;text-transform:uppercase">${esc(cta.label)}</a></p>` : ""}
+<p style="font-size:12px;color:${site.colors.mist};margin-top:32px">This link gives access to your booking. Please don't forward this email.</p>
 </div></body></html>`;
   const text = [title, "", ...paragraphs.map((p) => p.replace(/<[^>]+>/g, "")), ...(cta ? ["", `${cta.label}: ${cta.href}`] : [])].join("\n");
   return { html, text };

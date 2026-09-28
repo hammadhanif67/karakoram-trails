@@ -8,6 +8,7 @@ import { CtaButton } from "@/components/ui/cta-button";
 import { formatDate, formatPrice, whatsappLink, type Tour } from "@/lib/content";
 import { useCurrency } from "@/lib/currency";
 import { useDepartures, useLiveData, useTourPrice } from "@/lib/live-data";
+import { site } from "@/lib/site";
 
 const FLEXIBLE = "flexible";
 
@@ -39,7 +40,7 @@ export function TourBooking({ tour }: { tour: Tour }) {
     <>
       <aside aria-label="Book this tour" className="lg:relative">
         <div className="relative overflow-hidden rounded-3xl border border-line bg-white/80 p-7 shadow-xl shadow-night/5 lg:sticky lg:top-28">
-          <ShineBorder borderWidth={1.5} duration={12} shineColor={["#d08a3c", "#f6f1e7", "#d08a3c"]} />
+          <ShineBorder borderWidth={1.5} duration={12} shineColor={[site.colors.apricot, site.colors.cream, site.colors.apricot]} />
           <div className="flex items-center justify-between gap-4">
             <p className="text-xs tracking-[0.2em] text-mist uppercase">From, per person</p>
             <CurrencyToggle tone="light" />

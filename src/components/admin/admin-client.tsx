@@ -123,7 +123,7 @@ function Detail({ row, onDone }: { row: Row; onDone: () => void }) {
             href={`https://wa.me/${waNumber(row.phone)}?text=${encodeURIComponent(customerMessage(row))}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded bg-[#1b7f45] px-4 py-2 text-sm font-medium text-white hover:bg-[#146a38]"
+            className="inline-flex items-center gap-2 rounded bg-whatsapp px-4 py-2 text-sm font-medium text-white hover:bg-whatsapp-hover"
           >
             <MessageCircle className="h-4 w-4" aria-hidden /> {row.status === "confirmed" ? "Send confirmation on WhatsApp" : "Message customer on WhatsApp"}
           </a>

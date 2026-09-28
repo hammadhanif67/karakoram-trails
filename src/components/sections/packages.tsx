@@ -7,6 +7,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { CtaButton } from "@/components/ui/cta-button";
 import { TourPrice, UsdApproxNote } from "@/components/ui/tour-price";
 import { tours } from "@/lib/content";
+import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 // Server component; live prices and the currency note are small client components (ui/tour-price.tsx).
@@ -41,7 +42,7 @@ export function Packages() {
                     t.featured ? "border-apricot/60" : "border-line",
                   )}
                 >
-                  {t.featured && <ShineBorder borderWidth={1.5} duration={10} shineColor={["#d08a3c", "#f6f1e7", "#d08a3c"]} />}
+                  {t.featured && <ShineBorder borderWidth={1.5} duration={10} shineColor={[site.colors.apricot, site.colors.cream, site.colors.apricot]} />}
                   <a href={href} className="relative block aspect-[16/10] overflow-hidden" tabIndex={-1} aria-hidden>
                     <Photo
                       name={t.image}

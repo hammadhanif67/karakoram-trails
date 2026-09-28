@@ -6,7 +6,7 @@ import { destinations, months, seasonNotes } from "@/lib/content";
 /** Month-by-month chart for the three destinations, plus one line per season. */
 export function WhenToGo() {
   return (
-    <section id="when-to-go" className="bg-[#efe8da] py-24 sm:py-32">
+    <section id="when-to-go" className="bg-sand py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
           eyebrow="When to go"

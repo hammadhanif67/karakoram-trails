@@ -28,7 +28,7 @@ export function FloatingWhatsApp() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 16 }}
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-40 inline-flex min-h-11 items-center gap-2 rounded-[4px] bg-[#1b7f45] transition-colors duration-250 hover:bg-[#146a38] active:bg-[#146a38] px-4 text-[0.7rem] font-medium tracking-[0.14em] text-white uppercase shadow-lg shadow-night/30 ring-1 ring-white/20 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-apricot lg:hidden"
+          className="fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-40 inline-flex min-h-11 items-center gap-2 rounded-[4px] bg-whatsapp transition-colors duration-250 hover:bg-whatsapp-hover active:bg-whatsapp-hover px-4 text-[0.7rem] font-medium tracking-[0.14em] text-white uppercase shadow-lg shadow-night/30 ring-1 ring-white/20 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-apricot lg:hidden"
         >
           <MessageCircle className="h-4 w-4" aria-hidden />
           WhatsApp

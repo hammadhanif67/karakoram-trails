@@ -162,7 +162,7 @@ export function Contact() {
 
         <Reveal delay={0.1}>
           <div className="overflow-hidden rounded-2xl bg-cream shadow-2xl shadow-night/40">
-            <div className="border-b border-line bg-[#efe8da] px-6 py-5 sm:px-9">
+            <div className="border-b border-line bg-sand px-6 py-5 sm:px-9">
               <p className="font-serif text-2xl font-medium text-ink">Trip enquiry</p>
               <p className="mt-1 text-sm text-mist">Takes about a minute. No payment, no obligation.</p>
             </div>

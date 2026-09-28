@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ArrowRight } from "lucide-react";
 import { ShineBorder } from "@/components/magicui/shine-border";
+import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 type Variant = "primary" | "outline" | "solid";
@@ -41,8 +42,8 @@ const sizes: Record<Size, string> = {
 // half-over the old colour (the earlier left-to-right sweep left a lagging sliver).
 const variants: Record<Variant, Record<Tone, string>> = {
   primary: {
-    dark: "bg-apricot text-apricot-ink shadow-lg shadow-apricot/20 hover:bg-[#e0a059] hover:shadow-apricot/35",
-    light: "bg-apricot text-apricot-ink shadow-lg shadow-apricot/20 hover:bg-[#e0a059] hover:shadow-apricot/35",
+    dark: "bg-apricot text-apricot-ink shadow-lg shadow-apricot/20 hover:bg-apricot-bright hover:shadow-apricot/35",
+    light: "bg-apricot text-apricot-ink shadow-lg shadow-apricot/20 hover:bg-apricot-bright hover:shadow-apricot/35",
   },
   outline: {
     dark: "border border-cream/45 text-cream hover:border-cream hover:bg-cream hover:text-ink",
@@ -69,7 +70,7 @@ export function CtaButton(props: AsLink | AsButton) {
         <ShineBorder
           borderWidth={1.5}
           duration={8}
-          shineColor={variant === "primary" ? ["#fff6e6", "#d08a3c", "#fff6e6"] : ["#d08a3c", "#f6f1e7", "#d08a3c"]}
+          shineColor={variant === "primary" ? [site.colors.shine, site.colors.apricot, site.colors.shine] : [site.colors.apricot, site.colors.cream, site.colors.apricot]}
         />
       )}
       {icon}

@@ -4,8 +4,8 @@ import { cn } from "@/lib/utils";
 type Tone = "light" | "dark";
 
 const fill: Record<Tone, Record<SeasonCode, string>> = {
-  light: { g: "bg-[#4f8a63]", a: "bg-apricot", x: "bg-[#d6ccb9]" },
-  dark: { g: "bg-[#6fae84]", a: "bg-apricot", x: "bg-cream/20" },
+  light: { g: "bg-season-best", a: "bg-apricot", x: "bg-season-closed" },
+  dark: { g: "bg-season-best-on-dark", a: "bg-apricot", x: "bg-cream/20" },
 };
 
 /** Twelve month cells: green = best, amber = possible, grey = closed or not advised. */

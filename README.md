@@ -163,19 +163,22 @@ pages, the Pages Functions (booking rules, customer emails) and the build script
    code, email, office address, reply hours). `social`: profile URLs; empty ones are not shown.
 2. **Logo:** `logo.mark` is `"mountain"` (the built-in mark) or the path of your own SVG in `public/`, for
    example `"/logo.svg"`. The browser-tab icon is a separate file: replace `src/app/icon.svg`.
-3. **Booking rules:** `booking` (maximum group size, deposit %, hold hours, balance due days, online
+3. **Colours:** `colors`. Each comment gives today's contrast ratios; the text shades (`apricotDeep` on light
+   backgrounds, `apricotBright` on dark ones, `mist`) must stay at 4.5:1 or better, and the hero scrims
+   (`.hero-scrim`, `.destination-scrim` in `src/app/globals.css`) were tuned for these colours and photos.
+4. **Booking rules:** `booking` (maximum group size, deposit %, hold hours, balance due days, online
    cutoff). The server uses the same values, so a new deploy applies them everywhere. Going above 12
    travellers per booking also needs a D1 migration (`migrations/0001_init.sql` caps it at 12). The rules
    are quoted on /terms, so update `legalMeta.updated` in `src/lib/content.ts` and bump `TERMS_VERSION` in
    `server/bookings.ts` when they change.
-4. **Payments:** `payments.methods` and the labels on the booking page. The bank details themselves are
+5. **Payments:** `payments.methods` and the labels on the booking page. The bank details themselves are
    secrets: `npx wrangler pages secret put BANK_NAME --project-name <project>` (also `BANK_ACCOUNT_TITLE`,
    `BANK_IBAN`, `RAAST_ID`).
-5. **Feature flags:** `features.showTestimonials` (turn it on only once `testimonials` in
+6. **Feature flags:** `features.showTestimonials` (turn it on only once `testimonials` in
    `src/lib/content.ts` holds real reviews).
-6. **SEO:** `seo` (home page title and description, default social-preview photo, locale). Other pages are
+7. **SEO:** `seo` (home page title and description, default social-preview photo, locale). Other pages are
    titled "Page | name".
-7. **Address:** `url` is the default. Per deployment, set `NEXT_PUBLIC_SITE_URL` (Cloudflare Pages build
+8. **Address:** `url` is the default. Per deployment, set `NEXT_PUBLIC_SITE_URL` (Cloudflare Pages build
    variable) and, in `wrangler.toml`, `PUBLIC_SITE_URL` and `TURNSTILE_HOSTNAMES`.
 
 Not in the config: tours, destinations, FAQ and legal texts (`src/lib/content.ts`), photos

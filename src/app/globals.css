@@ -5,21 +5,7 @@
 @custom-variant pin (@media (min-width: 1024px) and (prefers-reduced-motion: no-preference));
 
 /* Design tokens from the approved direction (UI/UX Pro Max: Parallax Storytelling, Luxury Serif). */
-:root {
-  --night: #0f1e22;
-  --pine: #1e4d4a;
-  --pine-deep: #173b39;
-  --apricot: #d08a3c;
-  --apricot-ink: #1a1206;
-  /* Apricot for text on light backgrounds (cream/sand/white): 4.96:1 or better. --apricot stays for dark backgrounds, fills and icons. */
-  --apricot-deep: #92531a;
-  /* Apricot for text on the green (pine-deep) section (5.43:1) and on the hero photo's scrim. */
-  --apricot-bright: #e0a059;
-  --cream: #f6f1e7;
-  --ink: #1c1917;
-  --mist: #5f5e57;
-  --line: #e2d9c8;
-}
+/* Colours come from site.config.ts: the root layout sets them as CSS variables on <html>. */
 
 @theme inline {
   --color-night: var(--night);
@@ -30,6 +16,12 @@
   --color-apricot-deep: var(--apricot-deep);
   --color-apricot-bright: var(--apricot-bright);
   --color-cream: var(--cream);
+  --color-sand: var(--sand);
+  --color-season-best: var(--season-best);
+  --color-season-best-on-dark: var(--season-best-on-dark);
+  --color-season-closed: var(--season-closed);
+  --color-whatsapp: var(--whatsapp);
+  --color-whatsapp-hover: var(--whatsapp-hover);
   --color-ink: var(--ink);
   --color-mist: var(--mist);
   --color-line: var(--line);
@@ -41,13 +33,13 @@
   --color-foreground: var(--ink);
   --color-input: var(--line);
   --color-ring: var(--apricot);
-  --color-muted: #efe8da;
+  --color-muted: var(--sand);
   --color-muted-foreground: var(--mist);
   --color-accent: var(--pine);
   --color-accent-foreground: var(--cream);
   --color-primary: var(--pine);
   --color-primary-foreground: var(--cream);
-  --color-destructive: #b91c1c;
+  --color-destructive: var(--danger);
 
 
   /* Hero entrance (CSS, runs on first paint) and scroll cue */
@@ -133,13 +125,13 @@ body {
    right-hand side from 1024px up. Tuned so every hero text line stays at 4.5:1 or better even on its
    brightest 1% of pixels. */
 .hero-scrim {
-  background-image: linear-gradient(to bottom, rgb(15 30 34 / 0.88), rgb(15 30 34 / 0.84) 72%, rgb(15 30 34 / 0.35) 84%, rgb(15 30 34 / 0.85));
+  background-image: linear-gradient(to bottom, rgb(var(--night-rgb) / 0.88), rgb(var(--night-rgb) / 0.84) 72%, rgb(var(--night-rgb) / 0.35) 84%, rgb(var(--night-rgb) / 0.85));
 }
 @media (min-width: 1024px) {
   .hero-scrim {
     background-image:
-      linear-gradient(to right, rgb(15 30 34 / 0.9), rgb(15 30 34 / 0.86) 45%, rgb(15 30 34 / 0.78) 70%, rgb(15 30 34 / 0.25) 88%, transparent),
-      linear-gradient(to bottom, rgb(15 30 34 / 0.6), rgb(15 30 34 / 0.2) 58%, rgb(15 30 34 / 0.85));
+      linear-gradient(to right, rgb(var(--night-rgb) / 0.9), rgb(var(--night-rgb) / 0.86) 45%, rgb(var(--night-rgb) / 0.78) 70%, rgb(var(--night-rgb) / 0.25) 88%, transparent),
+      linear-gradient(to bottom, rgb(var(--night-rgb) / 0.6), rgb(var(--night-rgb) / 0.2) 58%, rgb(var(--night-rgb) / 0.85));
   }
 }
 
@@ -147,13 +139,13 @@ body {
    the hero on phones, so it is dark almost to the top there; from 1024px it is dark on the left, behind the
    text, and lighter on the right. Every hero text line stays at 4.5:1 or better (worst 1% of pixels). */
 .destination-scrim {
-  background-image: linear-gradient(to top, rgb(15 30 34 / 0.95), rgb(15 30 34 / 0.85) 45%, rgb(15 30 34 / 0.7) 75%, rgb(15 30 34 / 0.55));
+  background-image: linear-gradient(to top, rgb(var(--night-rgb) / 0.95), rgb(var(--night-rgb) / 0.85) 45%, rgb(var(--night-rgb) / 0.7) 75%, rgb(var(--night-rgb) / 0.55));
 }
 @media (min-width: 1024px) {
   .destination-scrim {
     background-image:
-      linear-gradient(to right, rgb(15 30 34 / 0.85), rgb(15 30 34 / 0.7) 45%, rgb(15 30 34 / 0.15) 75%, transparent),
-      linear-gradient(to top, rgb(15 30 34 / 0.9), rgb(15 30 34 / 0.35) 60%, rgb(15 30 34 / 0.3));
+      linear-gradient(to right, rgb(var(--night-rgb) / 0.85), rgb(var(--night-rgb) / 0.7) 45%, rgb(var(--night-rgb) / 0.15) 75%, transparent),
+      linear-gradient(to top, rgb(var(--night-rgb) / 0.9), rgb(var(--night-rgb) / 0.35) 60%, rgb(var(--night-rgb) / 0.3));
   }
 }
 

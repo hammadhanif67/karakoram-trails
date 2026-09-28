@@ -8,7 +8,7 @@ const icons = [Clock, Users, Wallet, MessageCircle];
 /** Shown in place of testimonials until there are real reviews (features.showTestimonials). */
 export function Promises() {
   return (
-    <section id="promises" className="bg-[#efe8da] py-24 sm:py-32">
+    <section id="promises" className="bg-sand py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
           eyebrow="Our promises"

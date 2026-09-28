@@ -33,7 +33,7 @@ function Card({ t }: { t: Item }) {
 
 export function Testimonials() {
   return (
-    <section id="stories" className="overflow-hidden bg-[#efe8da] py-24 sm:py-32">
+    <section id="stories" className="overflow-hidden bg-sand py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
           align="center"

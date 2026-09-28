@@ -82,7 +82,7 @@ export default async function TourPage({ params }: PageProps<"/tours/[slug]">) {
         </section>
 
         {/* Quick facts */}
-        <section aria-label="Quick facts" className="border-b border-line bg-[#efe8da]">
+        <section aria-label="Quick facts" className="border-b border-line bg-sand">
           <dl className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-6 px-5 py-8 sm:px-8 md:grid-cols-3 xl:grid-cols-6">
             {facts.map((f) => (
               <div key={f.label} className="relative pl-8">
@@ -212,7 +212,7 @@ export default async function TourPage({ params }: PageProps<"/tours/[slug]">) {
         </div>
 
         {/* Other tours */}
-        <section aria-labelledby="other-tours" className="border-t border-line bg-[#efe8da] py-20 sm:py-24">
+        <section aria-labelledby="other-tours" className="border-t border-line bg-sand py-20 sm:py-24">
           <div className="mx-auto max-w-7xl px-5 sm:px-8">
             <SectionTitle eyebrow="Keep exploring">
               <span id="other-tours">Other tours</span>

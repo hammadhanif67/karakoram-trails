@@ -6,6 +6,7 @@ import { AnimatedBeam } from "@/components/magicui/animated-beam";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { steps } from "@/lib/content";
+import { site } from "@/lib/site";
 import { useMediaQuery, useReducedMotionSafe } from "@/lib/use-media-query";
 
 const icons: LucideIcon[] = [MessageCircle, ClipboardList, Mountain];
@@ -64,11 +65,11 @@ export function HowItWorks() {
                 fromRef={refs[i]}
                 toRef={refs[i + 1]}
                 curvature={-30}
-                pathColor="#f6f1e7"
+                pathColor={site.colors.cream}
                 pathOpacity={0.15}
                 pathWidth={2}
-                gradientStartColor="#d08a3c"
-                gradientStopColor="#f6f1e7"
+                gradientStartColor={site.colors.apricot}
+                gradientStopColor={site.colors.cream}
                 duration={4}
                 delay={i * 1.2}
               />

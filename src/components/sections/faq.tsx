@@ -33,7 +33,7 @@ export function Faq() {
   };
 
   return (
-    <section id="faq" className="bg-[#efe8da] py-24 sm:py-32">
+    <section id="faq" className="bg-sand py-24 sm:py-32">
       <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)] gap-12 px-5 sm:px-8 lg:grid-cols-[4fr_7fr] lg:gap-20">
         <div>
           <SectionHeading

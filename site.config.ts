@@ -18,6 +18,44 @@ export type SiteConfig = {
     /** "mountain" for the built-in mountain mark, or the path of your own SVG in /public, e.g. "/logo.svg". */
     mark: "mountain" | `/${string}`;
   };
+  /**
+   * Brand colours as #rrggbb. They become CSS variables (--night, --pine-deep, ...) on every page and Tailwind
+   * colours (bg-night, text-apricot-deep, ...), and the customer emails use them too. Ratios are WCAG
+   * contrast with today's values; check them again if you change a colour.
+   */
+  colors: {
+    /** Dark sections, the navbar, hero scrims and the browser theme colour. Cream text on it: 15.18:1. */
+    night: string;
+    pine: string;
+    pineDeep: string;
+    /** Accent for buttons, icons and fills. Not for small text on light backgrounds (2.53:1 on cream). */
+    apricot: string;
+    /** Text on apricot buttons: 6.52:1. */
+    apricotInk: string;
+    /** Apricot text on light backgrounds: 5.37:1 on cream, 4.96:1 on sand, 6.04:1 on white. */
+    apricotDeep: string;
+    /** Apricot text on dark backgrounds: 5.43:1 on pine-deep, 7.60:1 on night (also over the hero scrims). */
+    apricotBright: string;
+    cream: string;
+    /** Body text: 15.54:1 on cream. */
+    ink: string;
+    /** Secondary text: 5.78:1 on cream, 5.34:1 on sand, 6.51:1 on white. */
+    mist: string;
+    /** Borders and dividers. */
+    line: string;
+    /** Alternate light section background. */
+    sand: string;
+    /** Season strips: "best" months on light and on dark backgrounds, and closed months on light. */
+    seasonBest: string;
+    seasonBestOnDark: string;
+    seasonClosed: string;
+    /** WhatsApp buttons (white text: 5.04:1, hover 6.67:1). */
+    whatsapp: string;
+    whatsappHover: string;
+    danger: string;
+    /** Highlight in the primary button's moving border. */
+    shine: string;
+  };
   contact: {
     phoneDisplay: string;
     /** Digits only, with the country code: used for wa.me links and tel: links. */
@@ -68,6 +106,27 @@ export const site: SiteConfig = {
   name,
   url: "https://karakoram-trails.pages.dev",
   logo: { mark: "mountain" },
+  colors: {
+    night: "#0f1e22",
+    pine: "#1e4d4a",
+    pineDeep: "#173b39",
+    apricot: "#d08a3c",
+    apricotInk: "#1a1206",
+    apricotDeep: "#92531a",
+    apricotBright: "#e0a059",
+    cream: "#f6f1e7",
+    ink: "#1c1917",
+    mist: "#5f5e57",
+    line: "#e2d9c8",
+    sand: "#efe8da",
+    seasonBest: "#4f8a63",
+    seasonBestOnDark: "#6fae84",
+    seasonClosed: "#d6ccb9",
+    whatsapp: "#1b7f45",
+    whatsappHover: "#146a38",
+    danger: "#b91c1c",
+    shine: "#fff6e6",
+  },
   contact: {
     phoneDisplay: "+92 328 1933287",
     whatsapp: "923281933287",

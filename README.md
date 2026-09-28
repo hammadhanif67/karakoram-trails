@@ -163,6 +163,15 @@ Commit `public/images/` and the manifest after running it.
 - Anything still marked `PLACEHOLDER` in `src/lib/content.ts` (for example `USD_RATE` and reply hours).
 - Prices and departures live in D1; keep `content.ts` in step (`npm run db:check:remote`).
 
+## Backlog
+
+- **Android font fallbacks.** next/font's automatic fallback fonts are metric-matched to Times New Roman
+  (for Cormorant) and Arial (for Montserrat). Android phones have neither, so they show Noto Serif / Roboto
+  without size-adjust until the web fonts arrive, and text can move when they swap in. Fix: add fallback
+  `@font-face` rules for Noto Serif and Roboto with their own `size-adjust` and ascent/descent overrides,
+  listed after the current fallbacks. So far the swap was only measured on Windows (CLS 0.002 at most with
+  the fonts held back 2.5 s).
+
 ## Build notes
 
 `npm run build` also runs `scripts/flatten-segment-files.mjs` (as `postbuild`). Next.js 16.3 writes the

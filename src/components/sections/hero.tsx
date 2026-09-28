@@ -18,16 +18,16 @@ export function Hero() {
 
   return (
     <LayeredParallaxHero
-      image={{ name: HERO, alt: "The jagged Passu Cones under a wide, cloud-streaked sky in upper Hunza" }}
+      image={{ name: HERO, alt: "The jagged Passu Cones under white clouds, above the wide grey riverbed at Passu in upper Hunza" }}
       footer={<HeroFacts />}
     >
       <div id="top" className="mx-auto w-full max-w-7xl px-5 pt-28 pb-12 sm:px-8 [@media(max-height:720px)]:pt-20 [@media(max-height:720px)]:pb-8">
         <p
           {...rise(0.05)}
-          className="animate-hero-rise flex items-center gap-2 text-xs font-medium tracking-[0.3em] text-apricot uppercase"
+          className="animate-hero-rise flex items-center gap-2 text-xs font-medium tracking-[0.3em] text-apricot-bright uppercase"
         >
           <MapPin className="h-4 w-4 shrink-0" aria-hidden />
-          <span>Journeys to</span>
+          <span className="shrink-0">Journeys to</span>
           <HeroPlaces places={places} />
         </p>
 
@@ -35,7 +35,7 @@ export function Hero() {
           {...rise(0.15)}
           className="animate-hero-rise mt-6 max-w-4xl font-serif text-[3.25rem] leading-[0.95] font-medium text-cream sm:text-7xl lg:text-8xl xl:text-[7.5rem] [@media(max-height:720px)]:mt-4 [@media(max-height:720px)]:text-[2.6rem] [@media(max-height:720px)_and_(min-width:640px)]:text-6xl"
         >
-          Where the mountains <em className="text-apricot">still keep secrets</em>
+          Where the mountains <em className="text-apricot-bright">still keep secrets</em>
         </h1>
 
         <p {...rise(0.3)} className="animate-hero-rise mt-6 max-w-xl [@media(max-height:720px)]:mt-4 text-base leading-relaxed text-cream/85 sm:text-lg">

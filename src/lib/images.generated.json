@@ -1,59 +1,59 @@
 {
   "hero-passu-cones": {
     "width": 1920,
-    "height": 1289,
-    "placeholder": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADwAQCdASoQAAsAA4BaJQBOgCG0zZnGZOAA/uvnYlM0RSsvADQsUW5arPaKJOd9L9FIjkv+Xvv3pWbgeyVbcLdrh6fieyJRhNUXyeYMLIAAAA==",
+    "height": 1440,
+    "placeholder": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADwAQCdASoQAAwAA4BaJYwCw7DzqqMTezAA/mbfLSFTdzq3gpdzngsxe8RapV7fFzaBpV5DcwyLXgRmWXWK6nZei6s5IOBMN+u/Uc5DAAA=",
     "avif": [
       [
         480,
-        "/images/hero-passu-cones-480.f0291bdf.avif"
+        "/images/hero-passu-cones-480.6cf76360.avif"
       ],
       [
         768,
-        "/images/hero-passu-cones-768.5dffab9e.avif"
+        "/images/hero-passu-cones-768.35e9e96d.avif"
       ],
       [
         1280,
-        "/images/hero-passu-cones-1280.08b87951.avif"
+        "/images/hero-passu-cones-1280.69561b9d.avif"
       ],
       [
         1600,
-        "/images/hero-passu-cones-1600.eb9b0123.avif"
+        "/images/hero-passu-cones-1600.ba8fd405.avif"
       ],
       [
         1920,
-        "/images/hero-passu-cones-1920.30911df9.avif"
+        "/images/hero-passu-cones-1920.4a331a2c.avif"
       ]
     ],
     "webp": [
       [
         480,
-        "/images/hero-passu-cones-480.3c7710d2.webp"
+        "/images/hero-passu-cones-480.48d6dae4.webp"
       ],
       [
         768,
-        "/images/hero-passu-cones-768.fe89be46.webp"
+        "/images/hero-passu-cones-768.e94f0298.webp"
       ],
       [
         1280,
-        "/images/hero-passu-cones-1280.d494e2a6.webp"
+        "/images/hero-passu-cones-1280.29af5d70.webp"
       ],
       [
         1600,
-        "/images/hero-passu-cones-1600.928e5b37.webp"
+        "/images/hero-passu-cones-1600.eed20da3.webp"
       ],
       [
         1920,
-        "/images/hero-passu-cones-1920.1bc232cc.webp"
+        "/images/hero-passu-cones-1920.80bc9143.webp"
       ]
     ],
     "credit": {
       "site": "Unsplash",
       "license": "Unsplash License",
       "licenseUrl": "https://unsplash.com/license",
-      "author": "Shan A. Rajpoot",
-      "url": "https://unsplash.com/photos/ZzyHnNQqnRM",
-      "subject": "Passu Cones, Hunza"
+      "author": "Abdul Rafay",
+      "url": "https://unsplash.com/photos/-lL3UsOn41A",
+      "subject": "Passu Cones from the viewpoint at Passu, Hunza"
     }
   },
   "dest-hunza": {

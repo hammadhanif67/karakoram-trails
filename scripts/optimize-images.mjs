@@ -26,8 +26,8 @@ const UNSPLASH = { site: "Unsplash", license: "Unsplash License", licenseUrl: "h
 const images = [
   // Home hero. 1600 sits between 1280 and 1920 so a 1440 px desktop doesn't download the 1920 file.
   {
-    file: "hero-passu-cones-shan-rajpoot.jpg", name: "hero-passu-cones", widths: [480, 768, 1280, 1600, 1920], budget: 300 * KB,
-    credit: { ...UNSPLASH, author: "Shan A. Rajpoot", url: "https://unsplash.com/photos/ZzyHnNQqnRM", subject: "Passu Cones, Hunza" },
+    file: "hero-passu-cones-abdul-rafay.jpg", name: "hero-passu-cones", widths: [480, 768, 1280, 1600, 1920], budget: 300 * KB,
+    credit: { ...UNSPLASH, author: "Abdul Rafay", url: "https://unsplash.com/photos/-lL3UsOn41A", subject: "Passu Cones from the viewpoint at Passu, Hunza" },
   },
 
   // Destinations (pinned full-width panels)

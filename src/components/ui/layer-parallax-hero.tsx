@@ -42,9 +42,8 @@ export function LayeredParallaxHero({ image, children, footer, className }: Prop
         <Photo name={image.name} alt={image.alt} priority sizes="100vw" className="h-full w-full object-cover" />
       </m.div>
 
-      {/* Tints keep text at 4.5:1 contrast on any part of the photo */}
-      <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-night/75 via-night/30 to-night/90" />
-      <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-night/70 via-night/20 to-transparent" />
+      {/* Scrim behind the text (globals.css): keeps it at 4.5:1 or better on any part of the photo */}
+      <div aria-hidden className="hero-scrim absolute inset-0 -z-10" />
 
       <m.div className="relative z-10 flex w-full flex-1 items-center" style={{ y: contentY, opacity: contentOpacity }}>
         {children}

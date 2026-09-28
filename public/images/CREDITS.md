@@ -5,7 +5,7 @@ location on its source page) and is used under the licence listed.
 
 | File | Shows | Photographer | Source | Licence |
 |---|---|---|---|---|
-| hero-passu-cones | Passu Cones, Hunza | Shan A. Rajpoot | [Unsplash](https://unsplash.com/photos/ZzyHnNQqnRM) | [Unsplash License](https://unsplash.com/license) |
+| hero-passu-cones | Passu Cones from the viewpoint at Passu, Hunza | Abdul Rafay | [Unsplash](https://unsplash.com/photos/-lL3UsOn41A) | [Unsplash License](https://unsplash.com/license) |
 | dest-hunza | Autumn road in Hunza Valley | Faysal Khan | [Pexels](https://www.pexels.com/photo/35061891/) | [Pexels License](https://www.pexels.com/license/) |
 | dest-skardu | Sand dunes near Skardu | Wasif Mehmood | [Pexels](https://www.pexels.com/photo/19442073/) | [Pexels License](https://www.pexels.com/license/) |
 | dest-fairy-meadows | Sunrise on Nanga Parbat | Maaz Kalia | [Pexels](https://www.pexels.com/photo/29401243/) | [Pexels License](https://www.pexels.com/license/) |

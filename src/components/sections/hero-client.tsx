@@ -58,7 +58,8 @@ export function HeroFacts() {
     { icon: Users, label: "Group size", value: `Small groups, max ${maxGroupSize}`, short: `Max ${maxGroupSize} travellers`, href: "#why-us" },
   ];
   return (
-    <div className="animate-hero-rise border-t border-cream/15 bg-night/35 backdrop-blur-md" style={{ animationDelay: "0.6s" }}>
+    // Darker below 1024px, where the strip sits on the open (lighter) bottom of the hero scrim.
+    <div className="animate-hero-rise border-t border-cream/15 bg-night/60 backdrop-blur-md lg:bg-night/35" style={{ animationDelay: "0.6s" }}>
       {/* Phones: the first two facts side by side; wider screens: all three plus the scroll cue */}
       <div className="mx-auto grid max-w-7xl grid-cols-2 divide-x divide-cream/10 px-5 sm:grid-cols-3 sm:px-8 lg:grid-cols-[1fr_1fr_1fr_auto]">
         {facts.map((f, i) => (

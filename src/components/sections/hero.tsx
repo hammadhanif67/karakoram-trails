@@ -7,7 +7,7 @@ const places = ["Hunza", "Skardu", "Fairy Meadows", "Khunjerab"];
 
 // Server component: the text is in the static HTML; only the rotating place name and the facts strip
 // (live prices and dates) are client components (hero-client.tsx).
-const HERO = "hero-skardu-shangrila" as const;
+const HERO = "hero-passu-cones" as const;
 
 export function Hero() {
   // No preload() for the hero photo: React would also put the hint in the prefetched home-page data, so
@@ -18,7 +18,7 @@ export function Hero() {
 
   return (
     <LayeredParallaxHero
-      image={{ name: HERO, alt: "Shangrila lake in Skardu beneath snow-capped Karakoram peaks" }}
+      image={{ name: HERO, alt: "The jagged Passu Cones under a wide, cloud-streaked sky in upper Hunza" }}
       footer={<HeroFacts />}
     >
       <div id="top" className="mx-auto w-full max-w-7xl px-5 pt-28 pb-12 sm:px-8 [@media(max-height:720px)]:pt-20 [@media(max-height:720px)]:pb-8">

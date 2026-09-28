@@ -3,7 +3,8 @@ import manifest from "./images.generated.json";
 
 export type ImageName = keyof typeof manifest;
 
-type Entry = { width: number; height: number; placeholder: string; avif: [number, string][]; webp: [number, string][] };
+export type Credit = { site: string; license: string; licenseUrl: string; author: string; url: string; subject: string };
+type Entry = { width: number; height: number; placeholder: string; avif: [number, string][]; webp: [number, string][]; credit: Credit };
 
 const srcSet = (files: [number, string][]) => files.map(([w, path]) => `${path} ${w}w`).join(", ");
 
@@ -20,3 +21,7 @@ export function photo(name: ImageName) {
     placeholder: e.placeholder,
   };
 }
+
+/** Every photo with its source, photographer and licence (for /credits/). */
+export const photoCredits = () =>
+  (Object.keys(manifest) as ImageName[]).map((name) => ({ name, ...(manifest[name] as Entry).credit }));

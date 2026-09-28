@@ -1,52 +1,60 @@
 {
-  "hero-skardu-shangrila": {
+  "hero-passu-cones": {
     "width": 1920,
-    "height": 1280,
-    "placeholder": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADwAQCdASoQAAsAA4BaJaACdAELy78XwugA/vI9pg6qGIfXF+rT4oImAl0aq2ahy0HmQcT8kYsKWMlsWQREdVS7Ol9UFBIyC/DgHNLdq0hkHdXAuCOScn3AAAA=",
+    "height": 1289,
+    "placeholder": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADwAQCdASoQAAsAA4BaJQBOgCG0zZnGZOAA/uvnYlM0RSsvADQsUW5arPaKJOd9L9FIjkv+Xvv3pWbgeyVbcLdrh6fieyJRhNUXyeYMLIAAAA==",
     "avif": [
       [
         480,
-        "/images/hero-skardu-shangrila-480.23ae79fd.avif"
+        "/images/hero-passu-cones-480.f0291bdf.avif"
       ],
       [
         768,
-        "/images/hero-skardu-shangrila-768.29ec496f.avif"
+        "/images/hero-passu-cones-768.5dffab9e.avif"
       ],
       [
         1280,
-        "/images/hero-skardu-shangrila-1280.e73e951a.avif"
+        "/images/hero-passu-cones-1280.08b87951.avif"
       ],
       [
         1600,
-        "/images/hero-skardu-shangrila-1600.0d12bd23.avif"
+        "/images/hero-passu-cones-1600.eb9b0123.avif"
       ],
       [
         1920,
-        "/images/hero-skardu-shangrila-1920.16052345.avif"
+        "/images/hero-passu-cones-1920.30911df9.avif"
       ]
     ],
     "webp": [
       [
         480,
-        "/images/hero-skardu-shangrila-480.5f7ce025.webp"
+        "/images/hero-passu-cones-480.3c7710d2.webp"
       ],
       [
         768,
-        "/images/hero-skardu-shangrila-768.a445506b.webp"
+        "/images/hero-passu-cones-768.fe89be46.webp"
       ],
       [
         1280,
-        "/images/hero-skardu-shangrila-1280.45f930ca.webp"
+        "/images/hero-passu-cones-1280.d494e2a6.webp"
       ],
       [
         1600,
-        "/images/hero-skardu-shangrila-1600.975ea8d7.webp"
+        "/images/hero-passu-cones-1600.928e5b37.webp"
       ],
       [
         1920,
-        "/images/hero-skardu-shangrila-1920.edb953c0.webp"
+        "/images/hero-passu-cones-1920.1bc232cc.webp"
       ]
-    ]
+    ],
+    "credit": {
+      "site": "Unsplash",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license",
+      "author": "Shan A. Rajpoot",
+      "url": "https://unsplash.com/photos/ZzyHnNQqnRM",
+      "subject": "Passu Cones, Hunza"
+    }
   },
   "dest-hunza": {
     "width": 1280,
@@ -79,7 +87,15 @@
         1280,
         "/images/dest-hunza-1280.a544826a.webp"
       ]
-    ]
+    ],
+    "credit": {
+      "site": "Pexels",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "author": "Faysal Khan",
+      "url": "https://www.pexels.com/photo/35061891/",
+      "subject": "Autumn road in Hunza Valley"
+    }
   },
   "dest-skardu": {
     "width": 1600,
@@ -112,7 +128,15 @@
         1600,
         "/images/dest-skardu-1600.6246b04d.webp"
       ]
-    ]
+    ],
+    "credit": {
+      "site": "Pexels",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "author": "Wasif Mehmood",
+      "url": "https://www.pexels.com/photo/19442073/",
+      "subject": "Sand dunes near Skardu"
+    }
   },
   "dest-fairy-meadows": {
     "width": 1600,
@@ -145,7 +169,15 @@
         1600,
         "/images/dest-fairy-meadows-1600.e04a6327.webp"
       ]
-    ]
+    ],
+    "credit": {
+      "site": "Pexels",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "author": "Maaz Kalia",
+      "url": "https://www.pexels.com/photo/29401243/",
+      "subject": "Sunrise on Nanga Parbat"
+    }
   },
   "why-altit-fort": {
     "width": 1000,
@@ -178,279 +210,359 @@
         1000,
         "/images/why-altit-fort-1000.74eabfe2.webp"
       ]
-    ]
+    ],
+    "credit": {
+      "site": "Pexels",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "author": "Aakash Ashraf",
+      "url": "https://www.pexels.com/photo/1454405/",
+      "subject": "Hunza Valley seen from Altit Fort"
+    }
   },
   "tour-hunza-escape": {
     "width": 1600,
     "height": 1000,
-    "placeholder": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADQAQCdASoQAAoAA4BaJZwAAqHaWIboAAD5YxiWmN67rub1tT6TJ/tvq3uufitOQgMJR2DAGAlgqwNIIYRdMJDfEAPiOpaq0gm1eZxI7LwAAA==",
+    "placeholder": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAQCdASoQAAoAA4BaJaACdAEUUxtYqIAA/ictZFR4UC6KPtZ7bjgUeZdlX2ocexR4Sae2kcc/1IQCJg5Nqh7qaNd4UNYEJM2CyZwA",
     "avif": [
       [
         480,
-        "/images/tour-hunza-escape-480.5362f00f.avif"
+        "/images/tour-hunza-escape-480.f55cb928.avif"
       ],
       [
         800,
-        "/images/tour-hunza-escape-800.7378b522.avif"
+        "/images/tour-hunza-escape-800.0418d389.avif"
       ],
       [
         1280,
-        "/images/tour-hunza-escape-1280.a06bab65.avif"
+        "/images/tour-hunza-escape-1280.2bffcaeb.avif"
       ],
       [
         1600,
-        "/images/tour-hunza-escape-1600.6a7e5902.avif"
+        "/images/tour-hunza-escape-1600.cce4575c.avif"
       ]
     ],
     "webp": [
       [
         480,
-        "/images/tour-hunza-escape-480.070f630f.webp"
+        "/images/tour-hunza-escape-480.918dd793.webp"
       ],
       [
         800,
-        "/images/tour-hunza-escape-800.36229f12.webp"
+        "/images/tour-hunza-escape-800.72bb67e3.webp"
       ],
       [
         1280,
-        "/images/tour-hunza-escape-1280.151656ab.webp"
+        "/images/tour-hunza-escape-1280.5933b9bc.webp"
       ],
       [
         1600,
-        "/images/tour-hunza-escape-1600.f9719cfc.webp"
+        "/images/tour-hunza-escape-1600.55a00ae8.webp"
       ]
-    ]
+    ],
+    "credit": {
+      "site": "Pexels",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "author": "Wasif Mehmood",
+      "url": "https://www.pexels.com/photo/15573399/",
+      "subject": "Harbour on Attabad Lake, Hunza"
+    }
   },
   "tour-grand-karakoram": {
     "width": 1600,
     "height": 1000,
-    "placeholder": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAAAQAgCdASoQAAoAA4BaJbACdAD6eO/SMWwAAP6DQkQdAQARRDirJDeC2vBiKODG1eoRQY63SnJ/odrSIgQVszDeQN9R7LGntWGIAA==",
+    "placeholder": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAAAwAgCdASoQAAoAA4BaJYwCdAEfcBZVJEXoAAD+yf6iFS14fvOH2sidQJiRjrrDavZS/YlVUvhIY2S0Gpzzxpe8hE52HdpxQJViKuAA",
     "avif": [
       [
         480,
-        "/images/tour-grand-karakoram-480.bd2b5a12.avif"
+        "/images/tour-grand-karakoram-480.63b2cdfd.avif"
       ],
       [
         800,
-        "/images/tour-grand-karakoram-800.4b430150.avif"
+        "/images/tour-grand-karakoram-800.cf063c86.avif"
       ],
       [
         1280,
-        "/images/tour-grand-karakoram-1280.e93a479b.avif"
+        "/images/tour-grand-karakoram-1280.e9de7ebb.avif"
       ],
       [
         1600,
-        "/images/tour-grand-karakoram-1600.ff9318d4.avif"
+        "/images/tour-grand-karakoram-1600.4ee461ca.avif"
       ]
     ],
     "webp": [
       [
         480,
-        "/images/tour-grand-karakoram-480.f8b99d02.webp"
+        "/images/tour-grand-karakoram-480.86fe3fa4.webp"
       ],
       [
         800,
-        "/images/tour-grand-karakoram-800.b2d7f05b.webp"
+        "/images/tour-grand-karakoram-800.c1c5f44d.webp"
       ],
       [
         1280,
-        "/images/tour-grand-karakoram-1280.cf731343.webp"
+        "/images/tour-grand-karakoram-1280.82cf64f2.webp"
       ],
       [
         1600,
-        "/images/tour-grand-karakoram-1600.03089c40.webp"
+        "/images/tour-grand-karakoram-1600.5681fd0f.webp"
       ]
-    ]
+    ],
+    "credit": {
+      "site": "Unsplash",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license",
+      "author": "Aqib Bilal",
+      "url": "https://unsplash.com/photos/217Zug9Ryq0",
+      "subject": "Forest and snow peaks at Fairy Meadows"
+    }
   },
   "tour-skardu-lakes": {
     "width": 1600,
     "height": 1000,
-    "placeholder": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAQCdASoQAAoAA4BaJQBOgCLaeuAJ+WgA/oIZZf1NcKkhvargM0b3wkXr3f61smLLza/pkUxWeedAZSz3ZU6KaF2sU8RtBetlD5IA",
+    "placeholder": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAADwAQCdASoQAAoAA4BaJYgCdAELy7mkpsAA/vI9pg6qGIfXF+rT4oImAl0aq2ahy0HmQcT8kYs5h6ume6ejXCkiX7q5lQvx+AeJ7eEHqNYOKcFyXgA=",
     "avif": [
       [
         480,
-        "/images/tour-skardu-lakes-480.96478bdb.avif"
+        "/images/tour-skardu-lakes-480.f62deb21.avif"
       ],
       [
         800,
-        "/images/tour-skardu-lakes-800.63fe21d9.avif"
+        "/images/tour-skardu-lakes-800.8a006e56.avif"
       ],
       [
         1280,
-        "/images/tour-skardu-lakes-1280.13d448d2.avif"
+        "/images/tour-skardu-lakes-1280.1c3c24be.avif"
       ],
       [
         1600,
-        "/images/tour-skardu-lakes-1600.8d2c1d66.avif"
+        "/images/tour-skardu-lakes-1600.50c8ffeb.avif"
       ]
     ],
     "webp": [
       [
         480,
-        "/images/tour-skardu-lakes-480.4b9d8176.webp"
+        "/images/tour-skardu-lakes-480.50e92df3.webp"
       ],
       [
         800,
-        "/images/tour-skardu-lakes-800.8d6ceb0c.webp"
+        "/images/tour-skardu-lakes-800.e7bd6cc8.webp"
       ],
       [
         1280,
-        "/images/tour-skardu-lakes-1280.3548af05.webp"
+        "/images/tour-skardu-lakes-1280.fa1f6cca.webp"
       ],
       [
         1600,
-        "/images/tour-skardu-lakes-1600.8f20b196.webp"
+        "/images/tour-skardu-lakes-1600.88b5be84.webp"
       ]
-    ]
+    ],
+    "credit": {
+      "site": "Pexels",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "author": "Arif Esapzai",
+      "url": "https://www.pexels.com/photo/35302567/",
+      "subject": "Shangrila Resort on Lower Kachura Lake, Skardu"
+    }
+  },
+  "gallery-baltit-fort": {
+    "width": 800,
+    "height": 1422,
+    "placeholder": "data:image/webp;base64,UklGRqoAAABXRUJQVlA4IJ4AAABQBACdASoQABwAPu1iqU2ppaQiMAgBMB2JYgCw7Gt7rHocmr92DztTdBTgAP748Fi8M6eCOHSniVESkEGXUvx4AXnlwpcvNTq0UNq6Q+71HWf++oRo/R4KZvCT9NqJ3CQm25x1b7FjQaQbZ3RvME3zMzhZSzzNZPTnMlVACWL+PQuMjZcw7STat76pZQ2JW1PcYa2AH0ESh4xAFyEAAA==",
+    "avif": [
+      [
+        400,
+        "/images/gallery-baltit-fort-400.cadbd0cb.avif"
+      ],
+      [
+        800,
+        "/images/gallery-baltit-fort-800.5811d7f4.avif"
+      ]
+    ],
+    "webp": [
+      [
+        400,
+        "/images/gallery-baltit-fort-400.332d99b3.webp"
+      ],
+      [
+        800,
+        "/images/gallery-baltit-fort-800.fcff5897.webp"
+      ]
+    ],
+    "credit": {
+      "site": "Pexels",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "author": "Mansoor Haider",
+      "url": "https://www.pexels.com/photo/31839248/",
+      "subject": "Baltit Fort, Karimabad"
+    }
+  },
+  "gallery-attabad-lake": {
+    "width": 800,
+    "height": 450,
+    "placeholder": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAQCdASoQAAkAA4BaJZACdAEeoVRXgLQA/nMwz/1+PwN4OagCisibPz+y5bUyPvbTliNKuRoneYUdkCu1X12YjbA3mRym0Zah3wAA",
+    "avif": [
+      [
+        400,
+        "/images/gallery-attabad-lake-400.b6a3c050.avif"
+      ],
+      [
+        800,
+        "/images/gallery-attabad-lake-800.a770f5d4.avif"
+      ]
+    ],
+    "webp": [
+      [
+        400,
+        "/images/gallery-attabad-lake-400.fcec4fc7.webp"
+      ],
+      [
+        800,
+        "/images/gallery-attabad-lake-800.7cc6b303.webp"
+      ]
+    ],
+    "credit": {
+      "site": "Pexels",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "author": "Arif Esapzai",
+      "url": "https://www.pexels.com/photo/35302565/",
+      "subject": "Attabad Lake, Hunza"
+    }
+  },
+  "gallery-khunjerab-gate": {
+    "width": 800,
+    "height": 1067,
+    "placeholder": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAAAwBACdASoQABUAPu1iqU2ppaOiMAgBMB2JbAC/OB7Gv04oDmgLeN7TAQAA/sTH5RDkhQCd9c7Nnh8Ggu0Zjtx59nbD+UnPyjOu+nGZxXJPtc9W9wMcmcKAew7vXtIUyCbTHIekXibnRBKOVvfQcer171HAD2X5P6jOgAAA",
+    "avif": [
+      [
+        400,
+        "/images/gallery-khunjerab-gate-400.b6563780.avif"
+      ],
+      [
+        800,
+        "/images/gallery-khunjerab-gate-800.6b52a8eb.avif"
+      ]
+    ],
+    "webp": [
+      [
+        400,
+        "/images/gallery-khunjerab-gate-400.65592832.webp"
+      ],
+      [
+        800,
+        "/images/gallery-khunjerab-gate-800.ec736da4.webp"
+      ]
+    ],
+    "credit": {
+      "site": "Pexels",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "author": "Muffaddal Qutbuddin",
+      "url": "https://www.pexels.com/photo/28903980/",
+      "subject": "Khunjerab Pass border gate"
+    }
+  },
+  "gallery-kkh-ganish": {
+    "width": 800,
+    "height": 533,
+    "placeholder": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoQAAsAA4BaJZgCsADpvBJBHcyAAMldi8ytid8Y9BMVp43TRggFDJ3MQS7zNNX/+gjN9jCpyPF0eEZzkKOd313bL89q3yR2fcMYcP84gBJrAAAA",
+    "avif": [
+      [
+        400,
+        "/images/gallery-kkh-ganish-400.a4deadc4.avif"
+      ],
+      [
+        800,
+        "/images/gallery-kkh-ganish-800.6b88af7d.avif"
+      ]
+    ],
+    "webp": [
+      [
+        400,
+        "/images/gallery-kkh-ganish-400.9b17c0ea.webp"
+      ],
+      [
+        800,
+        "/images/gallery-kkh-ganish-800.37ca6476.webp"
+      ]
+    ],
+    "credit": {
+      "site": "Unsplash",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license",
+      "author": "Pakistan Tourism",
+      "url": "https://unsplash.com/photos/SUazSOyCb3o",
+      "subject": "Karakoram Highway above the Hunza River at Ganish"
+    }
+  },
+  "gallery-fairy-meadows-night": {
+    "width": 800,
+    "height": 533,
+    "placeholder": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAADwAQCdASoQAAsAA4BaJYwCdAEPAI5oF4AA/vKcvYoRrVd60YV1Knf92aQ4elIDwTNEyygA",
+    "avif": [
+      [
+        400,
+        "/images/gallery-fairy-meadows-night-400.7928b824.avif"
+      ],
+      [
+        800,
+        "/images/gallery-fairy-meadows-night-800.4381b8af.avif"
+      ]
+    ],
+    "webp": [
+      [
+        400,
+        "/images/gallery-fairy-meadows-night-400.1830e642.webp"
+      ],
+      [
+        800,
+        "/images/gallery-fairy-meadows-night-800.2b399864.webp"
+      ]
+    ],
+    "credit": {
+      "site": "Unsplash",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license",
+      "author": "Obaid Awan",
+      "url": "https://unsplash.com/photos/nUc5Hba1McA",
+      "subject": "Nanga Parbat at night from Fairy Meadows"
+    }
   },
   "gallery-deosai": {
     "width": 800,
-    "height": 532,
-    "placeholder": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAACwAQCdASoQAAsAA4BaJaACdAB87gAAAP7W19iP0gsQ0sOkMnpcrdbEcAEkxH6JRp4LQrPNofgSk8xVyw17TZhF1J25cyUVO40vyXQAAAA=",
+    "height": 450,
+    "placeholder": "data:image/webp;base64,UklGRkAAAABXRUJQVlA4IDQAAACwAQCdASoQAAkAA4BaJZwAAvjwkawAAP7I/7qQ5lxd7Ao/Vh8/9N0YnNDkdHH7H3oDUHAA",
     "avif": [
       [
         400,
-        "/images/gallery-deosai-400.26b998af.avif"
+        "/images/gallery-deosai-400.478e9d82.avif"
       ],
       [
         800,
-        "/images/gallery-deosai-800.0f78426e.avif"
+        "/images/gallery-deosai-800.c5731a3f.avif"
       ]
     ],
     "webp": [
       [
         400,
-        "/images/gallery-deosai-400.9252baed.webp"
+        "/images/gallery-deosai-400.83bd4767.webp"
       ],
       [
         800,
-        "/images/gallery-deosai-800.9fe1b921.webp"
-      ]
-    ]
-  },
-  "gallery-kaghan-lake": {
-    "width": 800,
-    "height": 534,
-    "placeholder": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAAAwAgCdASoQAAsAA4BaJbACdAYs3gbxtiGpgADN8ZeyTqjBaji18YlUnePvIdLSLmrhKTtsvbJMPIhqc7T3slCkET/MK15RlQ/wBDjj0eDTUw4txYPZrYlxbkRYHdQAAAA=",
-    "avif": [
-      [
-        400,
-        "/images/gallery-kaghan-lake-400.3679c68d.avif"
-      ],
-      [
-        800,
-        "/images/gallery-kaghan-lake-800.7fe9203a.avif"
+        "/images/gallery-deosai-800.30ad198d.webp"
       ]
     ],
-    "webp": [
-      [
-        400,
-        "/images/gallery-kaghan-lake-400.272c4991.webp"
-      ],
-      [
-        800,
-        "/images/gallery-kaghan-lake-800.e430481d.webp"
-      ]
-    ]
-  },
-  "gallery-rakaposhi": {
-    "width": 800,
-    "height": 600,
-    "placeholder": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADwAQCdASoQAAwAA4BaJbACdAD6KcM3wjAA/qElPbFR7SFTF6aHh8wYOR8prhZtCf/b5u5AaViNt/diSLBr7RYXiQbGoENhq1Ni0yOJnWKUHu5ouKvDtXcUcAA=",
-    "avif": [
-      [
-        400,
-        "/images/gallery-rakaposhi-400.a20d8c4c.avif"
-      ],
-      [
-        800,
-        "/images/gallery-rakaposhi-800.6fb3612b.avif"
-      ]
-    ],
-    "webp": [
-      [
-        400,
-        "/images/gallery-rakaposhi-400.aade3da3.webp"
-      ],
-      [
-        800,
-        "/images/gallery-rakaposhi-800.f4424173.webp"
-      ]
-    ]
-  },
-  "gallery-karimabad-night": {
-    "width": 800,
-    "height": 521,
-    "placeholder": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAAAwAgCdASoQAAoAA4BaJbACdH8AFc1iE6OcAAD+954nZ5b1rFOl4SNmraC/EQmdeler4Dp+pEixWGlh9UJ29AuTKuKLpl7YKbRWgAAA",
-    "avif": [
-      [
-        400,
-        "/images/gallery-karimabad-night-400.0df38901.avif"
-      ],
-      [
-        800,
-        "/images/gallery-karimabad-night-800.c9241999.avif"
-      ]
-    ],
-    "webp": [
-      [
-        400,
-        "/images/gallery-karimabad-night-400.2805ecd1.webp"
-      ],
-      [
-        800,
-        "/images/gallery-karimabad-night-800.b5b46a90.webp"
-      ]
-    ]
-  },
-  "gallery-khunjerab": {
-    "width": 800,
-    "height": 533,
-    "placeholder": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAAAwAgCdASoQAAsAA4BaJZgCdAEWxp/8lPndAAD3SRPXC//MlzFgGEyOqknY889NVtMCGEmeJK/7nCRP0VsYl2+OhJXwm2dres/pxJc4KQAAAA==",
-    "avif": [
-      [
-        400,
-        "/images/gallery-khunjerab-400.fc98f557.avif"
-      ],
-      [
-        800,
-        "/images/gallery-khunjerab-800.157b1222.avif"
-      ]
-    ],
-    "webp": [
-      [
-        400,
-        "/images/gallery-khunjerab-400.55eb9649.webp"
-      ],
-      [
-        800,
-        "/images/gallery-khunjerab-800.a428940a.webp"
-      ]
-    ]
-  },
-  "gallery-fairy-meadows-cabins": {
-    "width": 800,
-    "height": 1067,
-    "placeholder": "data:image/webp;base64,UklGRp4AAABXRUJQVlA4IJIAAACwAwCdASoQABUAPu1iqU2ppaOiMAgBMB2JQAB8nDAtzn1GEMrwIAD+kbcrJCkmFud/K5Ydu2G2v5Ztd3K0GJmoYff4HAXM/JYrr9LKBOmooMEXGprxB0bCaJkcrLCXoj1qbb8x5mmQ5UCKNu8jMGg9rY8/nsDuRRm1NDxeilFKsTnyUrNVXVkrTuMR/BNM5AAAAA==",
-    "avif": [
-      [
-        400,
-        "/images/gallery-fairy-meadows-cabins-400.59619eae.avif"
-      ],
-      [
-        800,
-        "/images/gallery-fairy-meadows-cabins-800.fd2dbfea.avif"
-      ]
-    ],
-    "webp": [
-      [
-        400,
-        "/images/gallery-fairy-meadows-cabins-400.1113a77f.webp"
-      ],
-      [
-        800,
-        "/images/gallery-fairy-meadows-cabins-800.f5cc9f5e.webp"
-      ]
-    ]
+    "credit": {
+      "site": "Unsplash",
+      "license": "Unsplash License",
+      "licenseUrl": "https://unsplash.com/license",
+      "author": "Umar Farooq",
+      "url": "https://unsplash.com/photos/DX_HQ7M_WC0",
+      "subject": "Road across the Deosai Plains"
+    }
   }
 }

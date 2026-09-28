@@ -23,7 +23,7 @@ export const metadata: Metadata = pageMetadata({
   description:
     "Small-group road journeys through Gilgit-Baltistan, planned day by day, with honest drive times and a local team on the ground.",
   path: "/",
-  imageAlt: "Shangrila lake in Skardu beneath snow-capped Karakoram peaks",
+  imageAlt: "The jagged Passu Cones under a wide, cloud-streaked sky in upper Hunza",
 });
 
 export default function Home() {

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { brand } from "./content";
 import { photo, type ImageName } from "./images";
 
-const DEFAULT_IMAGE: ImageName = "hero-skardu-shangrila";
+const DEFAULT_IMAGE: ImageName = "hero-passu-cones";
 
 /**
  * Full metadata for one page. Next.js merges metadata shallowly, so a page that sets only a title would

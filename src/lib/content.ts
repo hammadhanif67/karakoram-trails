@@ -166,7 +166,7 @@ export const destinations = [
     altitude: "approx. 2,230 m",
     altitudeNote: "Skardu town",
     image: "dest-skardu",
-    alt: "Sand dunes of the Katpana cold desert beneath snowy peaks in Skardu",
+    alt: "Sand dunes of the cold desert near Skardu beneath snowy peaks",
     blurb: "Mirror-still lakes, a cold desert and Deosai, one of the highest plateaus in the world.",
     best: "May to Oct",
     bestDetail: "May to October; Deosai only mid-June to September",
@@ -295,7 +295,7 @@ export const tours: Tour[] = [
     overview:
       "Five days on the Karakoram Highway into the heart of Hunza: two forts, a turquoise lake, the Passu Cones and the China border at Khunjerab.",
     image: "tour-hunza-escape",
-    alt: "Boats on the turquoise water of Attabad Lake between steep mountains",
+    alt: "Boats moored at the harbour on the turquoise water of Attabad Lake",
     difficulty: "Easy",
     maxAltitude: "4,693 m (Khunjerab)",
     groupSize: `Max ${maxGroupSize} travellers`,
@@ -332,7 +332,7 @@ export const tours: Tour[] = [
     tagline: "Fairy Meadows, Hunza and Skardu in one summer loop.",
     overview: "Fairy Meadows, Hunza and Skardu in one journey: the classic summer circuit of the north.",
     image: "tour-grand-karakoram",
-    alt: "The jagged Passu Cones against a clear blue sky in upper Hunza",
+    alt: "Pine forest at Fairy Meadows below snow-covered peaks in cloud",
     featured: true,
     difficulty: "Moderate",
     difficultyNote: "includes a 2.5–4 h hike",
@@ -466,14 +466,15 @@ export const testimonials: { name: string; from: string; trip: string; text: str
 
 /* ------------------------------------------------------------------ gallery */
 
+// Three columns of two; the first photo in each column is shown tall (4:5), the second square.
 export const gallery: { image: ImageName; alt: string }[] = [
-  { image: "gallery-deosai", alt: "Green plains of Deosai, the Land of Giants, under a big sky" },
-  { image: "gallery-kaghan-lake", alt: "Snowy peaks reflected in a still lake in Kaghan Valley" },
-  { image: "gallery-rakaposhi", alt: "Snow-capped Rakaposhi rising behind brown ridges in Hunza" },
-  { image: "gallery-karimabad-night", alt: "Karimabad village lit up at night under the stars" },
-  { image: "gallery-khunjerab", alt: "Yaks grazing below snowy mountains at Khunjerab" },
-  { image: "gallery-fairy-meadows-cabins", alt: "Old log cabins among pine trees at Fairy Meadows" },
-];
+  { image: "gallery-baltit-fort", alt: "Baltit Fort on its rocky hill above green trees in Karimabad, Hunza" },
+  { image: "gallery-attabad-lake", alt: "A traveller looking out over the turquoise water of Attabad Lake" },
+  { image: "gallery-khunjerab-gate", alt: "Khunjerab Pass border gate" },
+  { image: "gallery-kkh-ganish", alt: "The Karakoram Highway and a bridge above the Hunza River at Ganish" },
+  { image: "gallery-fairy-meadows-night", alt: "Stars over Nanga Parbat, seen from Fairy Meadows at night" },
+  { image: "gallery-deosai", alt: "A car on the dirt road across the Deosai Plains, with snowy peaks behind" },
+]
 
 /* ------------------------------------------------------------ legal pages */
 

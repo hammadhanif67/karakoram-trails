@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { Lock } from "lucide-react";
 import { Turnstile, type TurnstileHandle } from "@/components/booking/turnstile";
+import { site } from "@/lib/site";
 
 /** Password sign-in form (the page itself is a server component so it can export metadata). */
 export function AdminLoginForm() {
@@ -42,7 +43,7 @@ export function AdminLoginForm() {
     <main className="flex min-h-svh items-center justify-center bg-stone-100 px-5 font-sans text-stone-900">
       <form onSubmit={submit} noValidate className="w-full max-w-sm space-y-5 rounded-xl border border-stone-200 bg-white p-7 shadow-sm">
         <div>
-          <p className="text-xs tracking-widest text-stone-500 uppercase">Karakoram Trails</p>
+          <p className="text-xs tracking-widest text-stone-500 uppercase">{site.name}</p>
           <h1 className="mt-1 flex items-center gap-2 text-2xl font-semibold">
             <Lock className="h-5 w-5" aria-hidden /> Admin sign in
           </h1>

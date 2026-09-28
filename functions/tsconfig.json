@@ -12,5 +12,5 @@
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true
   },
-  "include": ["./**/*.ts", "../server/**/*.ts", "../src/lib/booking-rules.ts", "../src/lib/content.ts"]
+  "include": ["./**/*.ts", "../server/**/*.ts", "../src/lib/booking-rules.ts", "../src/lib/content.ts", "../site.config.ts"]
 }

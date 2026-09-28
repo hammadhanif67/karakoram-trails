@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { CheckCircle2, ExternalLink, FileText, LogOut, MessageCircle, RefreshCw, Search, XCircle } from "lucide-react";
 import { formatDate, formatPrice } from "@/lib/content";
+import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { api } from "./api";
 import { CatalogEditor } from "./catalog-editor";
@@ -55,11 +56,11 @@ function customerMessage(row: Row) {
   const trip = `${row.tour_name} on ${formatDate(row.start_date)} for ${row.travellers} ${row.travellers === 1 ? "traveller" : "travellers"}`;
   const body =
     row.status === "confirmed"
-      ? `your booking ${row.ref} is confirmed: ${trip}. We've received your deposit of ${formatPrice(row.deposit_pkr, "PKR")}; the balance of ${formatPrice(row.total_pkr - row.deposit_pkr, "PKR")} is due 7 days before departure.`
+      ? `your booking ${row.ref} is confirmed: ${trip}. We've received your deposit of ${formatPrice(row.deposit_pkr, "PKR")}; the balance of ${formatPrice(row.total_pkr - row.deposit_pkr, "PKR")} is due ${site.booking.balanceDueDays} days before departure.`
       : row.status === "cancelled"
         ? `your booking ${row.ref} (${trip}) has been cancelled. Reply here if you'd like new dates.`
         : `we've received your booking ${row.ref}: ${trip}. To confirm, please transfer the deposit of ${formatPrice(row.deposit_pkr, "PKR")} and upload the receipt on your booking page.`;
-  return `Assalam o Alaikum ${row.lead_name}, ${body}\n\nYour booking: ${link}\n\nKarakoram Trails`;
+  return `Assalam o Alaikum ${row.lead_name}, ${body}\n\nYour booking: ${link}\n\n${site.name}`;
 }
 
 const sent = (v: number) => (v === 1 ? "sent" : v === 2 ? "n/a" : "pending");
@@ -192,7 +193,7 @@ export function AdminClient() {
     <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs tracking-widest text-stone-500 uppercase">Karakoram Trails admin</p>
+          <p className="text-xs tracking-widest text-stone-500 uppercase">{site.name} admin</p>
           <nav aria-label="Admin sections" className="mt-2 flex gap-1 rounded-lg bg-stone-200/70 p-1">
             {sections.map((t) => (
               <a

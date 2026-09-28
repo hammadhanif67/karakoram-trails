@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, CheckCircle2, Clock, Copy, FileUp, Hourglass, MessageCircle, XCircle } from "lucide-react";
 import { CtaButton } from "@/components/ui/cta-button";
 import { formatDate, formatPrice, whatsappLink } from "@/lib/content";
+import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { Turnstile, type TurnstileHandle } from "./turnstile";
 
@@ -38,7 +39,7 @@ function bookingMessage(b: Booking) {
           ? "My booking is confirmed; sharing the details for the trip."
           : "My booking shows as cancelled. Can you help?";
   return [
-    `Assalam o Alaikum Karakoram Trails, here is my booking.`,
+    `Assalam o Alaikum ${site.name}, here is my booking.`,
     `Booking: ${b.ref}`,
     `Tour: ${b.tour}, ${formatDate(b.date)}`,
     `Travellers: ${b.travellers}`,
@@ -216,10 +217,10 @@ export function BookingStatusClient() {
                 <dl className="mt-4">
                   <CopyRow label="Amount (PKR)" value={String(payment.amountPkr)} />
                   <CopyRow label="Reference / description" value={payment.reference} />
-                  <CopyRow label="Bank" value={payment.bankName} />
-                  <CopyRow label="Account title" value={payment.accountTitle} />
-                  <CopyRow label="IBAN" value={payment.iban} />
-                  {payment.raastId && <CopyRow label="Raast ID" value={payment.raastId} />}
+                  <CopyRow label={site.payments.labels.bankName} value={payment.bankName} />
+                  <CopyRow label={site.payments.labels.accountTitle} value={payment.accountTitle} />
+                  <CopyRow label={site.payments.labels.iban} value={payment.iban} />
+                  {payment.raastId && <CopyRow label={site.payments.labels.raastId} value={payment.raastId} />}
                 </dl>
               ) : (
                 <p className="mt-3 text-sm text-mist">
@@ -260,7 +261,7 @@ export function BookingStatusClient() {
         {b.status === "confirmed" && (
           <p className="flex items-start gap-3 rounded-xl bg-pine/10 p-4 text-ink">
             <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-pine" aria-hidden />
-            Your deposit is confirmed. The balance of {formatPrice(balance, "PKR")} is due 7 days before departure.
+            Your deposit is confirmed. The balance of {formatPrice(balance, "PKR")} is due {site.booking.balanceDueDays} days before departure.
           </p>
         )}
         {b.status === "cancelled" && (

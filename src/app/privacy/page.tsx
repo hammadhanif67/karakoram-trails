@@ -5,7 +5,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: `Privacy policy | ${brand.name}`,
-  description: "What personal data Karakoram Trails collects for bookings, how it is used and how to have it deleted.",
+  description: `What personal data ${brand.name} collects for bookings, how it is used and how to have it deleted.`,
   path: "/privacy/",
 });
 

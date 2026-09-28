@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { isBookableOnline } from "./booking-rules";
 import { publishedCatalog } from "./catalog-fallback";
 import { tours as fallbackTours } from "./content";
+import { site } from "./site";
 
 // Prices and departures come from D1 via /api/departures, so what the site shows always matches
 // the checkout. The static content.ts values are only the build-time fallback: they render in the
@@ -37,7 +38,7 @@ type LiveData = {
 const fallback: LiveData = {
   source: "fallback",
   status: "loading",
-  depositPercent: 30,
+  depositPercent: site.booking.depositPercent,
   // Build-time snapshot of D1 (scripts/snapshot-catalog.mjs); content.ts only for a tour missing from it.
   prices: { ...Object.fromEntries(fallbackTours.map((t) => [t.slug, t.pricePKR])), ...publishedCatalog.prices },
   // bookable: true until the browser can check the date (avoids a build-time vs. visit-time mismatch)
@@ -79,7 +80,7 @@ export function LiveDataProvider({ children }: { children: React.ReactNode }) {
         setData({
           source: "live",
           status: "live",
-          depositPercent: Number.isInteger(json.depositPercent) ? (json.depositPercent as number) : 30,
+          depositPercent: Number.isInteger(json.depositPercent) ? (json.depositPercent as number) : site.booking.depositPercent,
           prices: { ...fallback.prices, ...Object.fromEntries(json.tours.map((t) => [t.slug, t.pricePKR])) },
           departures: json.departures.map((d) => ({ ...d })),
         });

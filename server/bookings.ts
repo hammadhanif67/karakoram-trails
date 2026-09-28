@@ -1,7 +1,8 @@
 // Booking creation, lookup and hold expiry on D1.
 import { depositFor, holdExpiresAt, isBookableOnline } from "../src/lib/booking-rules";
 import { maxGroupSize } from "../src/lib/content";
-import { depositPercent, holdHours, type Env } from "./env";
+import { site } from "../site.config";
+import type { Env } from "./env";
 import { HttpError } from "./http";
 import { randomToken, safeEqual } from "./tokens";
 
@@ -119,9 +120,9 @@ export async function createBooking(env: Env, input: BookingInput, now = new Dat
     throw new HttpError(409, "not_enough_seats", dep.seats_left > 0 ? `Only ${dep.seats_left} seat(s) left on this departure.` : "This departure is fully booked.");
 
   const total = dep.price_pkr * input.travellers;
-  const pct = depositPercent(env);
+  const pct = site.booking.depositPercent;
   const deposit = depositFor(total, pct);
-  const expires = holdExpiresAt(dep.start_date, holdHours(env), now).toISOString();
+  const expires = holdExpiresAt(dep.start_date, site.booking.holdHours, now).toISOString();
   const token = randomToken();
   const tmpRef = `TMP-${randomToken(9)}`;
 

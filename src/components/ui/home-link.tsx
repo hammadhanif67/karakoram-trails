@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { site } from "@/lib/site";
 
 type Props = Omit<React.ComponentProps<typeof Link>, "href">;
 
@@ -14,7 +15,7 @@ export function HomeLink({ onClick, ...props }: Props) {
   return (
     <Link
       href="/"
-      aria-label="Karakoram Trails home"
+      aria-label={`${site.name} home`}
       onClick={(e) => {
         onClick?.(e);
         if (pathname !== "/" || e.defaultPrevented) return;

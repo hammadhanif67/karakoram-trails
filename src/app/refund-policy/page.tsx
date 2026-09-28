@@ -6,7 +6,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: `Refund policy | ${brand.name}`,
-  description: "How deposit refunds and free date changes work on Karakoram Trails group tours, and how to cancel a booking.",
+  description: `How deposit refunds and free date changes work on ${brand.name} group tours, and how to cancel a booking.`,
   path: "/refund-policy/",
 });
 

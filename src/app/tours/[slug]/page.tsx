@@ -14,6 +14,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { SectionTitle } from "@/components/ui/section-title";
 import { faqs, getDestination, getTour, goodToKnow, tours } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
+import { pageTitle } from "@/lib/site";
 
 // Only the tours listed in content.ts exist; anything else is a 404 in the static export.
 export const dynamicParams = false;
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: PageProps<"/tours/[slug]">): 
   const tour = getTour(slug);
   if (!tour) return {};
   return pageMetadata({
-    title: `${tour.name}: ${tour.days}-day tour | Karakoram Trails`,
+    title: pageTitle(`${tour.name}: ${tour.days}-day tour`),
     description: tour.overview,
     path: `/tours/${tour.slug}/`,
     image: tour.image,

@@ -1,30 +1,17 @@
+import { site } from "../../site.config";
 // Site copy and data. Facts follow CONTENT_BRIEF.md: no invented reviews, counts or ratings, and every
 // drive/hike time is approximate. Prices and departures also live in D1 (the source of truth);
 // change both together and run `npm run db:check:local` / `db:check:remote`.
 // PLACEHOLDERS still to confirm before launch are marked "PLACEHOLDER".
 import type { ImageName } from "./images";
 
-export const brand = {
-  name: "Karakoram Trails",
-  phoneDisplay: "+92 328 1933287",
-  whatsapp: "923281933287", // digits only with country code; used for wa.me links and tel:
-  email: "adalhammad556@gmail.com",
-  office: "Aliabad, Hunza, Gilgit-Baltistan",
-  hours: "Replies within a few hours, 9 am to 10 pm PKT", // PLACEHOLDER: your real reply hours
-};
+// Name and contact details, maximum group size and feature flags live in site.config.ts.
+export const brand = { name: site.name, ...site.contact };
 
-/**
- * Largest group on any departure: used by the admin (seats per departure), the checkout (travellers per
- * booking) and every "max 12 travellers" text. The database also caps one booking at 12 travellers
- * (bookings.travellers CHECK), so raising this above 12 needs a migration as well.
- */
-export const maxGroupSize = 12;
+/** Largest group on any departure (site.config.ts, booking.maxGroupSize). */
+export const maxGroupSize = site.booking.maxGroupSize;
 
-// Feature flags (move to site.config.ts in the config phase).
-export const features = {
-  // Off until there are real reviews from real travellers; the "Our promises" block shows instead.
-  showTestimonials: false,
-};
+export const features = site.features;
 
 export const whatsappLink = (text?: string) =>
   `https://wa.me/${brand.whatsapp}${text ? `?text=${encodeURIComponent(text)}` : ""}`;
@@ -575,7 +562,7 @@ export const whyUs = {
 export const promises = [
   { title: "Honest drive times", text: "Every itinerary day shows its approximate drive or hike time." },
   { title: "Small groups", text: `${maxGroupSize} travellers maximum on every departure.` },
-  { title: "Simple booking", text: "A 30% deposit holds your seats; the balance is paid before departure." },
+  { title: "Simple booking", text: `A ${site.booking.depositPercent}% deposit holds your seats; the balance is paid before departure.` },
   { title: "A real person on WhatsApp", text: "Before, during and after the trip." },
 ];
 
@@ -583,7 +570,7 @@ export const promises = [
 
 export const steps = [
   { title: "Tell us your plan", text: "Pick a tour and a date, or describe your trip on WhatsApp. Dates, group size, pace." },
-  { title: "Book your seats", text: "Book online or on WhatsApp. A 30% deposit by bank transfer or Raast holds your seats." },
+  { title: "Book your seats", text: `Book online or on WhatsApp. A ${site.booking.depositPercent}% deposit by bank transfer or Raast holds your seats.` },
   { title: "Travel north", text: "Pay the balance before departure. We handle transport, stays and the day-by-day plan." },
 ];
 
@@ -606,12 +593,11 @@ export const gallery: { image: ImageName; alt: string }[] = [
 
 /* ------------------------------------------------------------ legal pages */
 
-// Booking rules quoted on /terms. Keep in step with wrangler.toml [vars] (DEPOSIT_PERCENT, HOLD_HOURS)
-// and ONLINE_CUTOFF_HOURS in src/lib/booking-rules.ts.
+// Booking rules quoted on /terms (site.config.ts, booking).
 export const bookingTerms = {
-  depositPercent: 30,
-  holdHours: 48,
-  balanceDueDays: 7,
+  depositPercent: site.booking.depositPercent,
+  holdHours: site.booking.holdHours,
+  balanceDueDays: site.booking.balanceDueDays,
   maxGroup: maxGroupSize,
 };
 
@@ -636,7 +622,7 @@ export const faqs: { q: string; a: string; tour?: boolean }[] = [
   { q: "How fit do I need to be?", a: "Hunza Escape and Skardu Lakes are easy and suit most people, though some drive days are long. The Grand Karakoram includes a hike of approx. 2.5–4 h each way to Fairy Meadows; ponies are available.", tour: true },
   { q: "Will I get altitude sickness?", a: "Most nights are below 2,600 m, which most people handle fine. Khunjerab (4,693 m) and Deosai (~4,100 m) are short visits. Drink water, go slowly, and tell your tour leader about headaches or dizziness.", tour: true },
   { q: "Can children and older travellers join?", a: "Hunza Escape and Skardu Lakes are easy and suit most ages. Grand Karakoram includes a 2.5–4 h hike to Fairy Meadows at altitude; ponies are available." },
-  { q: "How do I book and pay?", a: "Book online from any tour page or send us a WhatsApp message. A 30% deposit by bank transfer or Raast holds your seats, and the balance is paid before departure." },
+  { q: "How do I book and pay?", a: `Book online from any tour page or send us a WhatsApp message. A ${site.booking.depositPercent}% deposit by bank transfer or Raast holds your seats, and the balance is paid before departure.` },
   { q: "What is your cancellation policy?", a: cancellationPolicy.join(" ") },
   { q: "What if a road is blocked?", a: "Landslides happen. The tour leader re-routes or adjusts the plan; safety comes before the schedule.", tour: true },
   { q: "What should I pack?", a: "Layers, a warm jacket even in summer, sturdy shoes, sunscreen, sunglasses, a power bank and a small personal medical kit.", tour: true },

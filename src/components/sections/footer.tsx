@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { ArrowUp, Mail, MapPin, MessageCircle, Mountain, Phone } from "lucide-react";
+import { ArrowUp, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { CtaButton } from "@/components/ui/cta-button";
 import { BackToTop, HomeLink } from "@/components/ui/home-link";
+import { LogoMark } from "@/components/ui/logo";
 import { brand, destinations, tours, whatsappLink } from "@/lib/content";
+import { site } from "@/lib/site";
 
 const explore = [
   { href: "/#destinations", label: "Destinations" },
@@ -13,6 +15,10 @@ const explore = [
   { href: "/#how-it-works", label: "How it works" },
   { href: "/#faq", label: "FAQ" },
 ];
+
+const socialLabels: Record<keyof typeof site.social, string> = { instagram: "Instagram", facebook: "Facebook", youtube: "YouTube", tiktok: "TikTok" };
+// Only the profiles filled in site.config.ts.
+const social = (Object.keys(socialLabels) as (keyof typeof site.social)[]).filter((k) => site.social[k]).map((k) => ({ label: socialLabels[k], href: site.social[k] }));
 
 function Heading({ children }: { children: React.ReactNode }) {
   return <p className="text-[0.7rem] font-medium tracking-[0.25em] text-apricot uppercase">{children}</p>;
@@ -28,7 +34,7 @@ export function Footer() {
         <div className="flex flex-col gap-8 border-b border-cream/10 py-14 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-md">
             <HomeLink className="inline-flex items-center gap-2 text-cream">
-              <Mountain className="h-7 w-7 text-apricot" aria-hidden />
+              <LogoMark className="h-7 w-7 text-apricot" />
               <span className="font-serif text-3xl font-semibold">{brand.name}</span>
             </HomeLink>
             <p className="mt-4 leading-relaxed">
@@ -108,6 +114,15 @@ export function Footer() {
                 <MapPin className="h-4 w-4 shrink-0 text-apricot" aria-hidden />
                 {brand.office}
               </li>
+              {social.length > 0 && (
+                <li className="flex flex-wrap gap-x-5 gap-y-2">
+                  {social.map((l) => (
+                    <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-cream">
+                      {l.label}
+                    </a>
+                  ))}
+                </li>
+              )}
             </ul>
           </div>
         </div>

@@ -5,6 +5,7 @@ import { isBookableOnline } from "../../src/lib/booking-rules";
 import { releaseExpiredHolds } from "../../server/bookings";
 import { deliverPending } from "../../server/notify";
 import type { Env } from "../../server/env";
+import { site } from "../../site.config";
 
 type TourRow = { slug: string; price_pkr: number };
 type DepartureRow = { id: number; tour: string; date: string; seats: number; seats_left: number };
@@ -31,7 +32,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ env, waitUntil }) => {
 
     const body = {
       generatedAt: now.toISOString(),
-      depositPercent: Number(env.DEPOSIT_PERCENT ?? 30),
+      depositPercent: site.booking.depositPercent,
       tours: (tours.results as TourRow[]).map((t) => ({ slug: t.slug, pricePKR: t.price_pkr })),
       departures: (departures.results as DepartureRow[]).map((d) => ({
         id: d.id,

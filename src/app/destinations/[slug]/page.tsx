@@ -14,6 +14,7 @@ import { TourPrice } from "@/components/ui/tour-price";
 import { destinations, getDestination, getTour, goodToKnow, passWindow, tours, whatsappLink } from "@/lib/content";
 import { photoSubject } from "@/lib/images";
 import { pageMetadata } from "@/lib/seo";
+import { pageTitle } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 // Only the destinations listed in content.ts exist; anything else is a 404 in the static export.
@@ -28,7 +29,7 @@ export async function generateMetadata({ params }: PageProps<"/destinations/[slu
   const d = getDestination(slug);
   if (!d) return {};
   return pageMetadata({
-    title: `${d.title}: when to go, travel times and tours | Karakoram Trails`,
+    title: pageTitle(`${d.title}: when to go, travel times and tours`),
     description: d.blurb,
     path: `/destinations/${d.slug}/`,
     image: d.image,

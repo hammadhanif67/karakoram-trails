@@ -53,8 +53,9 @@ the request 404s and the static values stay.
 
 - `wrangler.toml`: Pages config, D1 (`DB`) and R2 (`RECEIPTS`) bindings. No secrets.
 - `migrations/`: D1 schema. `server/`: server-only code for functions (kept out of the Next build).
-- `src/lib/booking-rules.ts`: shared rules. Online booking closes 72 h before departure; unpaid holds
-  expire at the earlier of now + `HOLD_HOURS` and departure − 72 h (only `pending_payment` expires).
+- `src/lib/booking-rules.ts`: shared rules. Online booking closes `booking.onlineCutoffHours` (72 h) before
+  departure; unpaid holds expire at the earlier of now + `booking.holdHours` (48 h) and that cutoff (only
+  `pending_payment` expires). Both numbers, and the deposit percentage, are in `site.config.ts`.
 
 Local development:
 
@@ -152,6 +153,35 @@ It also writes `src/lib/images.generated.json` (sizes, intrinsic width/height an
 placeholder per photo), which `src/lib/images.ts` and `<Photo>` read: `<picture>` with AVIF first, WebP as
 the fallback, width/height on the `<img>`, and the placeholder as its background until the photo paints.
 Commit `public/images/` and the manifest after running it.
+
+## How to rebrand
+
+Everything that makes this site "Karakoram Trails" is in one file, `site.config.ts` in the repo root. The
+pages, the Pages Functions (booking rules, customer emails) and the build scripts all read from it.
+
+1. **Name and contact:** `name`, and `contact` (phone as shown, WhatsApp number as digits with the country
+   code, email, office address, reply hours). `social`: profile URLs; empty ones are not shown.
+2. **Logo:** `logo.mark` is `"mountain"` (the built-in mark) or the path of your own SVG in `public/`, for
+   example `"/logo.svg"`. The browser-tab icon is a separate file: replace `src/app/icon.svg`.
+3. **Booking rules:** `booking` (maximum group size, deposit %, hold hours, balance due days, online
+   cutoff). The server uses the same values, so a new deploy applies them everywhere. Going above 12
+   travellers per booking also needs a D1 migration (`migrations/0001_init.sql` caps it at 12). The rules
+   are quoted on /terms, so update `legalMeta.updated` in `src/lib/content.ts` and bump `TERMS_VERSION` in
+   `server/bookings.ts` when they change.
+4. **Payments:** `payments.methods` and the labels on the booking page. The bank details themselves are
+   secrets: `npx wrangler pages secret put BANK_NAME --project-name <project>` (also `BANK_ACCOUNT_TITLE`,
+   `BANK_IBAN`, `RAAST_ID`).
+5. **Feature flags:** `features.showTestimonials` (turn it on only once `testimonials` in
+   `src/lib/content.ts` holds real reviews).
+6. **SEO:** `seo` (home page title and description, default social-preview photo, locale). Other pages are
+   titled "Page | name".
+7. **Address:** `url` is the default. Per deployment, set `NEXT_PUBLIC_SITE_URL` (Cloudflare Pages build
+   variable) and, in `wrangler.toml`, `PUBLIC_SITE_URL` and `TURNSTILE_HOSTNAMES`.
+
+Not in the config: tours, destinations, FAQ and legal texts (`src/lib/content.ts`), photos
+(`photos-original/` and `scripts/optimize-images.mjs`, see Photos), fonts (`src/app/layout.tsx`), the
+Turnstile site key (`.env.production`), and the D1 and R2 names (`wrangler.toml`). After changing anything,
+run `npm run build` and check the pages before deploying.
 
 ## Before launch
 

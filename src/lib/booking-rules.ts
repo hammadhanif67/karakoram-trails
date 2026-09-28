@@ -1,8 +1,9 @@
 // Booking rules shared by the site (browser) and the Pages Functions (server).
 // Pure functions only: no framework or Cloudflare types, so both sides can import this file.
+import { site } from "../../site.config";
 
-/** Online booking closes this many hours before a departure starts. */
-export const ONLINE_CUTOFF_HOURS = 72;
+/** Online booking closes this many hours before a departure starts (site.config.ts). */
+export const ONLINE_CUTOFF_HOURS = site.booking.onlineCutoffHours;
 
 const HOUR = 60 * 60 * 1000;
 

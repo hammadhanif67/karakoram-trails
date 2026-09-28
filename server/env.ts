@@ -4,10 +4,6 @@ export interface Env {
   DB: D1Database;
   RECEIPTS: R2Bucket;
 
-  // wrangler.toml [vars]
-  DEPOSIT_PERCENT?: string;
-  HOLD_HOURS?: string;
-
   // Turnstile (stage 2)
   TURNSTILE_SECRET_KEY?: string;
   /** Comma-separated frontend hostnames Turnstile tokens may come from. Never include localhost in production. */
@@ -54,14 +50,6 @@ export interface Env {
   // "Publish changes to site" in admin
   /** Cloudflare Pages deploy hook URL (secret: anyone holding it can start a build). */
   DEPLOY_HOOK_URL?: string;
-}
-
-export const depositPercent = (env: Env) => clampInt(env.DEPOSIT_PERCENT, 30, 1, 100);
-export const holdHours = (env: Env) => clampInt(env.HOLD_HOURS, 48, 1, 24 * 14);
-
-function clampInt(v: string | undefined, fallback: number, min: number, max: number) {
-  const n = Number.parseInt(v ?? "", 10);
-  return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;
 }
 
 /** Splits a comma-separated setting into trimmed, non-empty, lower-cased values. */

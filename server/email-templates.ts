@@ -2,6 +2,7 @@
 // Admin alerts go to Telegram instead (server/telegram.ts).
 import type { EmailMessage } from "./email/provider";
 import type { Env } from "./env";
+import { site } from "../site.config";
 
 export type EmailBooking = {
   ref: string;
@@ -34,7 +35,7 @@ const when = (iso: string) =>
 function layout(title: string, paragraphs: string[], cta?: { label: string; href: string }) {
   const html = `<!doctype html><html><body style="margin:0;background:#f6f1e7;font-family:Arial,Helvetica,sans-serif;color:#1c1917">
 <div style="max-width:560px;margin:0 auto;padding:32px 24px">
-<p style="font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#d08a3c;margin:0 0 8px">Karakoram Trails</p>
+<p style="font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#d08a3c;margin:0 0 8px">${esc(site.name)}</p>
 <h1 style="font-family:Georgia,serif;font-weight:normal;font-size:28px;margin:0 0 20px">${esc(title)}</h1>
 ${paragraphs.map((p) => `<p style="font-size:15px;line-height:1.6;margin:0 0 14px">${p}</p>`).join("\n")}
 ${cta ? `<p style="margin:24px 0"><a href="${esc(cta.href)}" style="background:#d08a3c;color:#1a1206;text-decoration:none;padding:12px 20px;border-radius:4px;font-size:14px;letter-spacing:1px;text-transform:uppercase">${esc(cta.label)}</a></p>` : ""}

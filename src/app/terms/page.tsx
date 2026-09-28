@@ -7,7 +7,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: `Terms and booking conditions | ${brand.name}`,
-  description: "How booking, payment, changes and cancellations work on Karakoram Trails group tours.",
+  description: `How booking, payment, changes and cancellations work on ${brand.name} group tours.`,
   path: "/terms/",
 });
 

@@ -11,10 +11,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { depositFor, holdExpiresAt, ONLINE_CUTOFF_HOURS } from "@/lib/booking-rules";
 import { cancellationPolicy, formatDate, formatPrice, getTour, maxGroupSize, whatsappLink } from "@/lib/content";
 import { useLiveData } from "@/lib/live-data";
+import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { Turnstile, type TurnstileHandle } from "./turnstile";
 
-const HOLD_HOURS = 48; // mirrors wrangler.toml HOLD_HOURS; the server's value is authoritative
 
 type Fields = { name: string; email: string; phone: string; notes: string; acceptTerms: boolean };
 type FieldErrors = Partial<Record<keyof Fields | "form", string>>;
@@ -118,7 +118,7 @@ export function CheckoutClient() {
   const price = live.prices[tour.slug];
   const total = price * count;
   const deposit = depositFor(total, live.depositPercent);
-  const holdUntil = holdExpiresAt(departure.date, HOLD_HOURS);
+  const holdUntil = holdExpiresAt(departure.date, site.booking.holdHours);
   const holdLabel = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }).format(holdUntil);
 
   const set = <K extends keyof Fields>(k: K, v: Fields[K]) => {
@@ -247,7 +247,7 @@ export function CheckoutClient() {
               </span>
               <span>
                 <span className="flex items-center gap-2 font-medium text-ink">
-                  <Banknote className="h-4 w-4 text-pine" aria-hidden /> Bank transfer or Raast
+                  <Banknote className="h-4 w-4 text-pine" aria-hidden /> {site.payments.methods}
                 </span>
                 <span className="mt-1 block text-sm text-mist">
                   After you reserve, we show our account details. Transfer the deposit and upload the receipt.
@@ -269,7 +269,7 @@ export function CheckoutClient() {
                 className="mt-0.5 h-5 w-5 shrink-0 accent-[var(--pine)]"
               />
               <span>
-                I accept the booking conditions: a {live.depositPercent}% deposit confirms the seats, the balance is due 7 days before
+                I accept the booking conditions: a {live.depositPercent}% deposit confirms the seats, the balance is due {site.booking.balanceDueDays} days before
                 departure, and the{" "}
                 <Link href="/terms/" target="_blank" className="text-pine underline underline-offset-2">
                   terms and booking conditions
@@ -321,7 +321,7 @@ export function CheckoutClient() {
               <dd className="text-apricot tabular-nums">{formatPrice(deposit, "PKR")}</dd>
             </div>
             <div className="flex justify-between gap-4 text-cream/70">
-              <dt>Balance, 7 days before departure</dt>
+              <dt>Balance, {site.booking.balanceDueDays} days before departure</dt>
               <dd className="tabular-nums">{formatPrice(total - deposit, "PKR")}</dd>
             </div>
           </dl>

@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, m } from "framer-motion";
-import { Menu, Mountain, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { brand } from "@/lib/content";
 import { ScrollProgress } from "@/components/magicui/scroll-progress";
 import { HomeLink } from "@/components/ui/home-link";
+import { LogoMark } from "@/components/ui/logo";
 import { CtaButton } from "@/components/ui/cta-button";
 import { cn } from "@/lib/utils";
 
@@ -49,7 +50,7 @@ export function Navbar({ solid = false }: { solid?: boolean }) {
       <ScrollProgress className="h-0.5 bg-none bg-apricot" />
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 sm:px-8" aria-label="Main">
         <HomeLink className="flex items-center gap-2 text-cream" onClick={() => setOpen(false)}>
-          <Mountain className="h-6 w-6 text-apricot" aria-hidden />
+          <LogoMark className="h-6 w-6 text-apricot" />
           <span className="font-serif text-2xl font-semibold tracking-wide">{brand.name}</span>
         </HomeLink>
 

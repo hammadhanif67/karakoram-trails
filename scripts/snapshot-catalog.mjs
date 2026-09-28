@@ -9,21 +9,31 @@
 //
 // SNAPSHOT_API_URL overrides the API address (default: <NEXT_PUBLIC_SITE_URL>/api/departures).
 
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
-import { transformSync } from "esbuild";
+import { buildSync } from "esbuild";
 
-// content.ts has no imports; compile it with esbuild instead of relying on Node's TypeScript support,
-// so this works on whatever Node version the Cloudflare build image uses.
-const compiled = transformSync(readFileSync("src/lib/content.ts", "utf8"), { loader: "ts", format: "esm" }).code;
+// Bundle content.ts (and the site.config.ts it imports) with esbuild instead of relying on Node's TypeScript
+// support, so this works on whatever Node version the Cloudflare build image uses.
+const compiled = buildSync({
+  stdin: {
+    contents: 'export { departures, tours } from "./src/lib/content.ts"; export { site } from "./site.config.ts";',
+    resolveDir: process.cwd(),
+    loader: "ts",
+  },
+  bundle: true,
+  format: "esm",
+  platform: "neutral",
+  write: false,
+}).outputFiles[0].text;
 mkdirSync("node_modules/.cache", { recursive: true });
 writeFileSync("node_modules/.cache/snapshot-content.mjs", compiled);
-const { departures: contentDepartures, tours: contentTours } = await import(
+const { departures: contentDepartures, tours: contentTours, site: siteConfig } = await import(
   `${pathToFileURL("node_modules/.cache/snapshot-content.mjs").href}?t=${Date.now()}`
 );
 
 const OUT = "src/lib/catalog-snapshot.json";
-const site = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://karakoram-trails.pages.dev").replace(/\/$/, "");
+const site = (process.env.NEXT_PUBLIC_SITE_URL ?? siteConfig.url).replace(/\/$/, "");
 const apiUrl = process.env.SNAPSHOT_API_URL ?? `${site}/api/departures`;
 const onCloudflare = !!process.env.CF_PAGES;
 const allowFallback = !onCloudflare || process.env.SNAPSHOT_ALLOW_FALLBACK === "1";

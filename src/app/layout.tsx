@@ -3,7 +3,7 @@ import { Cormorant, Montserrat } from "next/font/google";
 import { CurrencyProvider } from "@/lib/currency";
 import { LiveDataProvider } from "@/lib/live-data";
 import { MotionProvider } from "@/lib/motion-provider";
-import { siteUrl } from "@/lib/site";
+import { site, siteUrl } from "@/lib/site";
 import "./globals.css";
 
 // Both families are variable fonts: one file per style (latin subset only), whatever the number of weights.
@@ -37,9 +37,8 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Karakoram Trails | Tours to Hunza, Skardu and Fairy Meadows",
-  description:
-    "Small-group road journeys through Gilgit-Baltistan, planned day by day, with honest drive times and a local team on the ground.",
+  title: site.seo.title,
+  description: site.seo.description,
   // Every page builds its own canonical, Open Graph and Twitter tags with pageMetadata() (src/lib/seo.ts).
 };
 

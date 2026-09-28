@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { brand } from "./content";
 import { photo, type ImageName } from "./images";
+import { site } from "./site";
 
-const DEFAULT_IMAGE: ImageName = "hero-passu-cones";
+const DEFAULT_IMAGE = site.seo.defaultImage as ImageName;
 
 /**
  * Full metadata for one page. Next.js merges metadata shallowly, so a page that sets only a title would
@@ -32,8 +32,8 @@ export function pageMetadata({
     ...(path ? { alternates: { canonical: path } } : {}),
     openGraph: {
       type: "website",
-      siteName: brand.name,
-      locale: "en_GB",
+      siteName: site.name,
+      locale: site.seo.locale,
       title,
       description,
       images,

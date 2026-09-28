@@ -17,11 +17,11 @@ import { WhenToGo } from "@/components/sections/when-to-go";
 import { WhyUs } from "@/components/sections/why-us";
 import { features } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Karakoram Trails | Tours to Hunza, Skardu and Fairy Meadows",
-  description:
-    "Small-group road journeys through Gilgit-Baltistan, planned day by day, with honest drive times and a local team on the ground.",
+  title: site.seo.title,
+  description: site.seo.description,
   path: "/",
   image: heroImage.name,
   imageAlt: heroImage.alt,

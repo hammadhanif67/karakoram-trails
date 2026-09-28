@@ -196,7 +196,7 @@ export const destinations = [
     altitudeNote: "Skardu town",
     image: "dest-skardu",
     alt: "Sand dunes of the cold desert near Skardu beneath snowy peaks",
-    blurb: "Mirror-still lakes, a cold desert and Deosai, one of the highest plateaus in the world.",
+    blurb: "Mirror-still lakes, a cold desert and the Deosai Plains at approx. 4,100 m.",
     best: "May to Oct",
     bestDetail: "May to October; Deosai only mid-June to September",
     season: season("xxxaggggggax"),

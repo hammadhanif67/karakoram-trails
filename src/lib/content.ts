@@ -241,6 +241,8 @@ export type Tour = {
   image: ImageName;
   alt: string;
   featured?: boolean;
+  /** Short factual label on the card photo (e.g. a season limit). Never a popularity claim. */
+  badge?: string;
   difficulty: "Easy" | "Moderate" | "Active";
   difficultyNote?: string;
   maxAltitude: string;
@@ -334,6 +336,7 @@ export const tours: Tour[] = [
     image: "tour-grand-karakoram",
     alt: "Pine forest at Fairy Meadows below snow-covered peaks in cloud",
     featured: true,
+    badge: "Summer only",
     difficulty: "Moderate",
     difficultyNote: "includes a 2.5–4 h hike",
     maxAltitude: "4,693 m (Khunjerab)",

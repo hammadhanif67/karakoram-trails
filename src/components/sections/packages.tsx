@@ -49,12 +49,13 @@ export function Packages() {
                       sizes="(min-width: 1024px) 33vw, 100vw"
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                    {t.featured && (
-                      <span className="absolute top-4 left-4 rounded-full bg-apricot px-3 py-1 text-xs font-medium text-apricot-ink">
-                        Most booked
-                      </span>
-                    )}
                   </a>
+                  {/* Outside the aria-hidden photo link so screen readers get it too. */}
+                  {t.badge && (
+                    <span className="pointer-events-none absolute top-4 left-4 z-10 rounded-full bg-apricot px-3 py-1 text-xs font-medium text-apricot-ink">
+                      {t.badge}
+                    </span>
+                  )}
 
                   <div className="flex flex-1 flex-col p-6 sm:p-7">
                     <h3 className="font-serif text-3xl font-semibold text-ink">

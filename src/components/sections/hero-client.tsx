@@ -6,18 +6,21 @@ import { WordRotate } from "@/components/magicui/word-rotate";
 import { formatDate, formatPrice, getTour, maxGroupSize } from "@/lib/content";
 import { useCurrency } from "@/lib/currency";
 import { useDepartures, useFromPrice } from "@/lib/live-data";
-import { useReducedMotionSafe } from "@/lib/use-media-query";
 import { cn } from "@/lib/utils";
 
-/** "Journeys to <place>": a slow Word Rotate, or the full list under reduced motion. */
+/**
+ * "Journeys to <place>": a slow Word Rotate, or the full list under reduced motion. Both are in the HTML and
+ * CSS (motion-reduce) picks one, so the line never changes length after hydration.
+ */
 export function HeroPlaces({ places }: { places: string[] }) {
-  const reduce = useReducedMotionSafe();
-  if (reduce) return <span>{places.join(" · ")}</span>;
   return (
     <>
       <span className="sr-only">{places.join(", ")}</span>
+      <span aria-hidden className="hidden motion-reduce:inline">
+        {places.join(" · ")}
+      </span>
       {/* Magic UI Word Rotate, kept slow and subtle */}
-      <span aria-hidden className="text-cream">
+      <span aria-hidden className="text-cream motion-reduce:hidden">
         <WordRotate
           words={places}
           duration={3800}

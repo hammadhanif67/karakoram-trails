@@ -1,5 +1,7 @@
 # Karakoram Trails
 
+🔗 **Live:** https://karakoram-trails.pages.dev
+
 Landing page for a Northern Pakistan tour agency (Hunza, Skardu, Fairy Meadows).
 Next.js 16 + Tailwind CSS 4 + Framer Motion, exported as a fully static site.
 
